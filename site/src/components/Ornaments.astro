@@ -142,8 +142,11 @@
         <path d="M76,76 L45,45" /><path d="M124,124 L155,155" />
         <path d="M124,76 L155,45" /><path d="M76,124 L45,155" />
         <path d="M117,70 L134,31" /><path d="M83,130 L66,169" />
-        <path d="M130,117 L169,100" /><path d="M70,83 L31,66" />
-        <path d="M130,83 L169,100" /><path d="M70,117 L31,134" />
+        <!-- these two once both ended at 169,100, collapsing the right-hand pair onto a
+             single point while their left twins fanned out. The sun sat dead centre and
+             still looked lopsided. -->
+        <path d="M130,117 L169,134" /><path d="M70,83 L31,66" />
+        <path d="M130,83 L169,66" /><path d="M70,117 L31,134" />
         <path d="M83,70 L66,31" /><path d="M117,130 L134,169" />
       </g>
     </g>
