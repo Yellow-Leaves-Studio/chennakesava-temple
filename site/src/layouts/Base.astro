@@ -351,10 +351,10 @@ const schema = {
       font-family: var(--serif); font-weight: 400; font-size: 22px; line-height: 1.22;
       margin: 0 0 6px; text-wrap: balance;
     }
-    .page-te { color: var(--ink-soft); font-size: 17px; margin: 0 0 26px; }
+    .page-te { color: var(--ink-soft); font-size: 17px; margin: 0 0 22px; }
     h2 {
       font-family: var(--serif); font-weight: 400; font-size: 23px; line-height: 1.24;
-      margin: 38px 0 10px; text-wrap: balance;
+      margin: 30px 0 10px; text-wrap: balance;
     }
     h3 {
       display: flex; align-items: center; gap: 10px; margin: 30px 0 12px;
@@ -401,8 +401,14 @@ const schema = {
     }
     /* Height matches the pattern tile exactly (60x24 and 24x20 user units, 1 unit = 1px
        with no viewBox), so the motif is never clipped and never squashed. */
-    .kolam-rule { display: block; width: 100%; height: 24px; color: var(--gold-line); margin: 30px 0; }
-    .petal-rule { display: block; width: 100%; height: 20px; color: var(--gold-line); margin: 26px 0; }
+    .kolam-rule, .petal-rule {
+      display: block; width: 100%; color: var(--gold-line); margin: 30px 0;
+    }
+    .kolam-rule { height: 24px; }
+    .petal-rule { height: 20px; }
+    /* The rule does the separating. Without this the heading's own top margin collapses
+       in on top of it, giving 30px after a kolam rule and 38px after a petal one. */
+    .kolam-rule + *, .petal-rule + * { margin-top: 0; }
 
     .note {
       border-left: 2px solid var(--gold); background: var(--gold-glow);
