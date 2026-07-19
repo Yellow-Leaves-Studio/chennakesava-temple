@@ -227,6 +227,18 @@ hours logic.
 Video gallery · WhatsApp/SMS festival broadcast · archive of the 18 inscriptions ·
 YouTube Live embed during Brahmotsavam
 
+**The committee page** — who runs the temple: the Executive Officer, the trust or
+committee members, their roles, and where to take an enquiry. Useful to devotees, and it
+is the page that most makes the site read as the temple's own rather than a devotee's.
+
+> **Gated on sanction, not on effort.** It is a day's work and cannot be built from
+> public sources: naming real people, in office, on a site the temple has not approved,
+> is the one thing on this whole plan that could actually cause the committee a problem.
+> Build it *after* the EO conversation, from a list the office gives us, never from
+> anything found online. Ask at the same time whether photographs and direct contact
+> details for named individuals may be published, since the answer is often no for one
+> and yes for the other. See §14b items 17 and 18.
+
 ### Phase 4 — Backend, if and only if justified
 The dynamic CMS with a real server. **Trigger conditions:** the git-backed CMS is
 measurably insufficient **and** someone is committed to operating a server long-term.
@@ -706,6 +718,93 @@ Order of operations: **build → deploy to GitHub Pages → show the committee �
 the domain, in the temple's name, and point it at the same repo.**
 
 ---
+
+## 14. What to bring back from the temple
+
+A field checklist. Each item says what it unblocks, so anything that cannot be got is a
+known gap rather than a surprise later.
+
+### 14a. Photographs
+
+**Format, for all of them:** shoot at the phone's full resolution, keep the originals,
+and do not crop or filter before sending. Note **who took each one** — the site cannot
+publish a photograph it has no right to, which is the whole reason it is currently drawn
+in SVG (decision #4).
+
+**Ask first: what may be photographed at all.** Many temples prohibit photography of the
+moolavirat, and some prohibit it inside the sanctum entirely. Getting a yes or no in
+advance decides half this list.
+
+| # | Photograph | Why it matters | Priority |
+|---|---|---|---|
+| 1 | **The gopuram, whole, landscape** | The missing `og:image`. Needs to work cropped to 1200×630, so leave room around the tower. Right now every WhatsApp share of this site is a bare link | **Highest** |
+| 2 | **The gopuram, whole, portrait** | The hero. Would sit beside the open/closed status where the SVG is now | **Highest** |
+| 3 | **The sun on the deity's feet, at dawn, mid-December to early January** | The temple's one genuinely unique feature, and it is documented nowhere. A dated photograph would settle §14b item 1 as well | **Highest, and only possible in that window** |
+| 4 | **The six musical pillars**, Kalyana Mandapam | Named on the site, never shown | High |
+| 5 | **The forty-pillared mandapam**, wide, plus 2–3 carvings close up | Krishna, Anjaneya, Garuda, Lakshmi, Vigneshwara | High |
+| 6 | **The eighteen inscriptions**, as legible as possible, one frame each | Genuinely valuable to scholars, and nothing like it exists online. Straight on, even light, no flash | High |
+| 7 | **The temple from the Gundlakamma side** | Gives the setting the copy describes | Medium |
+| 8 | **The gateway and approach from the bus stand** | Helps a first-time visitor recognise it | Medium |
+| 9 | **Brahmotsavam: Garuda Vahana and Rathotsavam** | The two nights the festival page singles out | Medium, once a year only |
+| 10 | **The deity, if and only if permitted** | Would anchor the About page | Ask first |
+
+**Not for publishing, for verification only:**
+
+| # | Photograph | Why |
+|---|---|---|
+| 11 | **The timings board** | Settles the 8:30 / 8:50 / 9:00 contradiction and the Saturday break. The single most useful thing in this list |
+| 12 | **The seva board with rates** | Confirms the seva list and, if sanction is given, the prices |
+| 13 | **Any existing pamphlet, notice or signage** | Faster to scan than to re-write, and it is the temple's own wording |
+
+### 14b. Questions for the committee or the Executive Officer
+
+Ordered by how much of the site each one unblocks.
+
+**Blocking, or nearly:**
+
+1. **The exact darshan timings, including the Saturday break.** Published sources give
+   three different closing times. The site currently publishes the earliest of them and
+   says so. → replaces the caveat on `/darshan`
+2. **A telephone number, and whether it may be published.** None exists anywhere,
+   including on the state portal. → the biggest single gap on the site
+3. **The dates of the sun alignment.** Three sources give three windows spanning nearly a
+   month. Does the temple hold a record, or a customary date? → `/sun-phenomenon`
+4. **Does the committee want this to be the temple's official site?** Everything below
+   about prices, bank details and staff names depends on the answer. → §10
+
+**Content the site is currently guessing at:**
+
+5. **The temple's own sthala purana**, in its words. The Kesi and Adisesha account here
+   is from published sources and may differ from the temple's.
+6. **The seva list, with rates**, and whether rates may be published.
+7. **The full list of sub-shrines** within the complex. Not currently mentioned at all.
+8. **The festival calendar for the current year, confirmed**, and Brahmotsavam for next
+   year. The 2026 schedule on the site is from a third party and unverified.
+9. **The construction dates.** The site states 1405–59, 1425 and 1837 from public
+   sources that disagree with each other.
+10. **Is the 135 ft figure right**, and is "second tallest in the Telugu states" the
+    temple's own claim or a repeated one?
+
+**Practical, for visitors:**
+
+11. **Accessibility** — step-free access, wheelchair route, separate queue for elderly
+    and differently-abled devotees.
+12. **The official dress code.** "Any decent outfit" is a website's phrasing, not a
+    temple's.
+13. **Prasadam** — offered, sold, timings.
+14. **Office hours**, and where a visitor should go with a question.
+15. **Accommodation** nearby, if the temple runs or recommends any.
+
+**Administrative:**
+
+16. **Confirm the temple is under the AP Endowments Department**, and which division.
+17. **The Executive Officer's name and office contact**, and whether they may be
+    published.
+18. **The committee or trust members** — names and roles. → the new page in §5, Phase 3
+19. **Official UPI ID or bank details**, and whether they may be published. → §10
+20. **Any existing official web or social presence** to link to rather than duplicate.
+21. **Who should own the domain and hosting** once sanction is given. It must be
+    registered in the temple's name, not a personal one (§13).
 
 ## Remaining open items
 
