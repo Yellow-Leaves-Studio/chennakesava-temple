@@ -1,0 +1,73 @@
+---
+import Base from '../layouts/Base.astro';
+import festivals from '../data/festivals.json';
+
+const bram = festivals.brahmotsavam;
+const fmt = (iso) =>
+  new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', {
+    weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC',
+  });
+---
+<Base
+  title="Festival calendar and Brahmotsavam | Chennakesava Swamy Temple, Markapur"
+  description="The nineteen days of Brahmotsavam at Markapur — vahana sevas, Kalyanotsavam and Rathotsavam — with the temple's other annual observances."
+>
+  <h1>Festivals</h1>
+  <p class="page-te">బ్రహ్మోత్సవాలు</p>
+
+  <p class="lead">
+    Brahmotsavam runs nineteen days and was begun in the time of the Vijayanagara rulers.
+    On each night the utsava murti is carried on a different vahana. Rathotsavam, the
+    chariot procession on the eleventh day, has drawn crowds reported at over a lakh.
+  </p>
+
+  <div class="note">
+    <p>
+      <strong>These dates shift every year.</strong> They follow the lunar calendar, so the
+      schedule below is for <strong>{bram.year}</strong> and will not hold for another
+      year. It is entered by hand, once a year, on purpose — computing panchangam dates
+      gets them wrong in ways nobody notices until the page is wrong. Confirm with the
+      temple before travelling.
+    </p>
+  </div>
+
+  <h3>Brahmotsavam {bram.year}</h3>
+  <div class="table-wrap">
+    <table>
+      <tbody>
+        {bram.days.map((d) => (
+          <tr>
+            <td>
+              {d.highlight ? <strong>{d.name}</strong> : d.name}
+              {d.telugu && <span style="color:var(--ink-soft)"> · {d.telugu}</span>}
+            </td>
+            <td class="num">{fmt(d.date)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <svg class="petal-rule" viewBox="0 0 240 20" preserveAspectRatio="none" aria-hidden="true"><use href="#petalband" /></svg>
+
+  <h3>Through the year</h3>
+  <div class="table-wrap">
+    <table>
+      <tbody>
+        {festivals.observances.map((o) => (
+          <tr>
+            <td>{o.name}{o.telugu && <span style="color:var(--ink-soft)"> · {o.telugu}</span>}</td>
+            <td class="num">{o.when}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>If you are coming for Rathotsavam</h2>
+  <p>
+    It is the busiest day of the temple's year by a wide margin. Darshan hours extend well
+    beyond the usual, the town fills, and the walk from the bus stand takes considerably
+    longer than it does on an ordinary morning.
+  </p>
+</Base>

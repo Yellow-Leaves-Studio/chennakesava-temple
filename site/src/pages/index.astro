@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import timings from '../data/timings.json';
+import festivals from '../data/festivals.json';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const url = (p) => `${base}${p}`;
+
+const fmt = (iso) =>
+  new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', {
+    day: 'numeric', month: 'long', timeZone: 'UTC',
+  });
+
+const bram = festivals.brahmotsavam;
+const highlights = bram.days.filter((d) => d.highlight);
+---
+<Base
+  title="Sri Lakshmi Chennakesava Swami Devastanam, Markapur — timings, festivals, and how to visit"
+  description="Darshan timings, the annual festival calendar, and the history of the 600-year-old Chennakesava Swamy temple at Markapur, Prakasam District, Andhra Pradesh."
+>
+  <h1>A Vijayanagara temple on the Gundlakamma</h1>
+  <p class="lead">
+    Sri Maha Vishnu stands here as <strong>Chennakesava Swamy</strong> — the beautifully
+    adorned — with his consort Sri Mahalakshmi. The gopuram above the shrine rises
+    135 feet, reportedly the second tallest in the Telugu states, and has stood in some
+    form since 1425.
+  </p>
+
+  <h3>Today</h3>
+  <div class="table-wrap">
+    <table>
+      <tbody>
+        <tr><td>Darshan</td><td class="num">6:00 AM – 8:30 PM</td></tr>
+        {timings.rituals.map((r) => (
+          <tr><td>{r.name}</td><td class="num">{r.time}</td></tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:12px"><a href={url('/darshan')}>Full timings and sevas →</a></p>
+
+  <svg class="kolam-rule" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true"><use href="#kolam" /></svg>
+
+  <h3>The next festival</h3>
+  <h2 style="margin-top:0">Brahmotsavam <span style="color:var(--ink-soft)">బ్రహ్మోత్సవాలు</span></h2>
+  <p>
+    Nineteen days, begun in the time of the Vijayanagara rulers and observed since. The
+    utsava murti is carried each night on a different vahana.
+  </p>
+  <ul class="bud-list">
+    {highlights.map((d) => (
+      <li>
+        <svg viewBox="0 0 18 22" aria-hidden="true"><use href="#bud" /></svg>
+        <span><strong>{d.name}</strong> — {fmt(d.date)}</span>
+      </li>
+    ))}
+  </ul>
+  <p style="margin-top:14px"><a href={url('/festivals')}>The whole calendar →</a></p>
+
+  <svg class="petal-rule" viewBox="0 0 240 20" preserveAspectRatio="none" aria-hidden="true"><use href="#petalband" /></svg>
+
+  <h2>The sun reaches the feet</h2>
+  <p>
+    For about twenty minutes at dawn, across mid-December and early January, light passes
+    through an opening in the gopuram and falls at the feet of the deity. It is the most
+    particular thing about this temple, and almost nothing has been written about it.
+  </p>
+  <p><a href={url('/sun-phenomenon')}>What is known, and what isn't →</a></p>
+
+  <h3>Elsewhere on this site</h3>
+  <div class="cards">
+    <a class="card" href={url('/about')}>
+      <b>The temple</b><span>Sthala purana, the demon Kesi, eighteen inscriptions, the musical pillars</span>
+    </a>
+    <a class="card" href={url('/darshan')}>
+      <b>Darshan</b><span>Timings, sevas offered, what to wear and bring</span>
+    </a>
+    <a class="card" href={url('/festivals')}>
+      <b>Festivals</b><span>Brahmotsavam day by day, and the year's observances</span>
+    </a>
+    <a class="card" href={url('/visit')}>
+      <b>Getting there</b><span>By bus, rail and road, and where the temple stands</span>
+    </a>
+  </div>
+</Base>

@@ -1,0 +1,179 @@
+---
+// Every ornament on the site, defined once. All are drawn as geometry rather than
+// imported as images: no photographs of this temple are legally usable, and this keeps
+// the whole page under the weight of a single JPEG.
+//
+//   chakra    Vishnu's discus, and already a radial mandala
+//   padma     the lotus seen from above
+//   lotus     three petals in bloom, one definition rotated
+//   bud       a closed bud, used as a list marker
+//   kolam     muggu — the dot-grid drawing laid at Telugu thresholds each morning
+//   petalband padma-patti, the moulding along a temple base
+//   namam     the tirunamam every Vaishnava temple wears
+//   gopuram   the 135ft Galigopuram, drawn from photographs
+---
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="p-flame" d="M96,13 L100,1 L104,13 Z" />
+    <path id="p-petal" d="M100,25 C113,44 113,57 100,60 C87,57 87,44 100,25 Z" />
+    <path id="p-inner" d="M100,63 C107,73 107,80 100,85 C93,80 93,73 100,63 Z" />
+
+    <g id="chakra" fill="none" stroke="currentColor" stroke-width="1.6">
+      <circle cx="100" cy="100" r="87" /><circle cx="100" cy="100" r="79" />
+      <circle cx="100" cy="100" r="41" /><circle cx="100" cy="100" r="35" />
+      <circle cx="100" cy="100" r="12" />
+      <circle cx="100" cy="100" r="4.5" fill="currentColor" stroke="none" />
+      <g fill="currentColor" stroke="none">
+        <use href="#p-flame" /><use href="#p-flame" transform="rotate(22.5 100 100)" />
+        <use href="#p-flame" transform="rotate(45 100 100)" /><use href="#p-flame" transform="rotate(67.5 100 100)" />
+        <use href="#p-flame" transform="rotate(90 100 100)" /><use href="#p-flame" transform="rotate(112.5 100 100)" />
+        <use href="#p-flame" transform="rotate(135 100 100)" /><use href="#p-flame" transform="rotate(157.5 100 100)" />
+        <use href="#p-flame" transform="rotate(180 100 100)" /><use href="#p-flame" transform="rotate(202.5 100 100)" />
+        <use href="#p-flame" transform="rotate(225 100 100)" /><use href="#p-flame" transform="rotate(247.5 100 100)" />
+        <use href="#p-flame" transform="rotate(270 100 100)" /><use href="#p-flame" transform="rotate(292.5 100 100)" />
+        <use href="#p-flame" transform="rotate(315 100 100)" /><use href="#p-flame" transform="rotate(337.5 100 100)" />
+      </g>
+      <g>
+        <use href="#p-petal" /><use href="#p-petal" transform="rotate(30 100 100)" />
+        <use href="#p-petal" transform="rotate(60 100 100)" /><use href="#p-petal" transform="rotate(90 100 100)" />
+        <use href="#p-petal" transform="rotate(120 100 100)" /><use href="#p-petal" transform="rotate(150 100 100)" />
+        <use href="#p-petal" transform="rotate(180 100 100)" /><use href="#p-petal" transform="rotate(210 100 100)" />
+        <use href="#p-petal" transform="rotate(240 100 100)" /><use href="#p-petal" transform="rotate(270 100 100)" />
+        <use href="#p-petal" transform="rotate(300 100 100)" /><use href="#p-petal" transform="rotate(330 100 100)" />
+      </g>
+      <g>
+        <use href="#p-inner" /><use href="#p-inner" transform="rotate(45 100 100)" />
+        <use href="#p-inner" transform="rotate(90 100 100)" /><use href="#p-inner" transform="rotate(135 100 100)" />
+        <use href="#p-inner" transform="rotate(180 100 100)" /><use href="#p-inner" transform="rotate(225 100 100)" />
+        <use href="#p-inner" transform="rotate(270 100 100)" /><use href="#p-inner" transform="rotate(315 100 100)" />
+      </g>
+    </g>
+
+    <path id="p-outer" d="M100,10 C113,30 113,47 100,58 C87,47 87,30 100,10 Z" />
+    <path id="p-mid" d="M100,38 C110,51 110,62 100,72 C90,62 90,51 100,38 Z" />
+    <g id="padma" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+      <g>
+        <use href="#p-outer" /><use href="#p-outer" transform="rotate(22.5 100 100)" />
+        <use href="#p-outer" transform="rotate(45 100 100)" /><use href="#p-outer" transform="rotate(67.5 100 100)" />
+        <use href="#p-outer" transform="rotate(90 100 100)" /><use href="#p-outer" transform="rotate(112.5 100 100)" />
+        <use href="#p-outer" transform="rotate(135 100 100)" /><use href="#p-outer" transform="rotate(157.5 100 100)" />
+        <use href="#p-outer" transform="rotate(180 100 100)" /><use href="#p-outer" transform="rotate(202.5 100 100)" />
+        <use href="#p-outer" transform="rotate(225 100 100)" /><use href="#p-outer" transform="rotate(247.5 100 100)" />
+        <use href="#p-outer" transform="rotate(270 100 100)" /><use href="#p-outer" transform="rotate(292.5 100 100)" />
+        <use href="#p-outer" transform="rotate(315 100 100)" /><use href="#p-outer" transform="rotate(337.5 100 100)" />
+      </g>
+      <g>
+        <use href="#p-mid" transform="rotate(15 100 100)" /><use href="#p-mid" transform="rotate(45 100 100)" />
+        <use href="#p-mid" transform="rotate(75 100 100)" /><use href="#p-mid" transform="rotate(105 100 100)" />
+        <use href="#p-mid" transform="rotate(135 100 100)" /><use href="#p-mid" transform="rotate(165 100 100)" />
+        <use href="#p-mid" transform="rotate(195 100 100)" /><use href="#p-mid" transform="rotate(225 100 100)" />
+        <use href="#p-mid" transform="rotate(255 100 100)" /><use href="#p-mid" transform="rotate(285 100 100)" />
+        <use href="#p-mid" transform="rotate(315 100 100)" /><use href="#p-mid" transform="rotate(345 100 100)" />
+      </g>
+      <circle cx="100" cy="100" r="25" />
+      <circle cx="100" cy="100" r="7" fill="currentColor" stroke="none" />
+      <g fill="currentColor" stroke="none">
+        <circle cx="100" cy="86" r="1.7" /><circle cx="112" cy="93" r="1.7" />
+        <circle cx="112" cy="107" r="1.7" /><circle cx="100" cy="114" r="1.7" />
+        <circle cx="88" cy="107" r="1.7" /><circle cx="88" cy="93" r="1.7" />
+      </g>
+    </g>
+
+    <path id="pt" d="M34,31 C30,26 21,13 34,2 C47,13 38,26 34,31 Z" />
+    <g id="lotus" fill="none" stroke="currentColor" stroke-width="1.35"
+       stroke-linejoin="round" stroke-linecap="round">
+      <use href="#pt" transform="rotate(-48 34 31)" />
+      <use href="#pt" />
+      <use href="#pt" transform="rotate(48 34 31)" />
+      <path d="M19,31 H49" />
+    </g>
+
+    <g id="bud" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round">
+      <path d="M9,17 C4,12 4,6 9,1 C14,6 14,12 9,17 Z" />
+      <path d="M9,17 V21" />
+    </g>
+
+    <g id="kolam" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+      <path d="M0,12 Q15,-3 30,12 Q45,27 60,12 Q75,-3 90,12 Q105,27 120,12
+               Q135,-3 150,12 Q165,27 180,12 Q195,-3 210,12 Q225,27 240,12" />
+      <path d="M0,12 Q15,27 30,12 Q45,-3 60,12 Q75,27 90,12 Q105,-3 120,12
+               Q135,27 150,12 Q165,-3 180,12 Q195,27 210,12 Q225,-3 240,12" />
+      <g fill="currentColor" stroke="none">
+        <circle cx="30" cy="12" r="1.5" /><circle cx="60" cy="12" r="1.5" />
+        <circle cx="90" cy="12" r="1.5" /><circle cx="120" cy="12" r="1.5" />
+        <circle cx="150" cy="12" r="1.5" /><circle cx="180" cy="12" r="1.5" />
+        <circle cx="210" cy="12" r="1.5" />
+      </g>
+    </g>
+
+    <g id="petalband" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round">
+      <path d="M0,18 Q6,2 12,18 Q18,2 24,18 Q30,2 36,18 Q42,2 48,18 Q54,2 60,18
+               Q66,2 72,18 Q78,2 84,18 Q90,2 96,18 Q102,2 108,18 Q114,2 120,18
+               Q126,2 132,18 Q138,2 144,18 Q150,2 156,18 Q162,2 168,18 Q174,2 180,18
+               Q186,2 192,18 Q198,2 204,18 Q210,2 216,18 Q222,2 228,18 Q234,2 240,18" />
+      <path d="M0,18 H240" stroke-width="1" />
+    </g>
+
+    <g id="namam">
+      <path d="M2.6,2 L2.6,19 C2.6,26.2 6.6,31.8 12,34.6 C17.4,31.8 21.4,26.2 21.4,19
+               L21.4,2 L17.4,2 L17.4,19 C17.4,24.1 15.2,27.9 12,30.1
+               C8.8,27.9 6.6,24.1 6.6,19 L6.6,2 Z" fill="currentColor" />
+      <path d="M12,-1.5 L13.7,23.5 L10.3,23.5 Z" fill="var(--kumkum)" />
+    </g>
+
+    <g id="rays" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <circle cx="100" cy="100" r="21" />
+      <g stroke-width="1.3">
+        <path d="M100,66 V22" /><path d="M100,134 V178" />
+        <path d="M66,100 H22" /><path d="M134,100 H178" />
+        <path d="M76,76 L45,45" /><path d="M124,124 L155,155" />
+        <path d="M124,76 L155,45" /><path d="M76,124 L45,155" />
+        <path d="M117,70 L134,31" /><path d="M83,130 L66,169" />
+        <path d="M130,117 L169,100" /><path d="M70,83 L31,66" />
+        <path d="M130,83 L169,100" /><path d="M70,117 L31,134" />
+        <path d="M83,70 L66,31" /><path d="M117,130 L134,169" />
+      </g>
+    </g>
+
+    <g id="gopuram">
+      <rect x="30" y="452" width="140" height="18" fill="currentColor" />
+      <rect x="36" y="374" width="128" height="78" fill="currentColor" />
+      <path d="M84,452 V412 Q100,396 116,412 V452 Z" fill="var(--surface)" />
+      <rect x="28" y="364" width="144" height="11" fill="currentColor" />
+      <g fill="currentColor">
+        <polygon points="40,364 160,364 156.3,326 43.7,326" />
+        <polygon points="41.7,329 158.3,329 158.3,321 41.7,321" />
+        <polygon points="43.7,321 156.3,321 152.6,290 47.4,290" />
+        <polygon points="45.4,293 154.6,293 154.6,285 45.4,285" />
+        <polygon points="47.4,285 152.6,285 148.9,256 51.1,256" />
+        <polygon points="49.1,259 150.9,259 150.9,251 49.1,251" />
+        <polygon points="51.1,251 148.9,251 145.1,223 54.9,223" />
+        <polygon points="52.9,226 147.1,226 147.1,218 52.9,218" />
+        <polygon points="54.9,218 145.1,218 141.4,191 58.6,191" />
+        <polygon points="56.6,194 143.4,194 143.4,186 56.6,186" />
+        <polygon points="58.6,186 141.4,186 137.7,160 62.3,160" />
+        <polygon points="60.3,163 139.7,163 139.7,155 60.3,155" />
+        <polygon points="62.3,155 137.7,155 134,130 66,130" />
+        <polygon points="64,133 136,133 136,125 64,125" />
+      </g>
+      <g stroke="var(--surface)" stroke-dasharray="3.5 5.5">
+        <line x1="46" y1="346" x2="154" y2="346" stroke-width="18" />
+        <line x1="50" y1="309" x2="150" y2="309" stroke-width="17" />
+        <line x1="53" y1="274" x2="147" y2="274" stroke-width="16" />
+        <line x1="57" y1="240" x2="143" y2="240" stroke-width="15" />
+        <line x1="61" y1="208" x2="139" y2="208" stroke-width="15" />
+        <line x1="64" y1="176" x2="136" y2="176" stroke-width="14" />
+        <line x1="68" y1="145" x2="132" y2="145" stroke-width="14" />
+      </g>
+      <path d="M58,126 L58,104 Q58,80 100,80 Q142,80 142,104 L142,126 Z" fill="currentColor" />
+      <rect x="56" y="120" width="88" height="10" fill="currentColor" />
+      <g fill="currentColor">
+        <rect x="98.7" y="54" width="2.6" height="22" /><circle cx="100" cy="51" r="4.6" />
+        <rect x="82.9" y="62" width="2.2" height="17" /><circle cx="84" cy="59" r="3.6" />
+        <rect x="114.9" y="62" width="2.2" height="17" /><circle cx="116" cy="59" r="3.6" />
+        <rect x="68.1" y="70" width="1.9" height="14" /><circle cx="69" cy="67" r="3" />
+        <rect x="130" y="70" width="1.9" height="14" /><circle cx="131" cy="67" r="3" />
+      </g>
+    </g>
+  </defs>
+</svg>

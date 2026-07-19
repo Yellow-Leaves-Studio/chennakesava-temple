@@ -1,0 +1,280 @@
+---
+import Ornaments from '../components/Ornaments.astro';
+import timings from '../data/timings.json';
+
+const { title, description, showStatus = true } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const url = (p) => `${base}${p}`;
+const here = Astro.url.pathname.replace(base, '').replace(/\/$/, '') || '/';
+
+const nav = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'The temple' },
+  { href: '/darshan', label: 'Darshan' },
+  { href: '/festivals', label: 'Festivals' },
+  { href: '/sun-phenomenon', label: 'The sun' },
+  { href: '/visit', label: 'Getting there' },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'PlaceOfWorship',
+  name: 'Sri Lakshmi Chennakesava Swami Devastanam',
+  alternateName: 'శ్రీ లక్ష్మీ చెన్నకేశవ స్వామి దేవస్థానం',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Markapuram',
+    addressRegion: 'Andhra Pradesh',
+    postalCode: '523316',
+    addressCountry: 'IN',
+  },
+  openingHours: ['Su-Fr 06:00-20:30', 'Sa 06:00-12:00', 'Sa 17:00-20:30'],
+};
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 36'><path d='M2.6,2 L2.6,19 C2.6,26.2 6.6,31.8 12,34.6 C17.4,31.8 21.4,26.2 21.4,19 L21.4,2 L17.4,2 L17.4,19 C17.4,24.1 15.2,27.9 12,30.1 C8.8,27.9 6.6,24.1 6.6,19 L6.6,2 Z' fill='%23A8781A'/><path d='M12,-1.5 L13.7,23.5 L10.3,23.5 Z' fill='%2396222A'/></svg>" />
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</head>
+<body>
+  <Ornaments />
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="masthead">
+    <svg class="masthead-chakra" viewBox="0 0 200 200" aria-hidden="true"><use href="#chakra" /></svg>
+    <a class="crest" href={url('/')}>
+      <svg class="namam" viewBox="0 -3 24 39" aria-hidden="true"><use href="#namam" /></svg>
+      <span class="crest-te">శ్రీ లక్ష్మీ చెన్నకేశవ స్వామి దేవస్థానం</span>
+      <span class="crest-en">Sri Lakshmi Chennakesava Swami Devastanam</span>
+      <span class="crest-place">Markapur, Prakasam District &middot; మార్కాపురం</span>
+    </a>
+  </header>
+
+  {showStatus && (
+    <div id="status" class="status is-unknown" role="status">
+      <span class="status-dot"></span>
+      <span class="status-txt">Checking temple hours…</span>
+    </div>
+  )}
+
+  <nav class="nav" aria-label="Main">
+    {nav.map((n) => (
+      <a href={url(n.href === '/' ? '/' : n.href)} aria-current={here === n.href ? 'page' : undefined}>{n.label}</a>
+    ))}
+  </nav>
+
+  <main id="main">
+    <slot />
+  </main>
+
+  <footer class="foot">
+    <svg class="foot-lotus" viewBox="10 0 48 33" aria-hidden="true"><use href="#lotus" /></svg>
+    <p class="disclaimer">
+      An unofficial site maintained by devotees, not by the temple or the Endowments
+      Department. Timings and festival dates are compiled from public sources and are
+      <strong>not confirmed by the temple</strong> — where sources disagree, the earliest
+      closing time is published, so the temple may well be open later than stated, never
+      earlier. Hours change on festival days.
+    </p>
+    <p class="disclaimer">
+      No public telephone number is listed for this temple. Enquiries in person at the
+      temple office.
+    </p>
+  </footer>
+
+  <script is:inline type="application/json" id="timings-data" set:html={JSON.stringify(timings)} />
+
+  <script>
+    import { status, display } from '../lib/status.js';
+
+    const el = document.getElementById('status');
+    if (el) {
+      const timings = JSON.parse(document.getElementById('timings-data').textContent);
+      const paint = () => {
+        const s = status(timings);
+        const txt = el.querySelector('.status-txt');
+        el.classList.remove('is-unknown', 'is-open', 'is-shut', 'is-special');
+        if (s.open) {
+          el.classList.add(s.note ? 'is-special' : 'is-open');
+          txt.innerHTML = `<strong>Open now</strong> <span>&middot; ${
+            s.note ? s.note + ' &middot; ' : ''
+          }closes ${display(s.until)}</span>`;
+        } else {
+          el.classList.add('is-shut');
+          txt.innerHTML = s.until
+            ? `<strong>Closed</strong> <span>&middot; opens ${display(s.until)}${
+                s.nextDay ? ' tomorrow' : ''
+              }</span>`
+            : '<strong>Closed</strong>';
+        }
+      };
+      paint();
+      setInterval(paint, 60000);
+    }
+  </script>
+
+  <style is:global>
+    :root {
+      --ground: #EEF0EE; --surface: #F8F9F7; --line: #D3D8D4;
+      --ink: #232A27; --ink-soft: #5D6A63;
+      --kumkum: #96222A; --kumkum-soft: #F2E0DF;
+      --gold: #A8781A; --gold-line: rgba(168,120,26,.34); --gold-glow: rgba(168,120,26,.13);
+      --serif: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+      --sans: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+      --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      --wrap: 46rem;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ground: #171B1A; --surface: #1F2523; --line: #343C39;
+        --ink: #E7EBE8; --ink-soft: #95A099;
+        --kumkum: #DE8087; --kumkum-soft: #2E1D1C;
+        --gold: #D6A63F; --gold-line: rgba(214,166,63,.32); --gold-glow: rgba(214,166,63,.10);
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--ground); color: var(--ink);
+      font-family: var(--sans); font-size: 18px; line-height: 1.62;
+      -webkit-text-size-adjust: 100%;
+    }
+    img, svg { max-width: 100%; }
+
+    .skip {
+      position: absolute; left: -9999px; background: var(--kumkum); color: #fff;
+      padding: 10px 16px; z-index: 10;
+    }
+    .skip:focus { left: 8px; top: 8px; }
+    a:focus-visible { outline: 2px solid var(--kumkum); outline-offset: 3px; }
+
+    /* ---- masthead ---- */
+    .masthead {
+      position: relative; overflow: hidden; text-align: center;
+      padding: 22px 20px 18px; border-bottom: 1px solid var(--line); background: var(--surface);
+    }
+    .masthead-chakra {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 260px; height: 260px; color: var(--gold); opacity: .13; pointer-events: none;
+    }
+    .crest {
+      position: relative; display: flex; flex-direction: column; align-items: center;
+      gap: 3px; text-decoration: none; color: inherit;
+    }
+    .namam { width: 18px; color: var(--gold); margin-bottom: 5px; }
+    .crest-te { font-size: 16px; line-height: 1.5; }
+    .crest-en { font-family: var(--serif); font-size: 19px; line-height: 1.24; }
+    .crest-place {
+      font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--ink-soft); margin-top: 5px;
+    }
+    @media (min-width: 40rem) {
+      .masthead { padding: 34px 20px 26px; }
+      .crest-te { font-size: 20px; }
+      .crest-en { font-size: 30px; }
+    }
+
+    /* ---- status badge ---- */
+    .status {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 13px 20px; border-bottom: 1px solid var(--line); text-align: center;
+    }
+    .status-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ink-soft); flex: 0 0 auto; }
+    .status-txt { font-size: 15.5px; }
+    .status-txt span { color: var(--ink-soft); }
+    .is-open { background: var(--kumkum-soft); }
+    .is-open .status-dot { background: var(--kumkum); box-shadow: 0 0 0 3px var(--kumkum-soft); }
+    .is-special { background: var(--gold-glow); }
+    .is-special .status-dot { background: var(--gold); box-shadow: 0 0 0 3px var(--gold-glow); }
+    .is-unknown .status-txt { color: var(--ink-soft); }
+
+    /* ---- nav ---- */
+    .nav {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 4px;
+      padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--surface);
+    }
+    .nav a {
+      padding: 7px 12px; font-size: 14.5px; color: var(--ink-soft);
+      text-decoration: none; border-radius: 2px;
+    }
+    .nav a:hover { color: var(--ink); }
+    .nav a[aria-current="page"] { color: var(--kumkum); font-weight: 600; }
+
+    /* ---- main ---- */
+    main { max-width: var(--wrap); margin: 0 auto; padding: 34px 20px 12px; }
+    h1 {
+      font-family: var(--serif); font-weight: 400; font-size: 31px; line-height: 1.16;
+      margin: 0 0 6px; text-wrap: balance;
+    }
+    .page-te { color: var(--ink-soft); font-size: 17px; margin: 0 0 26px; }
+    h2 {
+      font-family: var(--serif); font-weight: 400; font-size: 23px; line-height: 1.24;
+      margin: 38px 0 10px; text-wrap: balance;
+    }
+    h3 {
+      display: flex; align-items: center; gap: 10px; margin: 30px 0 12px;
+      font-family: var(--mono); font-size: 10.5px; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--ink-soft); font-weight: 500;
+    }
+    h3::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+    p { margin: 0 0 14px; }
+    main a { color: var(--kumkum); text-underline-offset: 2px; }
+    strong { font-weight: 600; }
+    @media (min-width: 40rem) { h1 { font-size: 38px; } h2 { font-size: 26px; } }
+
+    /* ---- shared blocks ---- */
+    .lead { font-size: 19px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 16px; }
+    th { text-align: left; font-weight: 600; font-size: 14px; color: var(--ink-soft); }
+    td, th { padding: 9px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    td.num, th.num {
+      text-align: right; font-family: var(--mono); font-size: 14px;
+      font-variant-numeric: tabular-nums; white-space: nowrap;
+    }
+    .kolam-rule { display: block; width: 100%; height: 16px; color: var(--gold-line); margin: 30px 0; }
+    .petal-rule { display: block; width: 100%; height: 14px; color: var(--gold-line); margin: 26px 0; }
+
+    .note {
+      border-left: 2px solid var(--gold); background: var(--gold-glow);
+      padding: 14px 16px; font-size: 15.5px; margin: 22px 0;
+    }
+    .note p:last-child { margin-bottom: 0; }
+
+    .bud-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px; }
+    .bud-list li { display: flex; align-items: baseline; gap: 11px; }
+    .bud-list svg { width: 10px; flex: 0 0 auto; color: var(--gold); align-self: center; }
+
+    .cards { display: grid; gap: 12px; margin-top: 8px; }
+    @media (min-width: 34rem) { .cards { grid-template-columns: 1fr 1fr; } }
+    .card {
+      display: flex; flex-direction: column; gap: 3px; padding: 15px 16px;
+      border: 1px solid var(--line); background: var(--surface);
+      text-decoration: none; color: inherit;
+    }
+    .card:hover { border-color: var(--gold-line); }
+    .card b { font-family: var(--serif); font-size: 19px; font-weight: 400; }
+    .card span { font-size: 14.5px; color: var(--ink-soft); }
+
+    /* ---- footer ---- */
+    .foot {
+      max-width: var(--wrap); margin: 0 auto; padding: 26px 20px 44px;
+      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px;
+    }
+    .foot-lotus { width: 40px; color: var(--gold); opacity: .55; }
+    .disclaimer { font-size: 12.5px; line-height: 1.55; color: var(--ink-soft); margin: 0; max-width: 40rem; }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+  </style>
+</body>
+</html>

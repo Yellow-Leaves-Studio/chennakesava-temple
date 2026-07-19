@@ -1,0 +1,106 @@
+---
+import Base from '../layouts/Base.astro';
+import timings from '../data/timings.json';
+import sevas from '../data/sevas.json';
+
+const label = {
+  sunday: 'Sunday', monday: 'Monday', tuesday: 'Tuesday', wednesday: 'Wednesday',
+  thursday: 'Thursday', friday: 'Friday', saturday: 'Saturday',
+};
+const order = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+// Collapse consecutive days that share the same hours, so the table reads
+// "Sunday – Friday" rather than repeating one identical row six times.
+const rows = [];
+for (const day of order) {
+  const hours = timings.regular[day];
+  const key = JSON.stringify(hours);
+  const last = rows[rows.length - 1];
+  if (last && last.key === key) last.days.push(day);
+  else rows.push({ key, days: [day], hours });
+}
+const span = (days) =>
+  days.length === 1 ? label[days[0]] : `${label[days[0]]} – ${label[days[days.length - 1]]}`;
+
+// A day with two sittings gets both rows labelled — an empty cell reads as nothing
+// at all to a screen reader, and as a floating time to everyone else.
+const partOfDay = (open) => {
+  const hour = Number(open.split(':')[0]);
+  return hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
+};
+const rowLabel = (r, i) =>
+  r.hours.length === 1 ? span(r.days) : `${span(r.days)}, ${partOfDay(r.hours[i].open)}`;
+---
+<Base
+  title="Darshan timings and sevas | Chennakesava Swamy Temple, Markapur"
+  description="Daily darshan hours, the Saturday midday break, ritual times and the sevas offered at the Sri Lakshmi Chennakesava Swami temple in Markapur."
+>
+  <h1>Darshan</h1>
+  <p class="page-te">దర్శన సమయాలు</p>
+
+  <h3>Through the week</h3>
+  <div class="table-wrap">
+    <table>
+      <tbody>
+        {rows.map((r) =>
+          r.hours.map((h, i) => (
+            <tr>
+              <td>{rowLabel(r, i)}</td>
+              <td class="num">{h.open} – {h.close}</td>
+            </tr>
+          )),
+        )}
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:12px; color:var(--ink-soft); font-size:15.5px">
+    Saturday closes at midday and opens again at five.
+  </p>
+
+  <div class="note">
+    <p>
+      <strong>These hours are the earliest anyone reports.</strong> Published sources give
+      the closing time variously as 8:30, 8:50 and 9:00 in the evening. Rather than choose,
+      this site publishes the earliest of them. The temple may well be open later than
+      shown here — it will not be open earlier. No source has been confirmed against the
+      board at the temple.
+    </p>
+  </div>
+
+  <svg class="kolam-rule" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true"><use href="#kolam" /></svg>
+
+  <h3>Daily rituals</h3>
+  <div class="table-wrap">
+    <table>
+      <tbody>
+        {timings.rituals.map((r) => (
+          <tr><td>{r.name}</td><td class="num">{r.time}</td></tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Sevas offered</h3>
+  <ul class="bud-list">
+    {sevas.sevas.map((s) => (
+      <li>
+        <svg viewBox="0 0 18 22" aria-hidden="true"><use href="#bud" /></svg>
+        <span>{s.name}{s.telugu && <span style="color:var(--ink-soft)"> · {s.telugu}</span>}</span>
+      </li>
+    ))}
+  </ul>
+  <p style="margin-top:16px; color:var(--ink-soft); font-size:15.5px">
+    Ticket rates are not published here. Enquire at the temple office.
+  </p>
+
+  <h2>Before you go</h2>
+  <p>
+    Traditional dress is expected. Footwear and leather articles are left outside. The
+    temple stands beside the Gundlakamma, a short walk from the Markapur bus stand, and
+    autos run to it from there.
+  </p>
+  <p>
+    Festival days do not follow the weekly schedule — during Brahmotsavam in particular,
+    hours extend well past those shown above.
+  </p>
+</Base>

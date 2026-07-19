@@ -1,0 +1,74 @@
+---
+import Base from '../layouts/Base.astro';
+
+const routes = [
+  { how: 'On foot', detail: 'From the Markapur bus stand — the temple is a short walk, and autos run the distance', dist: '—' },
+  { how: 'By rail', detail: 'Markapur Road station, on the Guntakal–Vijayawada line, is within walking distance', dist: '—' },
+  { how: 'From Ongole', detail: 'Buses run through the day', dist: '94 km' },
+  { how: 'By road', detail: 'Markapur sits on the Amaravati–Anantapur Express Highway; approaches from Vijayawada, Guntur and Nandyal', dist: '—' },
+  { how: 'Vijayawada airport', detail: 'The nearer of the two airports', dist: '227 km' },
+  { how: 'Hyderabad airport', detail: 'Better connected, further away', dist: '272 km' },
+];
+---
+<Base
+  title="Getting there — Markapur, Prakasam District | Chennakesava Swamy Temple"
+  description="How to reach the Sri Lakshmi Chennakesava Swami temple at Markapur by bus, rail and road, and what is known about contacting the temple office."
+>
+  <h1>Getting there</h1>
+  <p class="page-te">మార్కాపురం, ప్రకాశం జిల్లా</p>
+
+  <p class="lead">
+    The temple stands in Markapuram town, on the banks of the Gundlakamma, in Prakasam
+    District, Andhra Pradesh — <strong>523316</strong>.
+  </p>
+
+  <h3>Routes</h3>
+  <div class="table-wrap">
+    <table>
+      <tbody>
+        {routes.map((r) => (
+          <tr>
+            <td><strong>{r.how}</strong><br />
+              <span style="color:var(--ink-soft); font-size:15px">{r.detail}</span></td>
+            <td class="num">{r.dist}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin-top:18px">
+    <a href="https://www.google.com/maps/search/?api=1&query=Sri+Lakshmi+Chennakesava+Swami+Devastanam+Markapur"
+       rel="noopener">Open in Google Maps →</a>
+  </p>
+
+  <svg class="kolam-rule" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true"><use href="#kolam" /></svg>
+
+  <h2>Contacting the temple</h2>
+  <div class="note">
+    <p>
+      <strong>No public telephone number is listed for this temple.</strong> Not on the
+      Andhra Pradesh Endowments portal, which carries a page for the temple with no
+      content on it, and not on any of the sites that write about it. A devotee asked for
+      the number publicly in 2017 and did not get one.
+    </p>
+    <p>
+      Enquiries in person at the temple office. If you obtain a number that the office
+      confirms, it belongs on this page.
+    </p>
+  </div>
+
+  <h2>About this site</h2>
+  <p>
+    It is built and maintained by devotees. It is not the temple's official site, it is
+    not run by the Endowments Department, and nothing here has been confirmed by either.
+    Timings, festival dates and the history are compiled from public sources, which
+    disagree with one another more often than you would expect.
+  </p>
+  <p>
+    Where sources conflict, this site publishes the most cautious reading — the earliest
+    closing time, no seva prices, no dates for the sun phenomenon. A visitor who arrives
+    to find the temple open an hour later than we said has lost nothing. The reverse costs
+    somebody a journey.
+  </p>
+</Base>
