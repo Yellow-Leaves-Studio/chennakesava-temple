@@ -75,9 +75,11 @@ const schema = {
   </header>
 
   {showStatus && (
-    <div id="status" class="status is-unknown" role="status">
+    <div class="status is-unknown" role="status" data-status-box>
       <span class="status-dot"></span>
-      <span class="status-txt">Checking temple hours…</span>
+      <span class="status-txt">
+        <strong data-status-primary>Checking temple hours…</strong><span data-status-detail></span>
+      </span>
     </div>
   )}
 
@@ -139,26 +141,29 @@ const schema = {
     systemDark.addEventListener('change', syncTheme);
 
     // --- open or shut -------------------------------------------------------
-    const el = document.getElementById('status');
-    if (el) {
+    // One code path, however many presentations. The compact strip and the home hero are
+    // both just markup carrying data-status-* ; adding a third means adding markup only.
+    const boxes = document.querySelectorAll('[data-status-box]');
+    if (boxes.length) {
       const timings = JSON.parse(document.getElementById('timings-data').textContent);
       const paint = () => {
         const s = status(timings);
-        const txt = el.querySelector('.status-txt');
-        el.classList.remove('is-unknown', 'is-open', 'is-shut', 'is-special');
-        if (s.open) {
-          el.classList.add(s.note ? 'is-special' : 'is-open');
-          txt.innerHTML = `<strong>Open now</strong> <span>&middot; ${
-            s.note ? s.note + ' &middot; ' : ''
-          }closes ${display(s.until)}</span>`;
-        } else {
-          el.classList.add('is-shut');
-          txt.innerHTML = s.until
-            ? `<strong>Closed</strong> <span>&middot; opens ${display(s.until)}${
-                s.nextDay ? ' tomorrow' : ''
-              }</span>`
-            : '<strong>Closed</strong>';
-        }
+        const state = s.open ? (s.note ? 'is-special' : 'is-open') : 'is-shut';
+        const primary = s.open ? 'Open now' : 'Closed';
+        const detail = s.open
+          ? `${s.note ? s.note + ' · ' : ''}closes ${display(s.until)}`
+          : s.until
+            ? `opens ${display(s.until)}${s.nextDay ? ' tomorrow' : ''}`
+            : '';
+
+        boxes.forEach((box) => {
+          box.classList.remove('is-unknown', 'is-open', 'is-shut', 'is-special');
+          box.classList.add(state);
+          const p = box.querySelector('[data-status-primary]');
+          const d = box.querySelector('[data-status-detail]');
+          if (p) p.textContent = primary;
+          if (d) d.textContent = detail;
+        });
       };
       paint();
       setInterval(paint, 60000);
@@ -255,7 +260,9 @@ const schema = {
     }
     .status-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ink-soft); flex: 0 0 auto; }
     .status-txt { font-size: 15.5px; }
-    .status-txt span { color: var(--ink-soft); }
+    .status-txt [data-status-detail] { color: var(--ink-soft); }
+    /* separator belongs to the strip only; the hero stacks its two lines instead */
+    .status-txt [data-status-detail]:not(:empty)::before { content: " · "; }
     .is-open { background: var(--kumkum-soft); }
     .is-open .status-dot { background: var(--kumkum); box-shadow: 0 0 0 3px var(--kumkum-soft); }
     .is-special { background: var(--gold-glow); }
@@ -315,6 +322,12 @@ const schema = {
        size it reads larger and heavier than the Latin beside it. Optical correction,
        not hierarchy: em so it scales with whatever context it lands in. */
     .te { font-size: .9em; }
+    /* Out of sight, still read aloud. Used where a diagram carries the information
+       visually but the same facts must reach a screen reader as real text. */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+      overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+    }
 
     .lead { font-size: 19px; }
     .table-wrap { overflow-x: auto; }

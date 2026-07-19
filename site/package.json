@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "node src/lib/status.test.js"
+    "test": "node src/lib/status.test.js && node src/lib/display.test.js"
   },
   "dependencies": {
     "astro": "^5.0.0"

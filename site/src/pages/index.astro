@@ -17,7 +17,24 @@ const highlights = bram.days.filter((d) => d.highlight);
 <Base
   title="Sri Lakshmi Chennakesava Swami Devastanam, Markapur: timings, festivals, and how to visit"
   description="Darshan timings, the annual festival calendar, and the history of the 600-year-old Chennakesava Swamy temple at Markapur, Prakasam District, Andhra Pradesh."
+  showStatus={false}
 >
+  <!-- Most arrivals want one fact. It gets the first screen. -->
+  <section class="hero is-unknown" role="status" data-status-box>
+    <svg class="hero-tower" viewBox="0 0 200 470" aria-hidden="true"><use href="#gopuram" /></svg>
+    <div class="hero-body">
+      <p class="hero-primary" data-status-primary>Checking temple hours…</p>
+      <p class="hero-detail" data-status-detail></p>
+      <dl class="hero-facts">
+        {timings.rituals.slice(0, 2).map((r) => (
+          <div><dt>{r.name}</dt><dd>{r.time}</dd></div>
+        ))}
+        <div><dt>Next festival</dt><dd>Brahmotsavam</dd></div>
+      </dl>
+      <p class="hero-more"><a href={url('/darshan')}>Full timings and sevas →</a></p>
+    </div>
+  </section>
+
   <h1>A Vijayanagara temple on the Gundlakamma</h1>
   <p class="lead">
     Sri Maha Vishnu stands here as <strong>Chennakesava Swamy</strong>, the beautifully
@@ -25,19 +42,6 @@ const highlights = bram.days.filter((d) => d.highlight);
     135 feet, reportedly the second tallest in the Telugu states, and has stood in some
     form since 1425.
   </p>
-
-  <h3>Today</h3>
-  <div class="table-wrap">
-    <table>
-      <tbody>
-        <tr><td>Darshan</td><td class="num">6:00 AM – 8:30 PM</td></tr>
-        {timings.rituals.map((r) => (
-          <tr><td>{r.name}</td><td class="num">{r.time}</td></tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-  <p style="margin-top:12px"><a href={url('/darshan')}>Full timings and sevas →</a></p>
 
   <svg class="kolam-rule" aria-hidden="true"><rect width="100%" height="100%" fill="url(#kolam)" /></svg>
 
@@ -83,3 +87,36 @@ const highlights = bram.days.filter((d) => d.highlight);
     </a>
   </div>
 </Base>
+
+<style>
+  .hero {
+    display: flex; align-items: center; gap: 26px; flex-wrap: wrap;
+    padding: 6px 0 30px;
+  }
+  .hero-tower { width: 76px; flex: 0 0 auto; color: var(--ink); }
+  .hero-body { flex: 1 1 15rem; min-width: 14rem; }
+  .hero-primary {
+    font-family: var(--serif); font-size: 34px; line-height: 1.1;
+    margin: 0 0 3px; font-weight: 400;
+  }
+  .hero-detail { color: var(--ink-soft); font-size: 16px; margin: 0 0 18px; min-height: 1.2em; }
+
+  /* the dot and tint the compact strip uses would be noise at this size; words carry it */
+  .hero.is-open .hero-primary { color: var(--kumkum); }
+  .hero.is-special .hero-primary { color: var(--gold); }
+
+  .hero-facts { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 0 0 16px; }
+  .hero-facts div { min-width: 8rem; }
+  .hero-facts dt {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 1px;
+  }
+  .hero-facts dd { margin: 0; font-size: 14.5px; }
+  .hero-more { margin: 0; font-size: 15px; }
+
+  @media (min-width: 40rem) {
+    .hero { gap: 34px; padding-bottom: 36px; }
+    .hero-tower { width: 96px; }
+    .hero-primary { font-size: 40px; }
+  }
+</style>

@@ -1,0 +1,504 @@
+<title>Design proposals: six pages</title>
+
+<style>
+  :root {
+    --ground: #EEF0EE; --surface: #F8F9F7; --line: #D3D8D4;
+    --ink: #232A27; --ink-soft: #5D6A63; --ink-place: #4C574F;
+    --kumkum: #96222A; --kumkum-soft: #F2E0DF;
+    --gold: #A8781A; --gold-line: rgba(168,120,26,.68);
+    --gold-veil: rgba(168,120,26,.24); --gold-glow: rgba(168,120,26,.13);
+    --serif: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #171B1A; --surface: #1F2523; --line: #343C39;
+      --ink: #E7EBE8; --ink-soft: #95A099; --ink-place: #A6B0A9;
+      --kumkum: #DE8087; --kumkum-soft: #2E1D1C;
+      --gold: #D6A63F; --gold-line: rgba(214,166,63,.40);
+      --gold-veil: rgba(214,166,63,.20); --gold-glow: rgba(214,166,63,.10);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #171B1A; --surface: #1F2523; --line: #343C39;
+    --ink: #E7EBE8; --ink-soft: #95A099; --ink-place: #A6B0A9;
+    --kumkum: #DE8087; --kumkum-soft: #2E1D1C;
+    --gold: #D6A63F; --gold-line: rgba(214,166,63,.40);
+    --gold-veil: rgba(214,166,63,.20); --gold-glow: rgba(214,166,63,.10);
+  }
+  :root[data-theme="light"] {
+    --ground: #EEF0EE; --surface: #F8F9F7; --line: #D3D8D4;
+    --ink: #232A27; --ink-soft: #5D6A63; --ink-place: #4C574F;
+    --kumkum: #96222A; --kumkum-soft: #F2E0DF;
+    --gold: #A8781A; --gold-line: rgba(168,120,26,.68);
+    --gold-veil: rgba(168,120,26,.24); --gold-glow: rgba(168,120,26,.13);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    background: var(--ground); color: var(--ink); font-family: var(--sans);
+    font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 0 22px 90px; }
+  .te { font-size: .9em; }
+
+  .masthead { padding: 70px 0 34px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 16px;
+  }
+  h1 {
+    font-family: var(--serif); font-size: clamp(32px, 5.4vw, 48px); font-weight: 400;
+    line-height: 1.08; margin: 0 0 16px; text-wrap: balance;
+  }
+  .masthead p { max-width: 60ch; color: var(--ink-soft); margin: 0; }
+
+  .diagnosis {
+    border-left: 2px solid var(--kumkum); background: var(--kumkum-soft);
+    padding: 16px 20px; margin: 30px 0 0; font-size: 15.5px;
+  }
+  .diagnosis p { margin: 0 0 10px; }
+  .diagnosis p:last-child { margin: 0; }
+
+  section { border-top: 1px solid var(--line); padding: 42px 0 8px; }
+  .num {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+    color: var(--kumkum); text-transform: uppercase;
+  }
+  h2 {
+    font-family: var(--serif); font-size: 26px; font-weight: 400;
+    margin: 8px 0 6px; text-wrap: balance;
+  }
+  .sub { color: var(--ink-soft); max-width: 64ch; font-size: 15.5px; margin: 0 0 24px; }
+  .now {
+    font-size: 14px; color: var(--ink-soft); margin: 0 0 22px;
+    padding-left: 13px; border-left: 2px solid var(--line);
+  }
+  .now b { color: var(--ink); font-weight: 600; }
+
+  .stage {
+    border: 1px solid var(--line); background: var(--surface);
+    padding: 26px 24px; border-radius: 3px; overflow-x: auto;
+  }
+  .cap {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-soft); margin: 11px 0 0;
+  }
+
+  /* ---------- 1. darshan day bands ---------- */
+  .bands { display: grid; grid-template-columns: 5.6rem 1fr; gap: 7px 14px; min-width: 420px; }
+  .band-day { font-size: 14px; color: var(--ink-soft); align-self: center; }
+  .band-day.today { color: var(--kumkum); font-weight: 600; }
+  .track { position: relative; height: 24px; background: var(--ground); border-radius: 2px; }
+  .bar {
+    position: absolute; top: 0; bottom: 0; background: var(--kumkum-soft);
+    border: 1px solid var(--kumkum); border-radius: 2px;
+  }
+  .track.today .bar { background: var(--kumkum); border-color: var(--kumkum); }
+  .ticks { position: relative; height: 18px; grid-column: 2; }
+  .tick {
+    position: absolute; font-family: var(--mono); font-size: 10px;
+    color: var(--ink-soft); transform: translateX(-50%);
+  }
+  .nowline { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--gold); }
+
+  /* ---------- 2. festival ribbon ---------- */
+  .ribbon { display: flex; flex-direction: column; }
+  .rib {
+    display: grid; grid-template-columns: 4.4rem 22px 1fr; gap: 0 12px;
+    align-items: start; position: relative;
+  }
+  .rib-date {
+    font-family: var(--mono); font-size: 11.5px; color: var(--ink-soft);
+    text-align: right; padding-top: 9px; font-variant-numeric: tabular-nums;
+  }
+  .rib-rail { position: relative; }
+  .rib-rail::before {
+    content: ""; position: absolute; left: 10px; top: 0; bottom: 0;
+    width: 1px; background: var(--line);
+  }
+  .rib:first-child .rib-rail::before { top: 14px; }
+  .rib:last-child .rib-rail::before { bottom: calc(100% - 14px); }
+  .node {
+    position: absolute; left: 6px; top: 10px; width: 9px; height: 9px;
+    border-radius: 50%; background: var(--surface); border: 1.5px solid var(--gold-line);
+  }
+  .rib.key .node { background: var(--kumkum); border-color: var(--kumkum); width: 11px; height: 11px; left: 5px; }
+  .rib-name { padding: 6px 0 10px; font-size: 15px; }
+  .rib.key .rib-name { font-family: var(--serif); font-size: 19px; }
+  .rib-note { display: block; font-size: 13px; color: var(--ink-soft); }
+
+  /* ---------- 3. sun: overlap of published windows ---------- */
+  .windows { display: grid; grid-template-columns: 8.6rem 1fr; gap: 9px 14px; min-width: 440px; }
+  .win-src { font-size: 13px; color: var(--ink-soft); align-self: center; }
+  .win-track { position: relative; height: 22px; background: var(--ground); border-radius: 2px; }
+  .win-bar {
+    position: absolute; top: 0; bottom: 0; border-radius: 2px;
+    background: var(--gold-glow); border: 1px solid var(--gold-line);
+  }
+  .win-overlap {
+    position: absolute; top: -3px; bottom: -3px; background: var(--gold);
+    opacity: .22; border-left: 2px solid var(--gold); border-right: 2px solid var(--gold);
+  }
+  .axis { position: relative; height: 16px; grid-column: 2; }
+  .axis span {
+    position: absolute; font-family: var(--mono); font-size: 10px;
+    color: var(--ink-soft); transform: translateX(-50%); white-space: nowrap;
+  }
+  .axis span:first-child { transform: none; }
+  .axis span:last-child { transform: translateX(-100%); }
+
+  /* ---------- 5. visit: distance arcs ---------- */
+  .arcs { display: block; width: 100%; max-width: 460px; margin: 0 auto; }
+
+  /* ---------- misc ---------- */
+  .two { display: grid; gap: 22px; }
+  @media (min-width: 46rem) { .two { grid-template-columns: 1.15fr 1fr; align-items: center; } }
+  .pick { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+  .pick li {
+    list-style: none; display: grid; grid-template-columns: 1.6rem 1fr; gap: 12px;
+    font-size: 15.5px;
+  }
+  .pick b { font-family: var(--mono); font-size: 12px; color: var(--kumkum); padding-top: 3px; }
+  a:focus-visible { outline: 2px solid var(--kumkum); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="gopuram">
+      <rect x="30" y="452" width="140" height="18" fill="currentColor"/>
+      <rect x="36" y="374" width="128" height="78" fill="currentColor"/>
+      <path d="M84,452 V412 Q100,396 116,412 V452 Z" fill="var(--surface)"/>
+      <rect x="28" y="364" width="144" height="11" fill="currentColor"/>
+      <g fill="currentColor">
+        <polygon points="40,364 160,364 156.3,326 43.7,326"/><polygon points="41.7,329 158.3,329 158.3,321 41.7,321"/>
+        <polygon points="43.7,321 156.3,321 152.6,290 47.4,290"/><polygon points="45.4,293 154.6,293 154.6,285 45.4,285"/>
+        <polygon points="47.4,285 152.6,285 148.9,256 51.1,256"/><polygon points="49.1,259 150.9,259 150.9,251 49.1,251"/>
+        <polygon points="51.1,251 148.9,251 145.1,223 54.9,223"/><polygon points="52.9,226 147.1,226 147.1,218 52.9,218"/>
+        <polygon points="54.9,218 145.1,218 141.4,191 58.6,191"/><polygon points="56.6,194 143.4,194 143.4,186 56.6,186"/>
+        <polygon points="58.6,186 141.4,186 137.7,160 62.3,160"/><polygon points="60.3,163 139.7,163 139.7,155 60.3,155"/>
+        <polygon points="62.3,155 137.7,155 134,130 66,130"/><polygon points="64,133 136,133 136,125 64,125"/>
+      </g>
+      <g stroke="var(--surface)" stroke-dasharray="3.5 5.5">
+        <line x1="46" y1="346" x2="154" y2="346" stroke-width="18"/><line x1="50" y1="309" x2="150" y2="309" stroke-width="17"/>
+        <line x1="53" y1="274" x2="147" y2="274" stroke-width="16"/><line x1="57" y1="240" x2="143" y2="240" stroke-width="15"/>
+        <line x1="61" y1="208" x2="139" y2="208" stroke-width="15"/><line x1="64" y1="176" x2="136" y2="176" stroke-width="14"/>
+        <line x1="68" y1="145" x2="132" y2="145" stroke-width="14"/>
+      </g>
+      <path d="M58,126 L58,104 Q58,80 100,80 Q142,80 142,104 L142,126 Z" fill="currentColor"/>
+      <rect x="56" y="120" width="88" height="10" fill="currentColor"/>
+      <g fill="currentColor">
+        <rect x="98.7" y="54" width="2.6" height="22"/><circle cx="100" cy="51" r="4.6"/>
+        <rect x="82.9" y="62" width="2.2" height="17"/><circle cx="84" cy="59" r="3.6"/>
+        <rect x="114.9" y="62" width="2.2" height="17"/><circle cx="116" cy="59" r="3.6"/>
+        <rect x="68.1" y="70" width="1.9" height="14"/><circle cx="69" cy="67" r="3"/>
+        <rect x="130" y="70" width="1.9" height="14"/><circle cx="131" cy="67" r="3"/>
+      </g>
+    </g>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="eyebrow">Design proposals &middot; six pages &middot; not yet built</div>
+    <h1>One shape for six different jobs</h1>
+    <p>The built site works and is honest. But every page is the same document: a
+      heading, a Telugu line, some sections, a table. Nothing about the sun page
+      <em>looks</em> different from the directions page, though they do completely
+      different work.</p>
+
+    <div class="diagnosis">
+      <p><strong>The diagnosis.</strong> The restraint is right and I would not undo it.
+        What is missing is that no page has a <em>signature</em>. A visitor who has been
+        to one page has seen the shape of all six, so nothing is memorable and nothing is
+        faster to read than plain prose would be.</p>
+      <p>Each proposal below gives one page a single element that only that page could
+        have. All are drawn from the vocabulary already in the build: no photographs, no
+        new colours, no libraries, no measurable weight.</p>
+    </div>
+  </header>
+
+  <!-- ============ 1 ============ -->
+  <section>
+    <div class="num">Proposal 01 &middot; Darshan</div>
+    <h2>Hours as bands, not numbers</h2>
+    <p class="sub">The single most useful fact on the site is buried in a table that has
+      to be read to be understood. Bands are read at a glance, and the Saturday break
+      stops being a footnote and becomes a visible gap.</p>
+    <p class="now"><b>Now:</b> three rows of text: "Sunday &ndash; Friday 06:00 &ndash; 20:30",
+      "Saturday, morning", "Saturday, evening". Correct, but you have to parse it.</p>
+
+    <div class="stage">
+      <div class="bands">
+        <div class="band-day">Sunday</div>
+        <div class="track"><div class="bar" style="left:11.1%; width:80.6%"></div></div>
+        <div class="band-day today">Monday &middot; today</div>
+        <div class="track today">
+          <div class="bar" style="left:11.1%; width:80.6%"></div>
+          <div class="nowline" style="left:29%" title="now"></div>
+        </div>
+        <div class="band-day">Tuesday</div>
+        <div class="track"><div class="bar" style="left:11.1%; width:80.6%"></div></div>
+        <div class="band-day">Wednesday</div>
+        <div class="track"><div class="bar" style="left:11.1%; width:80.6%"></div></div>
+        <div class="band-day">Thursday</div>
+        <div class="track"><div class="bar" style="left:11.1%; width:80.6%"></div></div>
+        <div class="band-day">Friday</div>
+        <div class="track"><div class="bar" style="left:11.1%; width:80.6%"></div></div>
+        <div class="band-day">Saturday</div>
+        <div class="track">
+          <div class="bar" style="left:11.1%; width:33.3%"></div>
+          <div class="bar" style="left:72.2%; width:19.4%"></div>
+        </div>
+        <div class="ticks">
+          <span class="tick" style="left:11.1%">6 AM</span>
+          <span class="tick" style="left:44.4%">12</span>
+          <span class="tick" style="left:77.8%">6 PM</span>
+          <span class="tick" style="left:91.7%">8:30</span>
+        </div>
+      </div>
+      <p class="cap">Gold line marks the current time. Today's row is filled.</p>
+    </div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section>
+    <div class="num">Proposal 02 &middot; Festivals</div>
+    <h2>Brahmotsavam as a sequence, because it is one</h2>
+    <p class="sub">Nineteen days in a table reads as nineteen unrelated rows. It is
+      actually a procession: a different vahana carries the deity each night, building to
+      Garuda and then the chariot. A rail with nodes says that; a table hides it.</p>
+    <p class="now"><b>Now:</b> a nineteen-row table sorted by date, with the two important
+      nights bolded and easy to miss.</p>
+
+    <div class="stage">
+      <div class="ribbon">
+        <div class="rib">
+          <div class="rib-date">1 Apr</div>
+          <div class="rib-rail"><span class="node"></span></div>
+          <div class="rib-name">Ankurarpana <span class="te" style="color:var(--ink-soft)">అంకురార్పణ</span></div>
+        </div>
+        <div class="rib">
+          <div class="rib-date">2 Apr</div>
+          <div class="rib-rail"><span class="node"></span></div>
+          <div class="rib-name">Dwajarohana<span class="rib-note">Suryaprabha vahana</span></div>
+        </div>
+        <div class="rib">
+          <div class="rib-date">3 Apr</div>
+          <div class="rib-rail"><span class="node"></span></div>
+          <div class="rib-name">Kalyanotsavam<span class="rib-note">4 AM &middot; Chandraprabha vahana</span></div>
+        </div>
+        <div class="rib">
+          <div class="rib-date">4&ndash;8 Apr</div>
+          <div class="rib-rail"><span class="node"></span></div>
+          <div class="rib-name">Simha, Sesha, Vyali, Ponna, Hanuman<span class="rib-note">five nights, five vahanas</span></div>
+        </div>
+        <div class="rib key">
+          <div class="rib-date">9 Apr</div>
+          <div class="rib-rail"><span class="node"></span></div>
+          <div class="rib-name">Garuda Vahana Seva<span class="rib-note">the vahana of Vishnu himself</span></div>
+        </div>
+        <div class="rib">
+          <div class="rib-date">10 Apr</div>
+          <div class="rib-rail"><span class="node"></span></div>
+          <div class="rib-name">Gaja vahana</div>
+        </div>
+        <div class="rib key">
+          <div class="rib-date">11 Apr</div>
+          <div class="rib-rail"><span class="node"></span></div>
+          <div class="rib-name">Rathotsavam <span class="te" style="color:var(--ink-soft)">రథోత్సవం</span><span class="rib-note">the chariot. Over a lakh of devotees</span></div>
+        </div>
+        <div class="rib">
+          <div class="rib-date">12&ndash;19 Apr</div>
+          <div class="rib-rail"><span class="node"></span></div>
+          <div class="rib-name">Aswa, Hamsa, Vasantotsavam, Unjal<span class="rib-note">the festival winds down</span></div>
+        </div>
+      </div>
+      <p class="cap">Consecutive minor days collapse into one node, so the two that matter stand out.</p>
+    </div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section>
+    <div class="num">Proposal 03 &middot; The sun</div>
+    <h2>Show the disagreement instead of describing it</h2>
+    <p class="sub">This page's real content is that nobody knows the dates. Three sources
+      publish three windows. Drawn as bars, the overlap becomes visible, and the honest
+      answer falls out of the picture rather than out of a paragraph.</p>
+    <p class="now"><b>Now:</b> a table of three date ranges, then a paragraph explaining
+      that the common overlap is the last week of December.</p>
+
+    <div class="stage">
+      <div class="windows">
+        <div class="win-src">ttdseva.in</div>
+        <div class="win-track">
+          <div class="win-bar" style="left:14.6%; width:46.3%"></div>
+        </div>
+        <div class="win-src">substack account</div>
+        <div class="win-track">
+          <div class="win-bar" style="left:31.7%; width:26.8%"></div>
+        </div>
+        <div class="win-src">others</div>
+        <div class="win-track">
+          <div class="win-bar" style="left:14.6%; width:70.7%"></div>
+        </div>
+        <div class="win-src" style="color:var(--gold); font-weight:600">all three agree</div>
+        <div class="win-track">
+          <div class="win-overlap" style="left:31.7%; width:26.8%"></div>
+        </div>
+        <div class="axis">
+          <span style="left:0%">10 Dec</span>
+          <span style="left:31.7%">23 Dec</span>
+          <span style="left:58.5%">3 Jan</span>
+          <span style="left:100%">20 Jan</span>
+        </div>
+      </div>
+      <p class="cap">The gold band is the only stretch every source covers. That is what the page should lead with.</p>
+    </div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section>
+    <div class="num">Proposal 04 &middot; The temple</div>
+    <h2>Let the gopuram carry its own history</h2>
+    <p class="sub">The tower is already drawn and already accurate. Annotating it turns a
+      decorative silhouette into the page's argument: this thing was built across four
+      centuries, and you can see the joins.</p>
+    <p class="now"><b>Now:</b> the gopuram sits at 118px beside two paragraphs, small
+      enough to read as an ornament rather than as evidence.</p>
+
+    <div class="stage">
+      <div class="two">
+        <div style="display:flex; justify-content:center">
+          <svg viewBox="0 0 470 500" style="width:100%; max-width:430px" role="img"
+               aria-label="The Galigopuram with its construction dates marked by tier">
+            <g style="color:var(--ink)"><use href="#gopuram" transform="translate(60,0) scale(0.92)"/></g>
+            <!-- each line lands on the tier it names: shikhara ~y100, lowest tier ~y317,
+                 gateway walls ~y380 once the tower is scaled 0.92 -->
+            <g stroke="var(--gold-line)" stroke-width="1" fill="none">
+              <path d="M196,100 H300"/><path d="M216,317 H300"/><path d="M214,380 H300"/>
+            </g>
+            <g fill="var(--kumkum)" font-family="ui-monospace,Menlo,monospace" font-size="12" font-weight="600">
+              <text x="304" y="104">1837</text>
+              <text x="304" y="321">1405&ndash;59</text>
+              <text x="304" y="384">1425</text>
+            </g>
+            <g fill="var(--ink-soft)" font-family="system-ui" font-size="10.5">
+              <text x="304" y="118">upper storeys added</text>
+              <text x="304" y="335">first storey, Vijayanagara</text>
+              <text x="304" y="398">walls, 18 inscriptions</text>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <p style="margin-top:0"><strong>135 feet</strong>, reportedly the second tallest
+            gopuram in the Telugu states, raised across more than four hundred years.</p>
+          <p style="font-size:15px; color:var(--ink-soft)">The same drawing, given leader
+            lines and room to breathe. Nothing new is invented and nothing new is loaded.</p>
+        </div>
+      </div>
+      <p class="cap">Leader lines land on the tiers they describe.</p>
+    </div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section>
+    <div class="num">Proposal 05 &middot; Getting there</div>
+    <h2>Distance you can feel</h2>
+    <p class="sub">A table of kilometres tells a pilgrim in Hyderabad very little. Arcs
+      put the temple at the centre and everything else in relation to it, which is how
+      someone planning a journey actually thinks.</p>
+    <p class="now"><b>Now:</b> a six-row table where "94 km" and "272 km" look the same size.</p>
+
+    <div class="stage">
+      <svg class="arcs" viewBox="0 0 460 250" role="img"
+           aria-label="Distances to Markapur: bus stand walkable, Ongole 94km, Vijayawada 227km, Hyderabad 272km">
+        <g fill="none" stroke="var(--gold-line)" stroke-width="1" stroke-dasharray="3 5">
+          <path d="M230,215 m-58,0 a58,58 0 0 1 116,0"/>
+          <path d="M230,215 m-118,0 a118,118 0 0 1 236,0"/>
+          <path d="M230,215 m-172,0 a172,172 0 0 1 344,0"/>
+        </g>
+        <g fill="var(--kumkum)"><circle cx="230" cy="215" r="5"/></g>
+        <text x="230" y="236" text-anchor="middle" font-family="system-ui" font-size="12"
+              fill="var(--ink)" font-weight="600">the temple</text>
+        <g font-family="system-ui" font-size="12" fill="var(--ink)">
+          <circle cx="230" cy="157" r="3.5" fill="var(--gold)"/>
+          <text x="242" y="161">Bus stand &middot; a short walk</text>
+          <circle cx="150" cy="128" r="3.5" fill="var(--gold)"/>
+          <text x="128" y="120" text-anchor="end">Ongole &middot; 94 km</text>
+          <circle cx="330" cy="120" r="3.5" fill="var(--gold)"/>
+          <text x="342" y="114">Vijayawada &middot; 227 km</text>
+          <circle cx="112" cy="196" r="3.5" fill="var(--gold)"/>
+          <text x="100" y="200" text-anchor="end">Hyderabad</text>
+          <text x="100" y="214" text-anchor="end" fill="var(--ink-soft)" font-size="11">272 km</text>
+        </g>
+      </svg>
+      <p class="cap">Rail and bus stay as text below. The arcs answer "how far is this from me".</p>
+    </div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section>
+    <div class="num">Proposal 06 &middot; Home</div>
+    <h2>Answer the question before anything else</h2>
+    <p class="sub">Most arrivals want one fact: is it open. Give that the whole first
+      screen, with the tower present and the hours immediately under it, and let the
+      history begin below the fold where it belongs.</p>
+    <p class="now"><b>Now:</b> a status strip, then a heading and three paragraphs of
+      history, then today's hours.</p>
+
+    <div class="stage">
+      <div style="display:flex; gap:26px; align-items:center; flex-wrap:wrap; justify-content:center">
+        <svg viewBox="0 0 200 470" style="width:78px; color:var(--ink); flex:0 0 auto" aria-hidden="true">
+          <use href="#gopuram"/>
+        </svg>
+        <div style="flex:1 1 17rem; min-width:15rem">
+          <div style="font-family:var(--serif); font-size:30px; line-height:1.1; margin-bottom:4px">
+            Open now
+          </div>
+          <div style="color:var(--ink-soft); font-size:16px; margin-bottom:16px">
+            closes 8:30 PM &middot; Monday
+          </div>
+          <div style="display:flex; gap:22px; flex-wrap:wrap; font-size:14px">
+            <div><div style="color:var(--ink-soft); font-size:11.5px; font-family:var(--mono); letter-spacing:.1em; text-transform:uppercase">Abhishekam</div>6:00 &ndash; 7:30 AM</div>
+            <div><div style="color:var(--ink-soft); font-size:11.5px; font-family:var(--mono); letter-spacing:.1em; text-transform:uppercase">Namarchana</div>8:00 &ndash; 8:30 AM</div>
+            <div><div style="color:var(--ink-soft); font-size:11.5px; font-family:var(--mono); letter-spacing:.1em; text-transform:uppercase">Next festival</div>Brahmotsavam</div>
+          </div>
+        </div>
+      </div>
+      <p class="cap">The status becomes the headline instead of a strip above one.</p>
+    </div>
+  </section>
+
+  <!-- ============ close ============ -->
+  <section>
+    <div class="num">If you only take one</div>
+    <h2>What I would build first</h2>
+    <p class="sub">In order of how much they earn against what they cost. All six are
+      static SVG and CSS, so none of them changes the page weight in any way you would
+      measure.</p>
+    <ul class="pick">
+      <li><b>01</b><span><strong>Darshan bands.</strong> Biggest utility gain on the site.
+        The Saturday break is currently a sentence people will miss, and missing it means
+        a wasted journey.</span></li>
+      <li><b>03</b><span><strong>The sun overlap.</strong> Turns the page's weakness, that
+        nobody knows the dates, into its most interesting feature.</span></li>
+      <li><b>06</b><span><strong>Home hero.</strong> Cheapest of the six. It is a
+        rearrangement of things already on the page.</span></li>
+      <li><b>02</b><span><strong>Festival ribbon.</strong> Lovely, and it matters most in
+        the one week a year when traffic is fifty times normal.</span></li>
+      <li><b>04</b><span><strong>Annotated gopuram.</strong> Pure craft. No utility gain,
+        but it is the page's only real image and it is currently wasted.</span></li>
+      <li><b>05</b><span><strong>Distance arcs.</strong> Nice, least essential. The table
+        is not actually failing anybody.</span></li>
+    </ul>
+    <p style="margin-top:26px; font-size:15px; color:var(--ink-soft)">
+      Nothing here is in the design document yet. Tell me which of these you want and I
+      will write them up there first, then build.
+    </p>
+  </section>
+
+</div>

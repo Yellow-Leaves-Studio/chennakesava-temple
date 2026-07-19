@@ -1,31 +1,115 @@
 {
-  "_note": "Festival dates follow the lunar calendar and shift every year. They are entered by hand, once a year, deliberately. Panchangam computation is a trap: regional variation makes it wrong in ways nobody notices until a festival page is wrong.",
+  "_note": "Festival dates follow the lunar calendar and shift every year. They are entered by hand, once a year, deliberately. Panchangam computation is a trap: regional variation makes it wrong in ways nobody notices until a festival page is wrong. 'phase' groups the days on the festivals page: consecutive days of the same phase fold into one node, and a highlighted day always stands alone.",
   "brahmotsavam": {
     "year": 2026,
     "verified": false,
     "days": [
-      { "date": "2026-04-01", "name": "Ankurarpana", "telugu": "అంకురార్పణ" },
-      { "date": "2026-04-02", "name": "Dwajarohana, Rayabaram, Edurukolu, Suryaprabha Vahana Seva" },
-      { "date": "2026-04-03", "name": "Kalyanotsavam (4 AM), Chandraprabha Vahana Seva", "telugu": "కళ్యాణోత్సవం" },
-      { "date": "2026-04-04", "name": "Simha Vahana Seva" },
-      { "date": "2026-04-05", "name": "Sesha Vahana Seva" },
-      { "date": "2026-04-06", "name": "Vyali Vahana Seva" },
-      { "date": "2026-04-07", "name": "Ponna Vahana Seva" },
-      { "date": "2026-04-08", "name": "Hanuman Vahana Seva" },
-      { "date": "2026-04-09", "name": "Garuda Vahana Seva", "highlight": true },
-      { "date": "2026-04-10", "name": "Gaja Vahana Seva" },
-      { "date": "2026-04-11", "name": "Rathotsavam", "telugu": "రథోత్సవం", "highlight": true },
-      { "date": "2026-04-12", "name": "Aswa Vahana Seva" },
-      { "date": "2026-04-13", "name": "Hamsa Vahana Seva" },
-      { "date": "2026-04-14", "name": "Vasantotsavam begins" },
-      { "date": "2026-04-17", "name": "Vasantotsavam concludes" },
-      { "date": "2026-04-18", "name": "Unjal Seva" },
-      { "date": "2026-04-19", "name": "Conclusion" }
+      {
+        "date": "2026-04-01",
+        "name": "Ankurarpana",
+        "telugu": "అంకురార్పణ",
+        "phase": "opening"
+      },
+      {
+        "date": "2026-04-02",
+        "name": "Dwajarohana, Rayabaram, Edurukolu, Suryaprabha Vahana Seva",
+        "phase": "opening"
+      },
+      {
+        "date": "2026-04-03",
+        "name": "Kalyanotsavam (4 AM), Chandraprabha Vahana Seva",
+        "telugu": "కళ్యాణోత్సవం",
+        "phase": "opening"
+      },
+      {
+        "date": "2026-04-04",
+        "name": "Simha Vahana Seva",
+        "phase": "vahana"
+      },
+      {
+        "date": "2026-04-05",
+        "name": "Sesha Vahana Seva",
+        "phase": "vahana"
+      },
+      {
+        "date": "2026-04-06",
+        "name": "Vyali Vahana Seva",
+        "phase": "vahana"
+      },
+      {
+        "date": "2026-04-07",
+        "name": "Ponna Vahana Seva",
+        "phase": "vahana"
+      },
+      {
+        "date": "2026-04-08",
+        "name": "Hanuman Vahana Seva",
+        "phase": "vahana"
+      },
+      {
+        "date": "2026-04-09",
+        "name": "Garuda Vahana Seva",
+        "highlight": true,
+        "phase": "vahana"
+      },
+      {
+        "date": "2026-04-10",
+        "name": "Gaja Vahana Seva",
+        "phase": "vahana"
+      },
+      {
+        "date": "2026-04-11",
+        "name": "Rathotsavam",
+        "telugu": "రథోత్సవం",
+        "highlight": true,
+        "phase": "chariot"
+      },
+      {
+        "date": "2026-04-12",
+        "name": "Aswa Vahana Seva",
+        "phase": "vahana"
+      },
+      {
+        "date": "2026-04-13",
+        "name": "Hamsa Vahana Seva",
+        "phase": "vahana"
+      },
+      {
+        "date": "2026-04-14",
+        "name": "Vasantotsavam begins",
+        "phase": "closing"
+      },
+      {
+        "date": "2026-04-17",
+        "name": "Vasantotsavam concludes",
+        "phase": "closing"
+      },
+      {
+        "date": "2026-04-18",
+        "name": "Unjal Seva",
+        "phase": "closing"
+      },
+      {
+        "date": "2026-04-19",
+        "name": "Conclusion",
+        "phase": "closing"
+      }
     ]
   },
   "observances": [
-    { "name": "Mahasivaratri", "telugu": "మహాశివరాత్రి", "when": "Phalguna, Krishna Chaturdashi" },
-    { "name": "Sankranthi", "telugu": "సంక్రాంతి", "when": "Mid-January" },
-    { "name": "Moolavirat Panchamrutha Abhishekam", "when": "Observed through the year" }
+    {
+      "name": "Mahasivaratri",
+      "telugu": "మహాశివరాత్రి",
+      "when": "Phalguna, Krishna Chaturdashi"
+    },
+    {
+      "name": "Sankranthi",
+      "telugu": "సంక్రాంతి",
+      "when": "Mid-January"
+    },
+    {
+      "name": "Moolavirat Panchamrutha Abhishekam",
+      "when": "Observed through the year"
+    }
   ]
 }

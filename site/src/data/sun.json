@@ -1,0 +1,9 @@
+{
+  "_note": "Three published windows for the dawn alignment, and they disagree by nearly a month. Nothing here is confirmed by the temple. The page draws these as bars and computes the common overlap; do not type the overlap in by hand. Dates use a placeholder year: only month and day matter, and the window crosses into January.",
+  "axis": { "from": "2000-12-10", "to": "2001-01-20" },
+  "windows": [
+    { "source": "ttdseva.in", "from": "2000-12-16", "to": "2001-01-04" },
+    { "source": "Substack account", "from": "2000-12-23", "to": "2001-01-03" },
+    { "source": "Other listings", "from": "2000-12-16", "to": "2001-01-14" }
+  ]
+}

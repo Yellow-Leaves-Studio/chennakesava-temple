@@ -444,6 +444,47 @@ detail. Remember the base path when linking it.
 - **No carousels, autoplay, parallax, scroll animation, or background music.** Each
   appears on comparable temple sites; each makes them worse.
 
+## 8a. Per-page signatures *(approved 2026-07-19)*
+
+The first build gave all six pages one shape: heading, Telugu line, sections, tables. It
+was honest and it was forgettable. Nothing about the sun page *looked* different from the
+directions page although they do completely different work.
+
+Four pages now get **one element that only that page could have**. All are drawn from the
+existing vocabulary: no photographs, no new colours, no libraries, no measurable weight.
+
+**Festivals — Brahmotsavam as a sequence.** Nineteen table rows read as nineteen
+unrelated facts. It is a procession, a different vahana each night, building to Garuda
+and then the chariot. A rail with nodes says that. Consecutive minor days collapse into a
+single node so Garuda and Rathotsavam stand out. Grouping is `groupDays()` in
+`lib/festivals.js`, driven off the `highlight` flags in the data.
+
+**The sun — show the disagreement.** The page's real content is that nobody knows the
+dates. Three published windows are drawn as bars on a shared axis, each labelled with its
+own range, and the stretch all three cover is filled in gold. The honest answer falls out
+of the picture instead of out of a paragraph.
+
+> The overlap is **computed, never typed**. `intersect()` in `lib/overlap.js` derives it
+> from the windows in `data/sun.json` and is covered by tests. If a fourth source is
+> added and the common stretch shrinks, the page must follow automatically. A hardcoded
+> band would quietly become a lie.
+
+**The temple — annotate the gopuram.** The tower is already drawn and already accurate;
+at 118px it read as ornament rather than as evidence. Leader lines land on the tiers they
+name, so the page's argument becomes visible: built across four centuries, and you can
+see the joins. **Each line must point at the tier it describes** — the first attempt had
+them landing on the plinth and the gateway.
+
+**Home — lead with the answer.** Most arrivals want one fact. The open/closed state
+becomes the headline with the tower beside it, and the history moves below the fold.
+
+**One status, two presentations.** The badge is filled by a single script writing into
+`[data-status-primary]` and `[data-status-detail]`, so the compact strip and the home
+hero share one code path. Adding a third presentation means adding markup, not logic.
+
+*(Proposals 01 darshan hour-bands and 05 distance arcs were shown and not taken. The
+darshan table stays as it is.)*
+
 ## 9. Content status
 
 | Item | Status |

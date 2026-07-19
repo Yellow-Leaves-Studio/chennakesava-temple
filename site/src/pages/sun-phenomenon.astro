@@ -1,5 +1,29 @@
 ---
 import Base from '../layouts/Base.astro';
+import sun from '../data/sun.json';
+import { intersect, band, label, position } from '../lib/overlap.js';
+
+const { axis, windows } = sun;
+const common = intersect(windows);
+const commonBand = common && band(common.from, common.to, axis);
+
+// axis marks: the ends, plus the two edges of the agreed stretch
+const marks = [
+  { at: 0, text: label(axis.from) },
+  ...(common
+    ? [
+        { at: position(common.from, axis), text: label(common.from) },
+        { at: position(common.to, axis), text: label(common.to) },
+      ]
+    : []),
+  { at: 100, text: label(axis.to) },
+];
+
+const summary = common
+  ? `Three published windows for the alignment. ${windows
+      .map((w) => `${w.source}: ${label(w.from)} to ${label(w.to)}`)
+      .join('. ')}. All three agree only on ${label(common.from)} to ${label(common.to)}.`
+  : 'Three published windows for the alignment, with no stretch common to all of them.';
 ---
 <Base
   title="The sun reaches the feet: the December alignment | Chennakesava Swamy, Markapur"
@@ -8,14 +32,9 @@ import Base from '../layouts/Base.astro';
   <h1>The sun reaches the feet</h1>
   <p class="page-te">Mid-December into early January</p>
 
-  <div style="position:relative; overflow:hidden; padding:30px 20px; margin-bottom:26px;
-              border:1px solid var(--gold-line); background:linear-gradient(to top, var(--gold-glow), transparent 72%)">
-    <svg viewBox="0 0 200 200" aria-hidden="true"
-         style="position:absolute; bottom:-92px; left:50%; transform:translateX(-50%);
-                width:230px; color:var(--gold); opacity:.2; pointer-events:none">
-      <use href="#rays" />
-    </svg>
-    <p class="lead" style="position:relative; margin:0">
+  <div class="opening">
+    <svg class="rays" viewBox="0 0 200 200" aria-hidden="true"><use href="#rays" /></svg>
+    <p class="lead">
       For about twenty minutes at dawn, light enters through an opening in the 135-foot
       gopuram, travels the length of the temple, and comes to rest at the feet of
       Chennakesava Swamy.
@@ -29,30 +48,47 @@ import Base from '../layouts/Base.astro';
     described carefully by none of them.
   </p>
 
-  <h2>What the sources actually say</h2>
+  <h2>The sources do not agree</h2>
   <p>
-    They do not agree. Three different windows are published, and no source explains where
-    its dates came from:
+    Three published windows, drawn on one axis. The gold band is the only stretch all
+    three cover, and it is derived from them rather than chosen.
   </p>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Reported window</th><th class="num">Length</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>16 December – 4 January</td><td class="num">20 days</td></tr>
-        <tr><td>23 December – 3 January</td><td class="num">12 days</td></tr>
-        <tr><td>16 December – 14 January</td><td class="num">30 days</td></tr>
-      </tbody>
-    </table>
+
+  <div class="windows" role="img" aria-label={summary}>
+    {windows.map((w) => {
+      const b = band(w.from, w.to, axis);
+      return (
+        <>
+          <span class="win-src">{w.source}</span>
+          <span class="win-track">
+            <span class="win-bar" style={`left:${b.left}%; width:${b.width}%`}>
+              <span class="win-dates">{label(w.from)} – {label(w.to)}</span>
+            </span>
+          </span>
+        </>
+      );
+    })}
+    {common && (
+      <>
+        <span class="win-src agreed">All three agree</span>
+        <span class="win-track">
+          <span class="win-overlap" style={`left:${commonBand.left}%; width:${commonBand.width}%`}>
+            <span class="win-dates">{label(common.from)} – {label(common.to)}</span>
+          </span>
+        </span>
+      </>
+    )}
+    <span class="axis">
+      {marks.map((m) => <span style={`left:${m.at}%`}>{m.text}</span>)}
+    </span>
   </div>
 
   <div class="note">
     <p>
-      <strong>So this site will not give you a date.</strong> Travelling a long way for a
-      twenty-minute event on the strength of a source that might be a month wrong is not
-      something we are willing to cause. The overlap common to all three accounts is the
-      final week of December, but confirm at the temple before planning around it.
+      <strong>So this site will not give you a single date.</strong> Travelling a long way
+      for a twenty-minute event on the strength of a source that might be a month wrong is
+      not something we are willing to cause. All the sources share the stretch shown in
+      gold. Confirm at the temple before planning around it.
     </p>
   </div>
 
@@ -68,3 +104,55 @@ import Base from '../layouts/Base.astro';
     temple has that no other Chennakesava temple does.
   </p>
 </Base>
+
+<style>
+  .opening {
+    position: relative; overflow: hidden; padding: 26px 20px; margin-bottom: 24px;
+    border: 1px solid var(--gold-line);
+    background: linear-gradient(to top, var(--gold-glow), transparent 72%);
+  }
+  .opening .lead { position: relative; margin: 0; }
+  .rays {
+    position: absolute; bottom: -92px; left: 50%; transform: translateX(-50%);
+    width: 230px; color: var(--gold); opacity: .2; pointer-events: none;
+  }
+
+  .windows {
+    display: grid; grid-template-columns: 8.4rem 1fr; gap: 10px 14px;
+    margin: 26px 0 8px;
+  }
+  .win-src { font-size: 13.5px; color: var(--ink-soft); align-self: center; }
+  .win-src.agreed { color: var(--gold); font-weight: 600; }
+  .win-track {
+    position: relative; height: 26px; background: var(--ground); border-radius: 2px;
+  }
+  .win-bar, .win-overlap {
+    position: absolute; top: 0; bottom: 0; border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .win-bar { background: var(--gold-glow); border: 1px solid var(--gold-line); }
+  .win-overlap {
+    background: color-mix(in srgb, var(--gold) 42%, transparent);
+    border: 1.5px solid var(--gold);
+  }
+  /* the range is written on its own bar, so nothing has to be cross-referenced */
+  .win-dates {
+    font-family: var(--mono); font-size: 10.5px; color: var(--ink);
+    white-space: nowrap; font-variant-numeric: tabular-nums;
+  }
+  .axis { position: relative; grid-column: 2; height: 15px; }
+  .axis span {
+    position: absolute; font-family: var(--mono); font-size: 10px;
+    color: var(--ink-soft); transform: translateX(-50%); white-space: nowrap;
+  }
+  .axis span:first-child { transform: none; }
+  .axis span:last-child { transform: translateX(-100%); }
+
+  /* the narrower bars cannot hold a label on a phone; the axis still carries the ends */
+  @media (max-width: 34rem) {
+    .windows { grid-template-columns: 5.4rem 1fr; }
+    .win-src { font-size: 12.5px; }
+    .win-bar .win-dates { display: none; }
+    .win-overlap .win-dates { font-size: 9.5px; }
+  }
+</style>
