@@ -170,6 +170,9 @@ const schema = {
       --ink: #232A27; --ink-soft: #5D6A63;
       --kumkum: #96222A; --kumkum-soft: #F2E0DF;
       --gold: #A8781A; --gold-line: rgba(168,120,26,.62); --gold-glow: rgba(168,120,26,.13);
+      /* watermark alpha is baked into the token, so it can differ per theme */
+      --gold-veil: rgba(168,120,26,.24);
+      --ink-place: #4C574F;
       --serif: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
       --sans: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
       --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
@@ -182,6 +185,8 @@ const schema = {
         --ink: #E7EBE8; --ink-soft: #95A099;
         --kumkum: #DE8087; --kumkum-soft: #2E1D1C;
         --gold: #D6A63F; --gold-line: rgba(214,166,63,.40); --gold-glow: rgba(214,166,63,.10);
+        --gold-veil: rgba(214,166,63,.20);
+        --ink-place: #A6B0A9;
       }
     }
     :root[data-theme="dark"] {
@@ -190,6 +195,8 @@ const schema = {
       --ink: #E7EBE8; --ink-soft: #95A099;
       --kumkum: #DE8087; --kumkum-soft: #2E1D1C;
       --gold: #D6A63F; --gold-line: rgba(214,166,63,.40); --gold-glow: rgba(214,166,63,.10);
+      --gold-veil: rgba(214,166,63,.20);
+      --ink-place: #A6B0A9;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -217,7 +224,7 @@ const schema = {
     }
     .masthead-chakra {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      width: 260px; height: 260px; color: var(--gold); opacity: .13; pointer-events: none;
+      width: 260px; height: 260px; color: var(--gold-veil); pointer-events: none;
     }
     .crest {
       position: relative; display: flex; flex-direction: column; align-items: center;
@@ -228,7 +235,7 @@ const schema = {
     .crest-en { font-family: var(--serif); font-size: 19px; line-height: 1.24; }
     .crest-place {
       font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
-      text-transform: uppercase; color: var(--ink-soft); margin-top: 5px;
+      text-transform: uppercase; color: var(--ink-place); margin-top: 5px;
     }
     @media (min-width: 40rem) {
       .masthead { padding: 34px 20px 26px; }

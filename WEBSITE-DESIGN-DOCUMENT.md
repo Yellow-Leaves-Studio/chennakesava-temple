@@ -384,8 +384,42 @@ do not scale it.
 
 **Ornament has to survive the light theme.** Gold at low opacity is legible against a
 dark ground and close to invisible against paper. `--gold-line` is therefore set
-separately per theme rather than shared, and the light value is the stronger of the two.
-Check ornament in light mode before calling it done, since dark flatters it.
+separately per theme rather than shared, and the light value is the stronger of the two
+(0.62 against 0.40). Check ornament in light mode before calling it done, since dark
+flatters it.
+
+**Inside a `<pattern>`, use `var(--token)` and never `currentColor`.** Pattern content
+inherits from where it is *defined*, not from the element referencing it. `currentColor`
+in a shared `<defs>` therefore resolves to the body text colour, and the rules silently
+rendered in `--ink` instead of gold, flipping grey in light mode and cream in dark. A
+custom property resolves from `:root` anywhere in the document and reaches inside.
+`<use>` does not have this problem, which is why the chakra, lotus and namam stayed gold
+while only the dividers lost it.
+
+> **Verify the paint, not the token.** The bug above survived a check that confirmed
+> `--gold-line` held the right value on `:root` and that the rule element carried the
+> right `color`. Both were true; the pixels were still grey. When a colour matters, read
+> the resolved `stroke`/`fill` off the element that actually draws, and look at it.
+
+**The chakra watermark is capped by the text sitting on it, not by taste.** The crest
+sits directly over the masthead chakra, so the watermark's strength is bounded by the
+contrast of the weakest text above it, which is the 10px uppercase place line. At the
+original `--ink-soft` that ceiling was 0.13, already where it stood, so there was no
+headroom at all.
+
+Raising the ornament therefore meant darkening that line first. `--ink-place` (`#4C574F`
+light, `#A6B0A9` dark) is a dedicated token for it, still visibly lighter than the name
+so the hierarchy holds. That bought a chakra at **0.24 light / 0.20 dark**, roughly
+double, with the crest measured over the *blended* background rather than the flat page:
+
+| | Worst-case bg behind crest | Name | Place line |
+|---|---|---|---|
+| Light | `#E5DAC2` | 10.57:1 | 5.44:1 |
+| Dark | `#443F29` | 8.77:1 | 4.73:1 |
+
+Alpha lives in `--gold-veil` rather than a CSS `opacity`, so the two themes can carry
+different strengths. **If the watermark is ever strengthened again, re-measure the crest
+against the blend, not against `--surface`.**
 
 **Punctuation: no em dashes**, in copy or in code comments. Use a comma, a colon,
 parentheses, or start a new sentence. En dashes stay where they are correct, which is

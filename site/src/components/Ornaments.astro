@@ -97,11 +97,15 @@
          column flattens every loop into a long lens and it stops reading as a kolam.
          One repeat unit, laid down by <pattern>, keeps the drawn proportions at any
          column width. -->
+    <!-- NOT currentColor. Pattern content inherits from where it is DEFINED, not from
+         the element referencing it, so currentColor here resolves to the body text
+         colour and the rules render in --ink instead of gold. A custom property
+         resolves from :root anywhere in the document, so it reaches inside. -->
     <pattern id="kolam" width="60" height="24" patternUnits="userSpaceOnUse">
-      <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+      <g fill="none" stroke="var(--gold-line)" stroke-width="1.4" stroke-linecap="round">
         <path d="M0,12 Q15,1 30,12 Q45,23 60,12" />
         <path d="M0,12 Q15,23 30,12 Q45,1 60,12" />
-        <g fill="currentColor" stroke="none">
+        <g fill="var(--gold-line)" stroke="none">
           <circle cx="0" cy="12" r="1.5" /><circle cx="30" cy="12" r="1.5" />
           <circle cx="60" cy="12" r="1.5" />
         </g>
@@ -109,7 +113,7 @@
     </pattern>
 
     <pattern id="petalband" width="24" height="20" patternUnits="userSpaceOnUse">
-      <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+      <g fill="none" stroke="var(--gold-line)" stroke-width="1.4" stroke-linejoin="round">
         <path d="M0,18 Q6,3 12,18 Q18,3 24,18" />
         <path d="M0,18 H24" stroke-width="1" />
       </g>
