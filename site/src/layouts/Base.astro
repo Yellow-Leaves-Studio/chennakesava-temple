@@ -36,6 +36,15 @@ const schema = {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <!-- Must run before first paint, or a visitor who chose light gets a dark flash on
+       every page load. Inline and blocking on purpose — do not move or defer this. -->
+  <script is:inline>
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  </script>
   <title>{title}</title>
   <meta name="description" content={description} />
   <meta property="og:title" content={title} />
@@ -70,6 +79,12 @@ const schema = {
     {nav.map((n) => (
       <a href={url(n.href === '/' ? '/' : n.href)} aria-current={here === n.href ? 'page' : undefined}>{n.label}</a>
     ))}
+    <!-- Both options shown rather than one toggle: standing in the sun outside the
+         temple is not the moment to work out what a half-moon icon means. -->
+    <span class="theme" role="group" aria-label="Page brightness">
+      <button type="button" data-set-theme="light" aria-pressed="false">Light</button>
+      <button type="button" data-set-theme="dark" aria-pressed="false">Dark</button>
+    </span>
   </nav>
 
   <main id="main">
@@ -96,6 +111,28 @@ const schema = {
   <script>
     import { status, display } from '../lib/status.js';
 
+    // --- brightness ---------------------------------------------------------
+    const root = document.documentElement;
+    const themeButtons = document.querySelectorAll('[data-set-theme]');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const activeTheme = () => root.dataset.theme || (systemDark.matches ? 'dark' : 'light');
+    const syncTheme = () =>
+      themeButtons.forEach((b) =>
+        b.setAttribute('aria-pressed', String(b.dataset.setTheme === activeTheme())),
+      );
+
+    themeButtons.forEach((b) =>
+      b.addEventListener('click', () => {
+        root.dataset.theme = b.dataset.setTheme;
+        try { localStorage.setItem('theme', b.dataset.setTheme); } catch (e) {}
+        syncTheme();
+      }),
+    );
+    syncTheme();
+    // keep the control honest if the device flips to night mode while the page is open
+    systemDark.addEventListener('change', syncTheme);
+
+    // --- open or shut -------------------------------------------------------
     const el = document.getElementById('status');
     if (el) {
       const timings = JSON.parse(document.getElementById('timings-data').textContent);
@@ -123,7 +160,11 @@ const schema = {
   </script>
 
   <style is:global>
+    /* Light is the default. Dark applies when the device asks for it AND the visitor
+       hasn't overridden to light — the :not() is what lets the toggle win in both
+       directions without restating the light palette a second time. */
     :root {
+      color-scheme: light;
       --ground: #EEF0EE; --surface: #F8F9F7; --line: #D3D8D4;
       --ink: #232A27; --ink-soft: #5D6A63;
       --kumkum: #96222A; --kumkum-soft: #F2E0DF;
@@ -134,17 +175,28 @@ const schema = {
       --wrap: 46rem;
     }
     @media (prefers-color-scheme: dark) {
-      :root {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
         --ground: #171B1A; --surface: #1F2523; --line: #343C39;
         --ink: #E7EBE8; --ink-soft: #95A099;
         --kumkum: #DE8087; --kumkum-soft: #2E1D1C;
         --gold: #D6A63F; --gold-line: rgba(214,166,63,.32); --gold-glow: rgba(214,166,63,.10);
       }
     }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --ground: #171B1A; --surface: #1F2523; --line: #343C39;
+      --ink: #E7EBE8; --ink-soft: #95A099;
+      --kumkum: #DE8087; --kumkum-soft: #2E1D1C;
+      --gold: #D6A63F; --gold-line: rgba(214,166,63,.32); --gold-glow: rgba(214,166,63,.10);
+    }
 
     *, *::before, *::after { box-sizing: border-box; }
+    /* The page is --surface (paper). --ground is the recessed tone, for chrome and
+       cards only. In the mockup --ground was the backdrop the phone frames sat on,
+       never the site itself — porting it onto body made the page read two-tone. */
     body {
-      margin: 0; background: var(--ground); color: var(--ink);
+      margin: 0; background: var(--surface); color: var(--ink);
       font-family: var(--sans); font-size: 18px; line-height: 1.62;
       -webkit-text-size-adjust: 100%;
     }
@@ -200,7 +252,7 @@ const schema = {
     /* ---- nav ---- */
     .nav {
       display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 4px;
-      padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--surface);
+      padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--ground);
     }
     .nav a {
       padding: 7px 12px; font-size: 14.5px; color: var(--ink-soft);
@@ -208,6 +260,20 @@ const schema = {
     }
     .nav a:hover { color: var(--ink); }
     .nav a[aria-current="page"] { color: var(--kumkum); font-weight: 600; }
+
+    /* brightness control */
+    .theme { display: inline-flex; border: 1px solid var(--line); border-radius: 2px; overflow: hidden; }
+    .theme button {
+      appearance: none; border: 0; background: transparent; cursor: pointer;
+      font: inherit; font-size: 13px; padding: 6px 11px; color: var(--ink-soft);
+      min-height: 34px; /* thumb target */
+    }
+    .theme button + button { border-left: 1px solid var(--line); }
+    .theme button:hover { color: var(--ink); }
+    .theme button[aria-pressed="true"] {
+      background: var(--surface); color: var(--kumkum); font-weight: 600;
+    }
+    .theme button:focus-visible { outline: 2px solid var(--kumkum); outline-offset: -2px; }
 
     /* ---- main ---- */
     main { max-width: var(--wrap); margin: 0 auto; padding: 34px 20px 12px; }
@@ -259,7 +325,7 @@ const schema = {
     @media (min-width: 34rem) { .cards { grid-template-columns: 1fr 1fr; } }
     .card {
       display: flex; flex-direction: column; gap: 3px; padding: 15px 16px;
-      border: 1px solid var(--line); background: var(--surface);
+      border: 1px solid var(--line); background: var(--ground);
       text-decoration: none; color: inherit;
     }
     .card:hover { border-color: var(--gold-line); }
