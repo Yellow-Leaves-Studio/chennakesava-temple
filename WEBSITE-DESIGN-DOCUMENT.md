@@ -197,7 +197,7 @@ Astro, static, English with Telugu inline, deployed. Content as Markdown/JSON in
 - Typographic + SVG design, no images, no image pipeline
 - SEO: per-page metadata, `Place`/`LocalBusiness` structured data, sitemap
 - Footer disclaimer: unofficial devotee-built site, timings unverified
-- **Exit:** live on a real domain, verified on mid-range Android over 4G, under 2s load
+- **Exit:** live on GitHub Pages, verified on mid-range Android over 4G, under 2s load
 
 ### Phase 2 — Photos, editability, seasonal content
 - Photo gallery, once you've had someone shoot the temple
@@ -336,8 +336,42 @@ per decision #2. A payment gateway remains the last resort, never the first.
 
 ## 11. Technical approach
 
-**Astro, static, Cloudflare Pages.** No server, no database, no monthly bill, and it
-survives a lakh of devotees on Rathotsavam day without anyone being paged.
+**Astro, static, GitHub Pages.** No server, no database, no monthly bill, and it
+survives a lakh of devotees on Rathotsavam day without anyone being paged. The repo is
+public, which is all GitHub Pages needs on the free plan.
+
+### Why GitHub Pages, and the one thing to get right
+
+**You are not limited to one site.** One *user* site per account
+(`<username>.github.io`), but an unlimited number of *project* sites — one per
+repository, served at `<username>.github.io/<repo>`. This temple site is a project
+site, and it costs you nothing you'd want to spend elsewhere.
+
+**Limits** ([GitHub Docs](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)):
+1 GB site size · 100 GB/month soft bandwidth · 10 builds/hour soft. "Soft" means they
+email before disabling.
+
+**Bandwidth is a non-issue in Phase 1** precisely because we have no photographs. A page
+is HTML, CSS and inline SVG — call it 60 KB. A lakh of devotees viewing two pages each
+is ~12 GB, comfortably inside 100 GB.
+
+> **Phase 2 warning.** The gallery is what could break this, not the traffic. Twenty
+> photos at 200 KB, viewed by festival-week crowds, runs to terabytes and blows the cap
+> outright. When photos arrive, either serve them from a proper image host or move
+> hosting to Cloudflare Pages (unlimited bandwidth). **Re-check this before shipping the
+> gallery.**
+
+**The gotcha: the base path.** A project site is served from a subdirectory, so Astro
+needs `base: '/<repo>'` in `astro.config.mjs`, and every internal link and asset must
+respect it. Get it wrong and the site builds clean, deploys clean, and every link 404s.
+When the custom domain arrives it moves to the root and `base` goes back to `/`.
+
+Handled by setting it correctly from the first commit and keeping internal links
+relative to it — the domain switch is then a one-line config change plus a `CNAME`
+file. Custom domains on Pages are free and include HTTPS.
+
+*(Cloudflare Pages remains the fallback: unlimited bandwidth and it always serves at the
+root, so no base path at all. Worth switching to only if the gallery forces it.)*
 
 - Content as Markdown/JSON in the repo — timings, sevas, festivals as **data**, never
   hardcoded. Phase 2's CMS depends on getting this right from day one.
@@ -382,13 +416,13 @@ there is one; the layout is already built for it.
 
 **Domain: deferred to the committee conversation, and not blocking.**
 
-Cloudflare Pages serves every deployment on a free `*.pages.dev` subdomain. So Phase 1
-can be built, deployed, and viewed on a phone without owning a domain — and that live
-URL is precisely what gets shown to the EO under decision #2. Buying a domain before
-that conversation risks registering it in the wrong name anyway (§11).
+GitHub Pages serves the project site at `<username>.github.io/<repo>` for free. So
+Phase 1 can be built, deployed, and viewed on a phone without owning a domain — and
+that live URL is precisely what gets shown to the EO under decision #2. Buying a domain
+before that conversation risks registering it in the wrong name anyway (§11).
 
-Order of operations: **build → deploy to pages.dev → show the committee → then buy the
-domain, in the temple's name.**
+Order of operations: **build → deploy to GitHub Pages → show the committee → then buy
+the domain, in the temple's name, and point it at the same repo.**
 
 ---
 
