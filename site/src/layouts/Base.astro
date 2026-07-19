@@ -1,26 +1,22 @@
 ---
 import Ornaments from '../components/Ornaments.astro';
 import timings from '../data/timings.json';
+import { PAGES as nav } from '../lib/pages.js';
 
 const { title, description, showStatus = true } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const url = (p) => `${base}${p}`;
 const here = Astro.url.pathname.replace(base, '').replace(/\/$/, '') || '/';
-
-const nav = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'The temple' },
-  { href: '/darshan', label: 'Darshan' },
-  { href: '/festivals', label: 'Festivals' },
-  { href: '/sun-phenomenon', label: 'The sun' },
-  { href: '/visit', label: 'Getting there' },
-];
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'PlaceOfWorship',
   name: 'Sri Lakshmi Chennakesava Swami Devastanam',
   alternateName: 'శ్రీ లక్ష్మీ చెన్నకేశవ స్వామి దేవస్థానం',
+  url: canonical,
+  description:
+    'A Vijayanagara-period temple to Vishnu as Chennakesava Swamy, on the Gundlakamma at Markapuram, Prakasam District, Andhra Pradesh.',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Markapuram',
@@ -28,7 +24,9 @@ const schema = {
     postalCode: '523316',
     addressCountry: 'IN',
   },
+  geo: { '@type': 'GeoCoordinates', latitude: 15.7349, longitude: 79.2691 },
   openingHours: ['Su-Fr 06:00-20:30', 'Sa 06:00-12:00', 'Sa 17:00-20:30'],
+  isAccessibleForFree: true,
 };
 ---
 <!doctype html>
@@ -47,9 +45,16 @@ const schema = {
   </script>
   <title>{title}</title>
   <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:site_name" content="Sri Lakshmi Chennakesava Swami Devastanam" />
+  <meta property="og:locale" content="en_IN" />
+  <meta name="twitter:card" content="summary" />
+  <!-- No og:image: no photograph of this temple is legally usable yet, and SVG is not
+       accepted as one. Add the gopuram in Phase 2. See §10a. -->
   <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
   <link rel="apple-touch-icon" href={url('/favicon.svg')} />
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
@@ -65,7 +70,7 @@ const schema = {
       <svg class="namam" viewBox="0 -3 24 39" aria-hidden="true"><use href="#namam" /></svg>
       <span class="crest-te">శ్రీ లక్ష్మీ చెన్నకేశవ స్వామి దేవస్థానం</span>
       <span class="crest-en">Sri Lakshmi Chennakesava Swami Devastanam</span>
-      <span class="crest-place">Markapur, Prakasam District &middot; మార్కాపురం</span>
+      <span class="crest-place">Markapur, Prakasam District &middot; <span class="te">మార్కాపురం</span></span>
     </a>
   </header>
 
@@ -169,7 +174,7 @@ const schema = {
       --ground: #EEF0EE; --surface: #F8F9F7; --line: #D3D8D4;
       --ink: #232A27; --ink-soft: #5D6A63;
       --kumkum: #96222A; --kumkum-soft: #F2E0DF;
-      --gold: #A8781A; --gold-line: rgba(168,120,26,.62); --gold-glow: rgba(168,120,26,.13);
+      --gold: #A8781A; --gold-line: rgba(168,120,26,.68); --gold-glow: rgba(168,120,26,.13);
       /* watermark alpha is baked into the token, so it can differ per theme */
       --gold-veil: rgba(168,120,26,.24);
       --ink-place: #4C574F;
@@ -306,6 +311,11 @@ const schema = {
     @media (min-width: 40rem) { h1 { font-size: 38px; } h2 { font-size: 26px; } }
 
     /* ---- shared blocks ---- */
+    /* Telugu carries vowel signs above and below the baseline, so at the same nominal
+       size it reads larger and heavier than the Latin beside it. Optical correction,
+       not hierarchy: em so it scales with whatever context it lands in. */
+    .te { font-size: .9em; }
+
     .lead { font-size: 19px; }
     .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 16px; }

@@ -368,6 +368,13 @@ that reads Telugu.
 - Headings: a system serif (Iowan Old Style / Palatino / Georgia)
 - Times and data: system monospace, `tabular-nums` so digits align in columns
 
+**Telugu sets slightly smaller than the Latin beside it.** Telugu glyphs carry vowel
+signs above and below the baseline, so at the same nominal size they occupy noticeably
+more vertical space and read as larger and heavier than the English they sit next to.
+The `.te` utility applies `font-size: .9em`, in `em` so it scales with whatever context
+it lands in. Apply it wherever Telugu appears inline alongside English. This is optical
+correction, not a hierarchy decision: the two are meant to read as equals.
+
 **Ornament** — drawn as geometry, never imported as images. Chakra (Vishnu's discus, and
 already a radial mandala), padma, muggu, padma-patti, tirunamam, lotus, bud, and the
 gopuram itself. See `site/src/components/Ornaments.astro`; each is defined once and
@@ -514,6 +521,34 @@ root, so no base path at all. Worth switching to only if the gallery forces it.)
 `*.pages.dev` subdomain, which is enough to build, test on a phone, and demo. See §13.
 **Ownership** — when sanction comes, domain and hosting are registered in the temple's
 name, not a personal one, or the site dies when someone moves on.
+
+## 10a. SEO
+
+The site's stated job is to rank for *"markapur temple timings"* and be the accurate
+answer (§1), so this is utility rather than decoration. Every existing page about the
+temple is an ad-funded aggregator with contradictory hours.
+
+**Per page:** a unique `<title>` and `description`, a canonical URL, Open Graph
+(`og:url`, `og:site_name`, `og:locale`, title, description, type) and a Twitter summary
+card. **Site-wide:** `PlaceOfWorship` structured data carrying the address, geo
+coordinates and opening hours, plus a `sitemap.xml`.
+
+**The route list lives in one place**, `src/lib/pages.js`, and is imported by both the
+nav and the sitemap. A sitemap that quietly goes stale when a page is added is worse
+than none.
+
+> **robots.txt is deliberately absent, because on a Pages project site it cannot work.**
+> Crawlers read `robots.txt` only at the domain root, and that root is
+> `yellow-leaves-studio.github.io`, which belongs to the org's user site rather than to
+> this repo. A file at `/chennakesava-temple/robots.txt` is simply never fetched.
+> **Add it when the temple's own domain arrives**, at which point it becomes meaningful,
+> along with the `CNAME` change in §13.
+
+**Known gap: no `og:image`.** Social previews, notably WhatsApp, will render without a
+picture, which matters for how this gets shared among devotees. There is nothing to use:
+no photographs are legally available (decision #4), and SVG is not accepted as an
+`og:image` by most platforms. **Resolve in Phase 2 with the first real photograph of the
+gopuram.**
 
 ## 11a. What was built — file map
 

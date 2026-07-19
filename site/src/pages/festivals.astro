@@ -39,7 +39,7 @@ const fmt = (iso) =>
           <tr>
             <td>
               {d.highlight ? <strong>{d.name}</strong> : d.name}
-              {d.telugu && <span style="color:var(--ink-soft)"> · {d.telugu}</span>}
+              {d.telugu && <span class="te" style="color:var(--ink-soft)"> · {d.telugu}</span>}
             </td>
             <td class="num">{fmt(d.date)}</td>
           </tr>
@@ -56,7 +56,7 @@ const fmt = (iso) =>
       <tbody>
         {festivals.observances.map((o) => (
           <tr>
-            <td>{o.name}{o.telugu && <span style="color:var(--ink-soft)"> · {o.telugu}</span>}</td>
+            <td>{o.name}{o.telugu && <span class="te" style="color:var(--ink-soft)"> · {o.telugu}</span>}</td>
             <td class="num">{o.when}</td>
           </tr>
         ))}
