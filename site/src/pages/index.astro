@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import timings from '../data/timings.json';
 import festivals from '../data/festivals.json';
+import Card from '../components/Card.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const url = (p) => `${base}${p}`;
@@ -19,29 +20,45 @@ const highlights = bram.days.filter((d) => d.highlight);
   description="Darshan timings, the annual festival calendar, and the history of the 600-year-old Chennakesava Swamy temple at Markapur, Prakasam District, Andhra Pradesh."
   showStatus={false}
 >
-  <!-- Most arrivals want one fact. It gets the first screen. -->
-  <section class="hero is-unknown" role="status" data-status-box>
-    <svg class="hero-tower" viewBox="0 0 200 470" aria-hidden="true"><use href="#gopuram" /></svg>
-    <div class="hero-body">
-      <p class="hero-primary" data-status-primary>Checking temple hours…</p>
-      <p class="hero-detail" data-status-detail></p>
-      <dl class="hero-facts">
-        {timings.rituals.slice(0, 2).map((r) => (
-          <div><dt>{r.name}</dt><dd>{r.time}</dd></div>
-        ))}
-        <div><dt>Next festival</dt><dd>Brahmotsavam</dd></div>
-      </dl>
+  <!-- Two columns from 48rem: the answer on the left, the identity on the right. Status
+       leads in the DOM so a phone gets the useful fact before the history. -->
+  <div class="home-top">
+    <section class="hero is-unknown" role="status" data-status-box>
+      <!-- tower and status share a row and stretch to a common height; the link sits on
+           its own row beneath them, spanning both -->
+      <div class="hero-row">
+        <!-- Cropped to the ink. The drawing starts 46 units below the top of its own
+             viewBox (the kalasas), so the untrimmed box left 22px of air above the
+             tower and the status appeared to start higher than the gopuram. -->
+        <svg class="hero-tower" viewBox="0 46 200 424" aria-hidden="true"><use href="#gopuram" /></svg>
+        <div class="hero-body">
+          <!-- state pinned to the top of the tower, the detail pushed to its foot -->
+          <div class="hero-now">
+            <p class="hero-primary" data-status-primary>Checking temple hours…</p>
+            <p class="hero-detail" data-status-detail></p>
+          </div>
+          <dl class="hero-facts">
+            {timings.rituals.slice(0, 2).map((r) => (
+              <div><dt>{r.name}</dt><dd>{r.time}</dd></div>
+            ))}
+            <div><dt>Next festival</dt><dd>Brahmotsavam</dd></div>
+          </dl>
+        </div>
+      </div>
       <p class="hero-more"><a href={url('/darshan')}>Full timings and sevas →</a></p>
-    </div>
-  </section>
+    </section>
 
-  <h1>A Vijayanagara temple on the Gundlakamma</h1>
-  <p class="lead">
-    Sri Maha Vishnu stands here as <strong>Chennakesava Swamy</strong>, the beautifully
-    adorned, with his consort Sri Mahalakshmi. The gopuram above the shrine rises
-    135 feet, reportedly the second tallest in the Telugu states, and has stood in some
-    form since 1425.
-  </p>
+    <div class="home-intro">
+      <h1>A Vijayanagara temple</h1>
+      <p class="lead">
+        Sri Maha Vishnu stands here as <strong>Chennakesava Swamy</strong>, the beautifully
+        adorned, with his consort Sri Mahalakshmi. The temple stands on the bank of the
+        <strong>Gundlakamma</strong> at Markapuram. Above the shrine the gopuram rises
+        135 feet, reportedly the second tallest in the Telugu states, and has stood in some
+        form since 1425.
+      </p>
+    </div>
+  </div>
 
   <svg class="kolam-rule" aria-hidden="true"><rect width="100%" height="100%" fill="url(#kolam)" /></svg>
 
@@ -73,50 +90,92 @@ const highlights = bram.days.filter((d) => d.highlight);
 
   <h3>Elsewhere on this site</h3>
   <div class="cards">
-    <a class="card" href={url('/about')}>
-      <b>The temple</b><span>Sthala purana, the demon Kesi, eighteen inscriptions, the musical pillars</span>
-    </a>
-    <a class="card" href={url('/darshan')}>
-      <b>Darshan</b><span>Timings, sevas offered, what to wear and bring</span>
-    </a>
-    <a class="card" href={url('/festivals')}>
-      <b>Festivals</b><span>Brahmotsavam day by day, and the year's observances</span>
-    </a>
-    <a class="card" href={url('/visit')}>
-      <b>Getting there</b><span>By bus, rail and road, and where the temple stands</span>
-    </a>
+    <Card href={url('/about')} title="The temple">
+      Sthala purana, the demon Kesi, eighteen inscriptions, the musical pillars
+    </Card>
+    <Card href={url('/darshan')} title="Darshan">
+      Timings, sevas offered, what to wear and bring
+    </Card>
+    <Card href={url('/festivals')} title="Festivals">
+      Brahmotsavam day by day, and the year's observances
+    </Card>
+    <Card href={url('/visit')} title="Getting there">
+      By bus, rail and road, and where the temple stands
+    </Card>
   </div>
 </Base>
 
 <style>
-  .hero {
-    display: flex; align-items: center; gap: 26px; flex-wrap: wrap;
-    padding: 6px 0 30px;
+  .home-top { display: grid; gap: 4px; }
+  @media (min-width: 48rem) {
+    .home-top {
+      grid-template-columns: 0.95fr 1.05fr; gap: 40px; align-items: stretch;
+      padding-bottom: 10px;
+    }
+    /* both columns share the row height, so the heading block and the tower finish level */
+    .home-intro { display: flex; flex-direction: column; justify-content: center; }
+    .home-intro h1 { margin-top: 0; }
+    .home-top .hero-tower { max-height: 218px; }
+    .home-top .hero-primary { font-size: 20px; }
+    .home-top .hero-facts { gap: 8px 16px; }
+    .home-top .hero-facts div { min-width: 6.5rem; }
   }
-  .hero-tower { width: 76px; flex: 0 0 auto; color: var(--ink); }
-  .hero-body { flex: 1 1 15rem; min-width: 14rem; }
+
+  .hero { display: flex; flex-direction: column; padding: 6px 0 30px; }
+
+  /* nowrap, not just min-width: flex decides to wrap from an item's flex-basis before it
+     ever tries to shrink it, so the tower kept jumping onto its own line above the status */
+  .hero-row {
+    display: flex; align-items: stretch; gap: 18px; flex-wrap: nowrap;
+  }
+  /* stretch plus width:auto lets the SVG take its height from the row and derive its
+     width from the viewBox, so the tower and the status block finish level */
+  /* The cap is what sets the row height, so it is tuned to what the status block
+     actually needs at each width. Left at one value it left 108px of dead air between
+     40rem and 48rem, where the facts fit on a single row and the status is short. */
+  .hero-tower {
+    align-self: stretch; width: auto; height: auto; max-height: 215px;
+    flex: 0 0 auto; color: var(--ink);
+  }
+  @media (min-width: 40rem) and (max-width: 47.999rem) {
+    .hero-tower { max-height: 132px; }
+  }
+  .hero-body {
+    flex: 1 1 0; min-width: 0;
+    display: flex; flex-direction: column; justify-content: space-between; gap: 14px;
+  }
+  .hero-now { display: flex; flex-direction: column; }
   .hero-primary {
-    font-family: var(--serif); font-size: 34px; line-height: 1.1;
+    font-family: var(--serif); font-size: 20px; line-height: 1.16;
     margin: 0 0 3px; font-weight: 400;
   }
-  .hero-detail { color: var(--ink-soft); font-size: 16px; margin: 0 0 18px; min-height: 1.2em; }
+  .hero-detail { color: var(--ink-soft); font-size: 15.5px; margin: 0; min-height: 1.2em; }
 
   /* the dot and tint the compact strip uses would be noise at this size; words carry it */
   .hero.is-open .hero-primary { color: var(--kumkum); }
   .hero.is-special .hero-primary { color: var(--gold); }
 
-  .hero-facts { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 0 0 16px; }
-  .hero-facts div { min-width: 8rem; }
+  .hero-facts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 0; }
+  .hero-facts div { min-width: 7.5rem; }
   .hero-facts dt {
     font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
     text-transform: uppercase; color: var(--ink-soft); margin-bottom: 1px;
   }
   .hero-facts dd { margin: 0; font-size: 14.5px; }
-  .hero-more { margin: 0; font-size: 15px; }
+
+  /* its own row under the tower and the status, spanning both */
+  .hero-more {
+    position: relative; margin: 12px 0 0; font-size: 15px; padding-top: 2px;
+  }
+  /* a short local rule, so it fades over its own ends rather than in a page margin */
+  .hero-more::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(to right,
+      transparent 0, var(--line) 9%, var(--line) 91%, transparent 100%);
+  }
 
   @media (min-width: 40rem) {
-    .hero { gap: 34px; padding-bottom: 36px; }
-    .hero-tower { width: 96px; }
-    .hero-primary { font-size: 40px; }
+    .hero-row { gap: 26px; }
+    .hero-primary { font-size: 22px; }
   }
 </style>

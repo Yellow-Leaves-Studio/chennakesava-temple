@@ -392,8 +392,14 @@ do not scale it.
 **Ornament has to survive the light theme.** Gold at low opacity is legible against a
 dark ground and close to invisible against paper. `--gold-line` is therefore set
 separately per theme rather than shared, and the light value is the stronger of the two
-(0.62 against 0.40). Check ornament in light mode before calling it done, since dark
+(0.68 against 0.40). Check ornament in light mode before calling it done, since dark
 flatters it.
+
+**One gold, one alpha.** Every drawn ornament takes its colour from `--gold-line` and
+sets no `opacity` of its own. The footer lotus was `--gold` at `opacity: .55`, an
+effective alpha of 0.55 against the rules' 0.68, so it read as a slightly different gold
+sitting a few centimetres from them. Layering an element opacity on top of an alpha
+token is how two things that should match stop matching.
 
 **Inside a `<pattern>`, use `var(--token)` and never `currentColor`.** Pattern content
 inherits from where it is *defined*, not from the element referencing it. `currentColor`
@@ -439,8 +445,43 @@ kumkum srichurnam, and it reads at 16px because it is two flat shapes with no fi
 detail. Remember the base path when linking it.
 
 **Layout**
-- Single column, max **46rem** for reading measure
+- Container **52rem**, prose capped separately at **43rem**
+- **Masthead, nav, status badge and footer are all full-bleed bands** carrying an inner
+  wrapper that holds their contents to the 52rem column. Content itself stays on the
+  column. In the nav that means menu items clustered left, brightness control hard right.
+- **Every horizontal rule spans the viewport and fades out at both ends.** They are
+  gradients, not borders, and the fade happens entirely in the margins either side of the
+  column, so a rule is solid for the full width of the text above it and dissolves only
+  once it is past the content. Below 52rem there is no margin, so the gradient is solid
+  edge to edge and nothing looks half-drawn on a phone.
+  > A rule that stops dead at the column while the band behind it runs to the screen edge
+  > is what made the header look broken. Bands and rules now agree.
+- **The nav and footer align to the column's edges, not centred inside it.** The first
+  menu item's text starts exactly where the body text starts and the brightness control
+  ends exactly where it ends, so the column has one left edge and one right edge all the
+  way down. The first item is pulled back by its own padding to make that true of the
+  text rather than of the tap target. The menu items sit as a group on the left, with the
+  control pushed right by an auto margin — **not** spread edge to edge, which left ugly
+  gaps between them.
+- **Order is masthead → nav → status → content.** The badge sits under the menu, not
+  above it, so the navigation stays in the same place on every page whether or not the
+  badge is shown. Home suppresses the badge entirely; its hero carries the state.
 - Generous spacing, clear section breaks
+
+> **Two widths, on purpose.** The container was widened from 46rem so the tables, the
+> festival ribbon, the sun chart and the two-column home have room. Prose does not follow
+> it. Measured at 18px, the running text sets at **84 characters per line at 46rem and 95
+> at 52rem**, against a comfortable 60–75. Letting paragraphs fill the wider container
+> would have made reading measurably worse for exactly the audience this site is for:
+> older visitors, outdoors, on a phone-sized column of attention.
+>
+> So `--wrap` is the layout width and `--measure` caps running text, holding it at
+> today's line length rather than degrading it. Structural things (tables, charts, cards)
+> deliberately span the full container and read as wider.
+>
+> **There is a further win available:** dropping `--measure` to about 38rem would bring
+> prose to ~73 characters, inside the comfortable band for the first time. Not taken
+> unilaterally, because it visibly narrows the text column.
 - **No carousels, autoplay, parallax, scroll animation, or background music.** Each
   appears on comparable temple sites; each makes them worse.
 

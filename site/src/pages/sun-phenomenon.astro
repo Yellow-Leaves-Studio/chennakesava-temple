@@ -83,6 +83,13 @@ const summary = common
     </span>
   </div>
 
+  {common && (
+    <p class="windows-answer">
+      All three sources agree on <strong>{label(common.from)} to {label(common.to)}</strong>.
+      That is as precise as the public record gets.
+    </p>
+  )}
+
   <div class="note">
     <p>
       <strong>So this site will not give you a single date.</strong> Travelling a long way
@@ -149,10 +156,12 @@ const summary = common
   .axis span:last-child { transform: translateX(-100%); }
 
   /* the narrower bars cannot hold a label on a phone; the axis still carries the ends */
+  .windows-answer { margin-top: 14px; font-size: 15.5px; }
+
   @media (max-width: 34rem) {
     .windows { grid-template-columns: 5.4rem 1fr; }
     .win-src { font-size: 12.5px; }
-    .win-bar .win-dates { display: none; }
-    .win-overlap .win-dates { font-size: 9.5px; }
+    /* nothing here is wide enough for a legible date; the sentence below says it */
+    .win-dates { display: none; }
   }
 </style>

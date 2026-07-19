@@ -93,6 +93,14 @@
       <path d="M9,17 V21" />
     </g>
 
+    <!-- muggu corner bracket, from the approved mockup. Drawn once for the top-left and
+         flipped with CSS transforms for the other three. -->
+    <g id="corner" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+      <path d="M1,13 Q1,1 13,1" />
+      <path d="M4,13 Q4,4 13,4" />
+      <circle cx="7.5" cy="7.5" r="1.2" fill="currentColor" stroke="none" />
+    </g>
+
     <!-- Rules TILE, they do not stretch. Stretching a 240-wide viewBox across a 46rem
          column flattens every loop into a long lens and it stops reading as a kolam.
          One repeat unit, laid down by <pattern>, keeps the drawn proportions at any

@@ -45,9 +45,14 @@ import Base from '../layouts/Base.astro';
   <!-- The drawing is the argument: four centuries of building, and the joins are visible.
        Decorative to assistive tech, because the same dates follow as real text below. -->
   <figure class="tower">
-    <svg viewBox="0 0 470 500" aria-hidden="true">
+    <!-- Two drawings, not one with a hidden group: the wide viewBox exists only to hold
+         the annotations, so reusing it on a phone strands the tower in the left third. -->
+    <svg class="tower-plain" viewBox="0 0 200 470" aria-hidden="true">
+      <use href="#gopuram" />
+    </svg>
+    <svg class="tower-anno" viewBox="0 0 470 500" aria-hidden="true">
       <g style="color:var(--ink)"><use href="#gopuram" transform="translate(60,0) scale(0.92)" /></g>
-      <g class="anno">
+      <g>
         <g stroke="var(--gold-line)" stroke-width="1" fill="none">
           <path d="M196,100 H300" /><path d="M216,317 H300" /><path d="M214,380 H300" />
         </g>
@@ -107,11 +112,16 @@ import Base from '../layouts/Base.astro';
 
 <style>
   .tower { margin: 24px 0 8px; text-align: center; }
-  .tower svg { width: 100%; max-width: 430px; }
+  /* Centring lives on the classes, not on `.tower svg`. With Astro's scoping attribute
+     that descendant selector scores higher than `.tower-anno`, and silently beat the
+     display:none below, so both drawings rendered at once on a phone. */
+  .tower-plain, .tower-anno { display: block; margin: 0 auto; width: 100%; }
+  .tower-plain { max-width: 132px; color: var(--ink); }
+  .tower-anno { max-width: 430px; }
 
-  /* On a phone the leader labels would set at about 8px, so the annotation is dropped
-     and the same dates are carried by the visible key instead. */
-  .tower-key { text-align: left; margin-top: 6px; }
+  /* On a phone the leader labels would set at about 8px, so the annotated drawing is
+     dropped and the same dates are carried by the visible key instead. */
+  .tower-key { text-align: left; margin-top: 14px; }
   .tower-key ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 7px; }
   .tower-key li { font-size: 14.5px; color: var(--ink-soft); }
   .tower-key b {
@@ -120,7 +130,7 @@ import Base from '../layouts/Base.astro';
   }
 
   @media (min-width: 40rem) {
-    .anno { display: block; }
+    .tower-plain { display: none; }
     /* clipped, not removed: the dates still reach a screen reader */
     .tower-key {
       position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
@@ -128,7 +138,6 @@ import Base from '../layouts/Base.astro';
     }
   }
   @media (max-width: 39.999rem) {
-    .anno { display: none; }
-    .tower svg { max-width: 200px; }
+    .tower-anno { display: none; }
   }
 </style>

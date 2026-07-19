@@ -64,9 +64,9 @@ const schema = {
 
   <a class="skip" href="#main">Skip to content</a>
 
-  <header class="masthead">
+  <header class="band masthead">
     <svg class="masthead-chakra" viewBox="0 0 200 200" aria-hidden="true"><use href="#chakra" /></svg>
-    <a class="crest" href={url('/')}>
+    <a class="crest band-inner" href={url('/')}>
       <svg class="namam" viewBox="0 -3 24 39" aria-hidden="true"><use href="#namam" /></svg>
       <span class="crest-te">శ్రీ లక్ష్మీ చెన్నకేశవ స్వామి దేవస్థానం</span>
       <span class="crest-en">Sri Lakshmi Chennakesava Swami Devastanam</span>
@@ -74,32 +74,41 @@ const schema = {
     </a>
   </header>
 
+  <!-- The band is full-bleed, its contents are not: hence the inner wrapper, which the
+       other sections do not need. -->
+  <nav class="band nav" aria-label="Main">
+    <div class="band-inner nav-inner">
+      {nav.map((n) => (
+        <a href={url(n.href === '/' ? '/' : n.href)} aria-current={here === n.href ? 'page' : undefined}>{n.label}</a>
+      ))}
+      <!-- Both options shown rather than one toggle: standing in the sun outside the
+           temple is not the moment to work out what a half-moon icon means. -->
+      <span class="theme" role="group" aria-label="Page brightness">
+        <button type="button" data-set-theme="light" aria-pressed="false">Light</button>
+        <button type="button" data-set-theme="dark" aria-pressed="false">Dark</button>
+      </span>
+    </div>
+  </nav>
+
+  <!-- Below the nav, not above it: the menu then sits in the same place on every page,
+       whether or not the badge is showing. -->
   {showStatus && (
-    <div class="status is-unknown" role="status" data-status-box>
-      <span class="status-dot"></span>
-      <span class="status-txt">
-        <strong data-status-primary>Checking temple hours…</strong><span data-status-detail></span>
+    <div class="band status is-unknown" role="status" data-status-box>
+      <span class="band-inner status-line">
+        <span class="status-dot"></span>
+        <span class="status-txt">
+          <strong data-status-primary>Checking temple hours…</strong><span data-status-detail></span>
+        </span>
       </span>
     </div>
   )}
-
-  <nav class="nav" aria-label="Main">
-    {nav.map((n) => (
-      <a href={url(n.href === '/' ? '/' : n.href)} aria-current={here === n.href ? 'page' : undefined}>{n.label}</a>
-    ))}
-    <!-- Both options shown rather than one toggle: standing in the sun outside the
-         temple is not the moment to work out what a half-moon icon means. -->
-    <span class="theme" role="group" aria-label="Page brightness">
-      <button type="button" data-set-theme="light" aria-pressed="false">Light</button>
-      <button type="button" data-set-theme="dark" aria-pressed="false">Dark</button>
-    </span>
-  </nav>
 
   <main id="main">
     <slot />
   </main>
 
-  <footer class="foot">
+  <footer class="band band-top foot">
+    <div class="band-inner foot-inner">
     <svg class="foot-lotus" viewBox="10 0 48 33" aria-hidden="true"><use href="#lotus" /></svg>
     <p class="disclaimer">
       An unofficial site maintained by devotees, not by the temple or the Endowments
@@ -112,6 +121,7 @@ const schema = {
       No public telephone number is listed for this temple. Enquiries in person at the
       temple office.
     </p>
+    </div>
   </footer>
 
   <script is:inline type="application/json" id="timings-data" set:html={JSON.stringify(timings)} />
@@ -186,7 +196,10 @@ const schema = {
       --serif: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
       --sans: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
       --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-      --wrap: 46rem;
+      /* layout width, and the separate cap on running text. See §8: letting prose fill
+         the wider container takes it from 84 to 95 characters a line. */
+      --wrap: 52rem;
+      --measure: 43rem;
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
@@ -228,9 +241,27 @@ const schema = {
     a:focus-visible { outline: 2px solid var(--kumkum); outline-offset: 3px; }
 
     /* ---- masthead ---- */
+    /* Every band runs the full viewport; .band-inner holds its contents to the column.
+       The rule is a gradient rather than a border so it can fade out instead of stopping
+       dead. The fade sits entirely in the margin either side of the column, so the line
+       is solid for the whole width of the text above it. Below 52rem that margin is
+       zero, the gradient goes solid edge to edge, and nothing looks half-drawn. */
+    .band { position: relative; }
+    .band-inner { max-width: var(--wrap); margin-left: auto; margin-right: auto; width: 100%; }
+    .band::after, .band-top::before {
+      content: ""; position: absolute; left: 0; right: 0; height: 1px; pointer-events: none;
+      background: linear-gradient(to right,
+        transparent 0,
+        var(--line) max(0px, calc((100% - var(--wrap)) / 2)),
+        var(--line) calc(100% - max(0px, calc((100% - var(--wrap)) / 2))),
+        transparent 100%);
+    }
+    .band::after { bottom: 0; }
+    .band-top::before { top: 0; }
+
     .masthead {
-      position: relative; overflow: hidden; text-align: center;
-      padding: 22px 20px 18px; border-bottom: 1px solid var(--line); background: var(--surface);
+      overflow: hidden; text-align: center;
+      padding: 22px 20px 18px; background: var(--surface);
     }
     .masthead-chakra {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
@@ -245,7 +276,7 @@ const schema = {
     .crest-en { font-family: var(--serif); font-size: 19px; line-height: 1.24; }
     .crest-place {
       font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
-      text-transform: uppercase; color: var(--ink-place); margin-top: 5px;
+      text-transform: uppercase; color: var(--ink-place); margin-top: 5px; font-size: 10.5px;
     }
     @media (min-width: 40rem) {
       .masthead { padding: 34px 20px 26px; }
@@ -254,10 +285,8 @@ const schema = {
     }
 
     /* ---- status badge ---- */
-    .status {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      padding: 13px 20px; border-bottom: 1px solid var(--line); text-align: center;
-    }
+    .status { padding: 13px 20px; text-align: center; }
+    .status-line { display: flex; align-items: center; justify-content: center; gap: 10px; }
     .status-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ink-soft); flex: 0 0 auto; }
     .status-txt { font-size: 15.5px; }
     .status-txt [data-status-detail] { color: var(--ink-soft); }
@@ -270,16 +299,37 @@ const schema = {
     .is-unknown .status-txt { color: var(--ink-soft); }
 
     /* ---- nav ---- */
+    /* Band tint fades in the margins too, on the same geometry as the rules. */
     .nav {
-      display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 4px;
-      padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--ground);
+      background: linear-gradient(to right,
+        transparent 0,
+        var(--ground) max(0px, calc((100% - var(--wrap)) / 2)),
+        var(--ground) calc(100% - max(0px, calc((100% - var(--wrap)) / 2))),
+        transparent 100%);
     }
+    /* Contents held to the column. Items cluster left and the control is pushed right by
+       an auto margin, rather than space-between, which spread the six links apart and
+       left gaps between them. On a phone the item padding comes down instead of the
+       gutter: matching the gutter without that took the menu from two rows to three. */
+    .nav-inner {
+      padding: 10px 20px;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px;
+    }
+    .nav .theme { margin-left: auto; }
     .nav a {
-      padding: 7px 12px; font-size: 14.5px; color: var(--ink-soft);
+      padding: 7px 8px; font-size: 14.5px; color: var(--ink-soft);
       text-decoration: none; border-radius: 2px;
     }
     .nav a:hover { color: var(--ink); }
     .nav a[aria-current="page"] { color: var(--kumkum); font-weight: 600; }
+    /* Pull the first item back by its own padding so its TEXT lands on the column edge,
+       not its tap target. The brightness control is a bordered box, so its border is
+       what should meet the right edge, and it needs no offset. */
+    .nav a:first-child { margin-left: -8px; }
+    @media (min-width: 40rem) {
+      .nav a { padding: 7px 12px; }
+      .nav a:first-child { margin-left: -12px; }
+    }
 
     /* brightness control */
     .theme { display: inline-flex; border: 1px solid var(--line); border-radius: 2px; overflow: hidden; }
@@ -298,7 +348,7 @@ const schema = {
     /* ---- main ---- */
     main { max-width: var(--wrap); margin: 0 auto; padding: 34px 20px 12px; }
     h1 {
-      font-family: var(--serif); font-weight: 400; font-size: 31px; line-height: 1.16;
+      font-family: var(--serif); font-weight: 400; font-size: 22px; line-height: 1.22;
       margin: 0 0 6px; text-wrap: balance;
     }
     .page-te { color: var(--ink-soft); font-size: 17px; margin: 0 0 26px; }
@@ -313,15 +363,25 @@ const schema = {
     }
     h3::after { content: ""; flex: 1; height: 1px; background: var(--line); }
     p { margin: 0 0 14px; }
+    /* Running text stops at the measure; tables, charts and cards span the container. */
+    main p, main > ul li, .lead, .sub { max-width: var(--measure); }
     main a { color: var(--kumkum); text-underline-offset: 2px; }
+    /* A link that is a paragraph to itself is a control, not prose. Left inline it was an
+       18px tap target; WCAG 2.2 asks for 24. Links inside a sentence are exempt and stay
+       as they are. */
+    main p > a:only-child { display: inline-block; padding: 7px 0; }
     strong { font-weight: 600; }
-    @media (min-width: 40rem) { h1 { font-size: 38px; } h2 { font-size: 26px; } }
+    @media (min-width: 40rem) { h1 { font-size: 25px; } h2 { font-size: 22px; } }
 
     /* ---- shared blocks ---- */
     /* Telugu carries vowel signs above and below the baseline, so at the same nominal
        size it reads larger and heavier than the Latin beside it. Optical correction,
        not hierarchy: em so it scales with whatever context it lands in. */
     .te { font-size: .9em; }
+    /* Optical correction, not shrinking. Where the surrounding text is already at the
+       smallest size on the page, 0.9em put Telugu at 9px, which is not readable at arm's
+       length in sunlight. Those contexts opt out. */
+    .crest-place .te, .site-place .te { font-size: 1em; }
     /* Out of sight, still read aloud. Used where a diagram carries the information
        visually but the same facts must reach a screen reader as real text. */
     .sr-only {
@@ -354,24 +414,22 @@ const schema = {
     .bud-list li { display: flex; align-items: baseline; gap: 11px; }
     .bud-list svg { width: 10px; flex: 0 0 auto; color: var(--gold); align-self: center; }
 
+    /* .card itself lives in components/Card.astro, alongside its muggu corners */
     .cards { display: grid; gap: 12px; margin-top: 8px; }
     @media (min-width: 34rem) { .cards { grid-template-columns: 1fr 1fr; } }
-    .card {
-      display: flex; flex-direction: column; gap: 3px; padding: 15px 16px;
-      border: 1px solid var(--line); background: var(--ground);
-      text-decoration: none; color: inherit;
-    }
-    .card:hover { border-color: var(--gold-line); }
-    .card b { font-family: var(--serif); font-size: 19px; font-weight: 400; }
-    .card span { font-size: 14.5px; color: var(--ink-soft); }
 
     /* ---- footer ---- */
-    .foot {
-      max-width: var(--wrap); margin: 0 auto; padding: 26px 20px 44px;
-      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px;
+    /* stretch, not centre: the disclaimers reach the column's edges like everything
+       above them, instead of floating in a narrower block of their own */
+    .foot { margin-top: 30px; }
+    .foot-inner {
+      padding: 26px 20px 44px;
+      display: flex; flex-direction: column; align-items: stretch; text-align: center; gap: 12px;
     }
-    .foot-lotus { width: 40px; color: var(--gold); opacity: .55; }
-    .disclaimer { font-size: 12.5px; line-height: 1.55; color: var(--ink-soft); margin: 0; max-width: 40rem; }
+    /* --gold-line, not --gold with an opacity: layering an element opacity on top of an
+       alpha token gave the lotus a different gold from the rules beside it. */
+    .foot-lotus { width: 40px; color: var(--gold-line); align-self: center; }
+    .disclaimer { font-size: 12.5px; line-height: 1.55; color: var(--ink-soft); margin: 0; }
 
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
   </style>

@@ -1,0 +1,41 @@
+---
+// A link card wearing muggu corners. The brackets show at rest rather than only on
+// hover: most visitors are on a phone, where hover does not exist at all.
+const { href, title, children } = Astro.props;
+---
+<a class="card" href={href}>
+  <svg class="corner tl" viewBox="0 0 14 14" aria-hidden="true"><use href="#corner" /></svg>
+  <svg class="corner tr" viewBox="0 0 14 14" aria-hidden="true"><use href="#corner" /></svg>
+  <svg class="corner bl" viewBox="0 0 14 14" aria-hidden="true"><use href="#corner" /></svg>
+  <svg class="corner br" viewBox="0 0 14 14" aria-hidden="true"><use href="#corner" /></svg>
+  <b>{title}</b>
+  <span><slot /></span>
+</a>
+
+<style is:global>
+  .card {
+    position: relative;
+    display: flex; flex-direction: column; gap: 3px;
+    padding: 17px 18px;
+    border: 1px solid var(--line); background: var(--ground);
+    text-decoration: none; color: inherit;
+  }
+  .card b { font-family: var(--serif); font-size: 19px; font-weight: 400; }
+  .card span { font-size: 14.5px; color: var(--ink-soft); }
+
+  .card .corner {
+    position: absolute; width: 13px; height: 13px;
+    color: var(--gold); opacity: .5; pointer-events: none;
+  }
+  .card .tl { top: 4px; left: 4px; }
+  .card .tr { top: 4px; right: 4px; transform: scaleX(-1); }
+  .card .bl { bottom: 4px; left: 4px; transform: scaleY(-1); }
+  .card .br { bottom: 4px; right: 4px; transform: scale(-1); }
+
+  .card:hover, .card:focus-visible { border-color: var(--gold-line); }
+  .card:hover .corner, .card:focus-visible .corner { opacity: 1; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .card, .card .corner { transition: border-color .15s ease, opacity .15s ease; }
+  }
+</style>
