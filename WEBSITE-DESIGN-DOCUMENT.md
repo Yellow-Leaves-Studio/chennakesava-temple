@@ -124,10 +124,14 @@ Dates are lunar and shift yearly — see §7.
 Appears **AP Endowments Department managed** — press names an Executive Officer.
 
 1. **Authority.** Resolved by decision #2: devotee-labelled now, sanction sought later.
-2. **Booking and donations likely already exist** at
-   [aptemples.ap.gov.in](https://aptemples.ap.gov.in/) — 175 AP temples, with booking,
-   donations, accommodation, and Paroksha Seva. **`[NEED]` — check whether Markapur is
-   listed. If yes, we link and build nothing.** That's the correct answer, not a compromise.
+2. **The state portal has a page for this temple, and it is empty.** Confirmed
+   2026-07-19 at
+   [aptemples.org/en-in/temples/SLCKSTemple](https://www.aptemples.org/en-in/temples/SLCKSTemple/history).
+   The temple is listed; the content is not populated — no history, no timings, no sevas,
+   no booking, no donation. **This closes the "link out and build nothing" option: there
+   is nothing to link to.** It also sharpens why this site should exist. The official
+   channel exists and is blank; that is a concrete, non-hypothetical gap, and it is the
+   strongest single argument to put in front of the EO later.
 
 **Sources:** [Substack – Ratnakar Sadasyula](https://sadashree.substack.com/p/markapur-chennakesava-swamy-temple) ·
 [TTD Seva](https://ttdseva.in/sri-lakshmi-chennakesava-swamy-temple-markapur-timings-info/) ·
@@ -310,21 +314,25 @@ WCAG AA minimum. Bright-sunlight readability is a real constraint.
 | Brahmotsavam schedule | **Have** (2026, `[VERIFY]`) |
 | Timings | **Have**, conservative window (§6) |
 | Location & transport | **Have** |
-| Phone number | **Missing everywhere** — highest-value gap |
+| Phone number | **Missing everywhere** — Phase 1 states this plainly, see §13 |
 | Seva prices | Deferred — decision #2 |
 | Photos | Missing — Phase 2 |
 | Sun phenomenon exact dates | **Conflicting** — three ranges published |
 | Sub-shrines, accessibility, official dress code | Missing |
-| Is the temple on aptemples.ap.gov.in? | **Unchecked — highest-leverage unknown** |
+| Is the temple on aptemples.ap.gov.in? | **Resolved** — listed, but the page is empty |
 
 Phase 1 is **not blocked** on any of these. That's the point of decisions #2–#4.
 
 ## 10. Deferred: donations
 
-If the temple is on aptemples.ap.gov.in, we link there and are done — no gateway, no
-KYC, no fees, no reconciliation, no liability. If not, the lazy path is publishing the
-official UPI ID and a QR code. A payment gateway is the last resort, never the first.
-Revisit before Phase 1 ends.
+**The link-out option is dead** — the temple's state-portal page is empty (§3). So the
+choice narrows to two: publish the temple's official UPI ID with a QR code, or carry no
+donation section at all.
+
+UPI/QR costs nothing, integrates nothing, and carries no liability — but it requires
+the temple's official UPI ID, which needs the same sanction we're deferring. So
+donations and authority resolve together or not at all. **Phase 1 ships with neither**,
+per decision #2. A payment gateway remains the last resort, never the first.
 
 ## 11. Technical approach
 
@@ -337,9 +345,10 @@ survives a lakh of devotees on Rathotsavam day without anyone being paged.
 - Target: full load under 2s on 4G. Easy without images.
 - Git repo required (Phase 2's CMS is git-backed). Not yet created.
 
-**Domain** `[NEED]` — ~₹1,000/yr, `.org` or `.in`.
-**Ownership** — when sanction comes, domain and hosting move to the temple's account,
-not a personal one, or the site dies when someone moves on.
+**Domain** — deferred until the committee conversation. Phase 1 deploys to a free
+`*.pages.dev` subdomain, which is enough to build, test on a phone, and demo. See §13.
+**Ownership** — when sanction comes, domain and hosting are registered in the temple's
+name, not a personal one, or the site dies when someone moves on.
 
 ## 12. Out of scope for v1
 
@@ -349,9 +358,47 @@ inline Telugu · blog · Telugu mirror site.
 
 ---
 
+## 13. Phone number and domain — resolved for Phase 1
+
+**Phone number: none exists, and Phase 1 ships without one.**
+
+The mockup carries `+91 00000 00000` so the layout shows how a number will sit. It is
+rendered with a hatched background and a dashed outline **on purpose** — a fake number
+must never look shippable.
+
+It must not go live. A visitor who dials a placeholder either reaches nothing or reaches
+a stranger, and this site's entire value is being the accurate one (§1). A wrong number
+is worse than no number, and it is exactly the kind of thing that sours the EO
+conversation later.
+
+**What Phase 1 publishes instead**, which is true and genuinely useful:
+
+> No public telephone number is listed for this temple. Enquiries in person at the
+> temple office.
+
+That saves a visitor the search that others have already failed at — a devotee asked
+for this number publicly in 2017 and got no answer. Swap in the real number the moment
+there is one; the layout is already built for it.
+
+**Domain: deferred to the committee conversation, and not blocking.**
+
+Cloudflare Pages serves every deployment on a free `*.pages.dev` subdomain. So Phase 1
+can be built, deployed, and viewed on a phone without owning a domain — and that live
+URL is precisely what gets shown to the EO under decision #2. Buying a domain before
+that conversation risks registering it in the wrong name anyway (§11).
+
+Order of operations: **build → deploy to pages.dev → show the committee → then buy the
+domain, in the temple's name.**
+
+---
+
 ## Remaining open items
 
-1. **Is the temple on aptemples.ap.gov.in?** Decides whether booking/donations is a link
-   or nothing at all. Highest leverage. You can check in five minutes.
-2. **A phone number.** The most valuable single thing the site could carry.
-3. **Domain name.** Needed before launch, not before mockups.
+**None blocking.** Phase 1 can begin.
+
+Deferred by decision, to revisit after the committee conversation: real phone number ·
+domain purchase and ownership · donations (§10) · official sanction (§10) · photographs
+for the gallery (Phase 2).
+
+*(Resolved 2026-07-19: the state portal question — the temple is listed there but the
+page carries no content. See §3 and §10.)*

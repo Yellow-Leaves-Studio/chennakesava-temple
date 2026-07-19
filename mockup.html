@@ -1,0 +1,893 @@
+<title>Chennakesava Devastanam — Design Direction</title>
+
+<style>
+  :root {
+    /* Markapur slate — the town's own material */
+    --ground:      #EEF0EE;
+    --surface:     #F8F9F7;
+    --line:        #D3D8D4;
+    --ink:         #232A27;
+    --ink-soft:    #5D6A63;
+    /* Kumkum */
+    --kumkum:      #96222A;
+    --kumkum-soft: #F2E0DF;
+    /* Gold — sacred ornament and the sun */
+    --gold:        #A8781A;
+    --gold-line:   rgba(168,120,26,.34);
+    --gold-glow:   rgba(168,120,26,.13);
+    --frame:       #2B3230;
+
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #171B1A; --surface: #1F2523; --line: #343C39;
+      --ink: #E7EBE8; --ink-soft: #95A099;
+      --kumkum: #DE8087; --kumkum-soft: #2E1D1C;
+      --gold: #D6A63F; --gold-line: rgba(214,166,63,.32); --gold-glow: rgba(214,166,63,.10);
+      --frame: #0D100F;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #171B1A; --surface: #1F2523; --line: #343C39;
+    --ink: #E7EBE8; --ink-soft: #95A099;
+    --kumkum: #DE8087; --kumkum-soft: #2E1D1C;
+    --gold: #D6A63F; --gold-line: rgba(214,166,63,.32); --gold-glow: rgba(214,166,63,.10);
+    --frame: #0D100F;
+  }
+  :root[data-theme="light"] {
+    --ground: #EEF0EE; --surface: #F8F9F7; --line: #D3D8D4;
+    --ink: #232A27; --ink-soft: #5D6A63;
+    --kumkum: #96222A; --kumkum-soft: #F2E0DF;
+    --gold: #A8781A; --gold-line: rgba(168,120,26,.34); --gold-glow: rgba(168,120,26,.13);
+    --frame: #2B3230;
+  }
+
+  body {
+    background: var(--ground); color: var(--ink);
+    font-family: var(--sans); font-size: 17px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ---------- page masthead, with chakra ---------- */
+  .masthead { position: relative; padding: 78px 0 46px; }
+  .masthead-chakra {
+    position: absolute; top: 4px; right: -30px; width: 260px; height: 260px;
+    color: var(--gold); opacity: .3; pointer-events: none;
+  }
+  @media (max-width: 760px) { .masthead-chakra { width: 170px; height: 170px; right: -34px; opacity: .2; } }
+  .masthead > div { position: relative; display: flex; flex-direction: column; gap: 17px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .masthead h1 {
+    font-family: var(--serif); font-size: clamp(33px, 5.6vw, 51px);
+    line-height: 1.08; font-weight: 400; text-wrap: balance; letter-spacing: -.01em; max-width: 19ch;
+  }
+  .masthead p { max-width: 60ch; color: var(--ink-soft); }
+
+  section { padding: 46px 0; border-top: 1px solid var(--line); }
+  h2 { font-family: var(--serif); font-weight: 400; font-size: 27px; margin-bottom: 8px; text-wrap: balance; }
+  .sub { color: var(--ink-soft); max-width: 64ch; margin-bottom: 30px; font-size: 15.5px; }
+
+  /* ---------- swatches ---------- */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(146px, 1fr)); gap: 14px; }
+  .sw { display: flex; flex-direction: column; gap: 9px; }
+  .chip { height: 74px; border-radius: 2px; border: 1px solid var(--line); }
+  .sw b { font-size: 13.5px; font-weight: 600; }
+  .sw span { font-family: var(--mono); font-size: 11.5px; color: var(--ink-soft); }
+  .sw em { font-style: normal; font-size: 12.5px; color: var(--ink-soft); line-height: 1.45; }
+
+  /* ---------- specimen ---------- */
+  .specimen { display: flex; flex-direction: column; gap: 22px; }
+  .spec-row { display: grid; grid-template-columns: 116px 1fr; gap: 22px; align-items: baseline; }
+  .spec-label {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-soft); padding-top: 6px;
+  }
+  @media (max-width: 620px) { .spec-row { grid-template-columns: 1fr; gap: 5px; } }
+
+  /* ---------- ornament gallery ---------- */
+  .orn-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 26px; }
+  .orn { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .orn-stage {
+    width: 100%; aspect-ratio: 3/2; border: 1px solid var(--line); border-radius: 3px;
+    background: var(--surface); display: grid; place-items: center; padding: 16px;
+  }
+  .orn h4 { font-size: 14px; font-weight: 600; }
+  .orn p { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+
+  /* ---------- gopuram block ---------- */
+  .gopuram-block { display: grid; grid-template-columns: 210px 1fr; gap: 48px; align-items: center; }
+  @media (max-width: 720px) { .gopuram-block { grid-template-columns: 1fr; gap: 30px; justify-items: center; } }
+  .tier-notes { display: flex; flex-direction: column; gap: 15px; }
+  .tier-note { display: grid; grid-template-columns: 78px 1fr; gap: 16px; font-size: 14.5px; }
+  .tier-note b { font-family: var(--mono); font-size: 12.5px; color: var(--kumkum); font-weight: 600; }
+  .tier-note span { color: var(--ink-soft); }
+
+  /* ---------- devices ---------- */
+  .devices { display: flex; gap: 34px; flex-wrap: wrap; align-items: flex-start; }
+  .device { display: flex; flex-direction: column; gap: 13px; }
+  .device > figcaption {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .phone {
+    width: 322px; border: 9px solid var(--frame); border-radius: 30px;
+    background: var(--surface); overflow: hidden; flex-shrink: 0;
+    box-shadow: 0 18px 44px rgba(0,0,0,.13);
+  }
+  .screen { height: 592px; overflow-y: auto; overscroll-behavior: contain; }
+  .desktop {
+    flex: 1; min-width: 320px; border: 1px solid var(--line); border-radius: 6px;
+    background: var(--surface); overflow: hidden; box-shadow: 0 18px 44px rgba(0,0,0,.09);
+  }
+  .chrome {
+    height: 30px; background: var(--ground); border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 6px; padding: 0 12px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+  .chrome-url { margin-left: 10px; font-family: var(--mono); font-size: 10.5px; color: var(--ink-soft); }
+
+  /* ================== THE SITE ================== */
+  .site { font-size: 15px; line-height: 1.58; color: var(--ink); background: var(--surface); }
+  .site-pad { padding: 20px 19px; }
+
+  .site-head {
+    position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--line); padding: 16px 19px 15px;
+    display: flex; flex-direction: column; align-items: center; gap: 3px; text-align: center;
+  }
+  .head-chakra {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 186px; height: 186px; color: var(--gold); opacity: .16; pointer-events: none;
+  }
+  .site-head > * { position: relative; }
+  .namam { width: 17px; color: var(--gold); margin-bottom: 4px; }
+  .head-padma {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 176px; height: 176px; color: var(--gold); opacity: .15; pointer-events: none;
+  }
+  .petal-rule { display: block; width: 100%; height: 13px; color: var(--gold-line); margin: 6px 0 14px; }
+  .seva-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .seva-list li { display: flex; align-items: baseline; gap: 9px; font-size: 13.5px; color: var(--ink-soft); }
+  .seva-list svg { width: 9px; flex-shrink: 0; color: var(--gold); align-self: center; }
+  .site-te { font-size: 15px; line-height: 1.5; }
+  .site-en { font-family: var(--serif); font-size: 15.5px; line-height: 1.28; letter-spacing: .01em; }
+  .site-place {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-soft); margin-top: 4px;
+  }
+
+  .status {
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    padding: 12px 19px; background: var(--kumkum-soft); border-bottom: 1px solid var(--line);
+  }
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--kumkum); flex-shrink: 0;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--kumkum) 20%, transparent);
+  }
+  .status-txt { font-size: 14px; font-weight: 600; }
+  .status-txt em { font-style: normal; font-weight: 400; color: var(--ink-soft); }
+  .status.shut { background: transparent; }
+  .status.shut .status-dot { background: var(--ink-soft); box-shadow: none; }
+
+  /* kolam divider used as the section rule */
+  .kolam-rule { display: block; width: 100%; height: 15px; color: var(--gold-line); margin: 4px 0 14px; }
+
+  .site h3 {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 10px; font-weight: 500;
+  }
+  .site h3::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  .times { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .times td { padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .times td:last-child {
+    text-align: right; font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums;
+  }
+  .times tr:last-child td { border-bottom: none; }
+
+  /* festival card, with muggu corners */
+  .fest {
+    position: relative; border: 1px solid var(--gold-line); padding: 15px 16px;
+    display: flex; flex-direction: column; gap: 5px; background: var(--surface);
+  }
+  .fest-corner { position: absolute; width: 13px; height: 13px; color: var(--gold); opacity: .62; }
+  .fc-tl { top: 4px; left: 4px; }
+  .fc-tr { top: 4px; right: 4px; transform: scaleX(-1); }
+  .fc-bl { bottom: 4px; left: 4px; transform: scaleY(-1); }
+  .fc-br { bottom: 4px; right: 4px; transform: scale(-1); }
+  .fest-name { font-family: var(--serif); font-size: 19px; line-height: 1.2; }
+  .fest-te { font-size: 13.5px; color: var(--ink-soft); }
+  .fest-when {
+    font-family: var(--mono); font-size: 11.5px; color: var(--kumkum);
+    letter-spacing: .05em; margin-top: 3px;
+  }
+
+  /* sun phenomenon */
+  .sun {
+    position: relative; overflow: hidden; padding: 18px;
+    border: 1px solid var(--gold-line);
+    background: linear-gradient(to top, var(--gold-glow), transparent 70%);
+  }
+  .sun-rays {
+    position: absolute; bottom: -78px; left: 50%; transform: translateX(-50%);
+    width: 210px; height: 210px; color: var(--gold); opacity: .2; pointer-events: none;
+  }
+  .sun > * { position: relative; }
+  .sun-label {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+  }
+  .sun h4 { font-family: var(--serif); font-size: 20px; font-weight: 400; line-height: 1.22; margin-bottom: 7px; }
+  .sun p { font-size: 13.5px; color: var(--ink-soft); }
+
+  .navlist { display: flex; flex-direction: column; }
+  .navlink {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+    padding: 13px 0; border-bottom: 1px solid var(--line); color: inherit; text-decoration: none;
+  }
+  .navlink:last-child { border-bottom: none; }
+  .navlink b { font-family: var(--serif); font-size: 16.5px; font-weight: 400; }
+  .navlink span { font-size: 12.5px; color: var(--ink-soft); text-align: right; }
+
+  .disclaimer {
+    padding: 15px 19px; border-top: 1px solid var(--line);
+    font-size: 11.5px; line-height: 1.5; color: var(--ink-soft);
+  }
+  /* deliberately ugly: a fake number must never look shippable */
+  .placeholder {
+    background: repeating-linear-gradient(45deg, var(--kumkum-soft) 0 5px, transparent 5px 10px);
+    outline: 1px dashed var(--kumkum); color: var(--kumkum);
+  }
+  .placeholder-note {
+    margin-top: 8px; font-size: 11px; line-height: 1.45; color: var(--kumkum);
+  }
+  .site-foot { display: flex; flex-direction: column; align-items: center; padding: 16px 19px 4px; }
+  .foot-lotus { width: 36px; color: var(--gold); opacity: .55; }
+
+  .prose p { font-size: 14px; color: var(--ink-soft); }
+  .prose p + p { margin-top: 9px; }
+
+  .states { display: grid; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); gap: 16px; }
+  .state-demo { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: var(--surface); }
+  .state-cap {
+    font-family: var(--mono); font-size: 10.5px; color: var(--ink-soft);
+    padding: 9px 13px; border-top: 1px solid var(--line); line-height: 1.45;
+  }
+
+  .nope { display: flex; flex-wrap: wrap; gap: 8px; }
+  .nope li {
+    list-style: none; font-family: var(--mono); font-size: 12px;
+    padding: 6px 11px; border: 1px solid var(--line); border-radius: 2px;
+    color: var(--ink-soft); text-decoration: line-through;
+  }
+
+  a:focus-visible, .navlink:focus-visible { outline: 2px solid var(--kumkum); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<!-- ============ reusable motifs ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+
+    <!-- Sudarshana Chakra as mandala: 16 flames, 12 lotus petals, 8 inner petals -->
+    <path id="p-flame" d="M96,13 L100,1 L104,13 Z"/>
+    <path id="p-petal" d="M100,25 C113,44 113,57 100,60 C87,57 87,44 100,25 Z"/>
+    <path id="p-inner" d="M100,63 C107,73 107,80 100,85 C93,80 93,73 100,63 Z"/>
+
+    <g id="chakra" fill="none" stroke="currentColor" stroke-width="1.6">
+      <circle cx="100" cy="100" r="87"/>
+      <circle cx="100" cy="100" r="79"/>
+      <circle cx="100" cy="100" r="41"/>
+      <circle cx="100" cy="100" r="35"/>
+      <circle cx="100" cy="100" r="12"/>
+      <circle cx="100" cy="100" r="4.5" fill="currentColor" stroke="none"/>
+      <g fill="currentColor" stroke="none">
+        <use href="#p-flame"/><use href="#p-flame" transform="rotate(22.5 100 100)"/>
+        <use href="#p-flame" transform="rotate(45 100 100)"/><use href="#p-flame" transform="rotate(67.5 100 100)"/>
+        <use href="#p-flame" transform="rotate(90 100 100)"/><use href="#p-flame" transform="rotate(112.5 100 100)"/>
+        <use href="#p-flame" transform="rotate(135 100 100)"/><use href="#p-flame" transform="rotate(157.5 100 100)"/>
+        <use href="#p-flame" transform="rotate(180 100 100)"/><use href="#p-flame" transform="rotate(202.5 100 100)"/>
+        <use href="#p-flame" transform="rotate(225 100 100)"/><use href="#p-flame" transform="rotate(247.5 100 100)"/>
+        <use href="#p-flame" transform="rotate(270 100 100)"/><use href="#p-flame" transform="rotate(292.5 100 100)"/>
+        <use href="#p-flame" transform="rotate(315 100 100)"/><use href="#p-flame" transform="rotate(337.5 100 100)"/>
+      </g>
+      <g>
+        <use href="#p-petal"/><use href="#p-petal" transform="rotate(30 100 100)"/>
+        <use href="#p-petal" transform="rotate(60 100 100)"/><use href="#p-petal" transform="rotate(90 100 100)"/>
+        <use href="#p-petal" transform="rotate(120 100 100)"/><use href="#p-petal" transform="rotate(150 100 100)"/>
+        <use href="#p-petal" transform="rotate(180 100 100)"/><use href="#p-petal" transform="rotate(210 100 100)"/>
+        <use href="#p-petal" transform="rotate(240 100 100)"/><use href="#p-petal" transform="rotate(270 100 100)"/>
+        <use href="#p-petal" transform="rotate(300 100 100)"/><use href="#p-petal" transform="rotate(330 100 100)"/>
+      </g>
+      <g>
+        <use href="#p-inner"/><use href="#p-inner" transform="rotate(45 100 100)"/>
+        <use href="#p-inner" transform="rotate(90 100 100)"/><use href="#p-inner" transform="rotate(135 100 100)"/>
+        <use href="#p-inner" transform="rotate(180 100 100)"/><use href="#p-inner" transform="rotate(225 100 100)"/>
+        <use href="#p-inner" transform="rotate(270 100 100)"/><use href="#p-inner" transform="rotate(315 100 100)"/>
+      </g>
+    </g>
+
+    <!-- Muggu / kolam: two mirrored loops around a dot grid -->
+    <g id="kolam" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+      <path d="M0,12 Q15,-3 30,12 Q45,27 60,12 Q75,-3 90,12 Q105,27 120,12
+               Q135,-3 150,12 Q165,27 180,12 Q195,-3 210,12 Q225,27 240,12"/>
+      <path d="M0,12 Q15,27 30,12 Q45,-3 60,12 Q75,27 90,12 Q105,-3 120,12
+               Q135,27 150,12 Q165,-3 180,12 Q195,27 210,12 Q225,-3 240,12"/>
+      <g fill="currentColor" stroke="none">
+        <circle cx="30" cy="12" r="1.5"/><circle cx="60" cy="12" r="1.5"/>
+        <circle cx="90" cy="12" r="1.5"/><circle cx="120" cy="12" r="1.5"/>
+        <circle cx="150" cy="12" r="1.5"/><circle cx="180" cy="12" r="1.5"/>
+        <circle cx="210" cy="12" r="1.5"/>
+      </g>
+    </g>
+
+    <!-- muggu corner bracket -->
+    <g id="corner" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round">
+      <path d="M1,13 Q1,1 13,1"/>
+      <path d="M4,13 Q4,4 13,4"/>
+      <circle cx="7.5" cy="7.5" r="1.2" fill="currentColor" stroke="none"/>
+    </g>
+
+    <!-- tirunamam: gold thiruman, kumkum srichurnam. viewBox 0 0 24 36 -->
+    <g id="namam">
+      <path d="M2.6,2 L2.6,19 C2.6,26.2 6.6,31.8 12,34.6 C17.4,31.8 21.4,26.2 21.4,19
+               L21.4,2 L17.4,2 L17.4,19 C17.4,24.1 15.2,27.9 12,30.1
+               C8.8,27.9 6.6,24.1 6.6,19 L6.6,2 Z" fill="currentColor"/>
+      <path d="M12,-1.5 L13.7,23.5 L10.3,23.5 Z" fill="var(--kumkum)"/>
+    </g>
+
+    <!-- lotus in bloom: five petals, each a lens pointed at both ends.
+         Three above meet at one point; the two below cross each other. -->
+    <!-- one petal, used three times, so all three are identical by construction -->
+    <path id="pt" d="M34,31 C30,26 21,13 34,2 C47,13 38,26 34,31 Z"/>
+    <g id="lotus" fill="none" stroke="currentColor" stroke-width="1.35"
+       stroke-linejoin="round" stroke-linecap="round">
+      <use href="#pt" transform="rotate(-48 34 31)"/>
+      <use href="#pt"/>
+      <use href="#pt" transform="rotate(48 34 31)"/>
+      <path d="M19,31 H49"/>
+    </g>
+
+    <!-- lotus bud, closed -->
+    <g id="bud" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round">
+      <path d="M9,17 C4,12 4,6 9,1 C14,6 14,12 9,17 Z"/>
+      <path d="M9,17 V21"/>
+    </g>
+
+    <!-- padma medallion: a second mandala, sixteen petals over twelve -->
+    <path id="p-outer" d="M100,10 C113,30 113,47 100,58 C87,47 87,30 100,10 Z"/>
+    <path id="p-mid" d="M100,38 C110,51 110,62 100,72 C90,62 90,51 100,38 Z"/>
+    <g id="padma" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+      <g>
+        <use href="#p-outer"/><use href="#p-outer" transform="rotate(22.5 100 100)"/>
+        <use href="#p-outer" transform="rotate(45 100 100)"/><use href="#p-outer" transform="rotate(67.5 100 100)"/>
+        <use href="#p-outer" transform="rotate(90 100 100)"/><use href="#p-outer" transform="rotate(112.5 100 100)"/>
+        <use href="#p-outer" transform="rotate(135 100 100)"/><use href="#p-outer" transform="rotate(157.5 100 100)"/>
+        <use href="#p-outer" transform="rotate(180 100 100)"/><use href="#p-outer" transform="rotate(202.5 100 100)"/>
+        <use href="#p-outer" transform="rotate(225 100 100)"/><use href="#p-outer" transform="rotate(247.5 100 100)"/>
+        <use href="#p-outer" transform="rotate(270 100 100)"/><use href="#p-outer" transform="rotate(292.5 100 100)"/>
+        <use href="#p-outer" transform="rotate(315 100 100)"/><use href="#p-outer" transform="rotate(337.5 100 100)"/>
+      </g>
+      <g>
+        <use href="#p-mid" transform="rotate(15 100 100)"/><use href="#p-mid" transform="rotate(45 100 100)"/>
+        <use href="#p-mid" transform="rotate(75 100 100)"/><use href="#p-mid" transform="rotate(105 100 100)"/>
+        <use href="#p-mid" transform="rotate(135 100 100)"/><use href="#p-mid" transform="rotate(165 100 100)"/>
+        <use href="#p-mid" transform="rotate(195 100 100)"/><use href="#p-mid" transform="rotate(225 100 100)"/>
+        <use href="#p-mid" transform="rotate(255 100 100)"/><use href="#p-mid" transform="rotate(285 100 100)"/>
+        <use href="#p-mid" transform="rotate(315 100 100)"/><use href="#p-mid" transform="rotate(345 100 100)"/>
+      </g>
+      <circle cx="100" cy="100" r="25"/>
+      <circle cx="100" cy="100" r="7" fill="currentColor" stroke="none"/>
+      <g fill="currentColor" stroke="none">
+        <circle cx="100" cy="86" r="1.7"/><circle cx="112" cy="93" r="1.7"/>
+        <circle cx="112" cy="107" r="1.7"/><circle cx="100" cy="114" r="1.7"/>
+        <circle cx="88" cy="107" r="1.7"/><circle cx="88" cy="93" r="1.7"/>
+      </g>
+    </g>
+
+    <!-- padma-patti: the lotus-petal moulding that runs along a temple base -->
+    <g id="petalband" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round">
+      <path d="M0,18 Q6,2 12,18 Q18,2 24,18 Q30,2 36,18 Q42,2 48,18 Q54,2 60,18
+               Q66,2 72,18 Q78,2 84,18 Q90,2 96,18 Q102,2 108,18 Q114,2 120,18
+               Q126,2 132,18 Q138,2 144,18 Q150,2 156,18 Q162,2 168,18 Q174,2 180,18
+               Q186,2 192,18 Q198,2 204,18 Q210,2 216,18 Q222,2 228,18 Q234,2 240,18"/>
+      <path d="M0,18 H240" stroke-width="1"/>
+    </g>
+
+    <!-- radiating sun for the phenomenon -->
+    <g id="rays" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <circle cx="100" cy="100" r="21"/>
+      <g stroke-width="1.3">
+        <path d="M100,66 V22"/><path d="M100,134 V178"/>
+        <path d="M66,100 H22"/><path d="M134,100 H178"/>
+        <path d="M76,76 L45,45"/><path d="M124,124 L155,155"/>
+        <path d="M124,76 L155,45"/><path d="M76,124 L45,155"/>
+        <path d="M117,70 L134,31"/><path d="M83,130 L66,169"/>
+        <path d="M130,117 L169,100"/><path d="M70,83 L31,66"/>
+        <path d="M130,83 L169,100"/><path d="M70,117 L31,134"/>
+        <path d="M83,70 L66,31"/><path d="M117,130 L134,169"/>
+      </g>
+    </g>
+
+    <!-- ============ the gopuram, drawn from photographs ============ -->
+    <g id="gopuram">
+      <!-- plinth and gateway base -->
+      <rect x="30" y="452" width="140" height="18" fill="currentColor"/>
+      <rect x="36" y="374" width="128" height="78" fill="currentColor"/>
+      <path d="M84,452 V412 Q100,396 116,412 V452 Z" fill="var(--surface)"/>
+      <rect x="28" y="364" width="144" height="11" fill="currentColor"/>
+
+      <!-- seven receding tiers; dashed strokes read as the rows of niches -->
+      <g fill="currentColor">
+        <polygon points="40,364 160,364 156.3,326 43.7,326"/>
+        <polygon points="41.7,329 158.3,329 158.3,321 41.7,321"/>
+        <polygon points="43.7,321 156.3,321 152.6,290 47.4,290"/>
+        <polygon points="45.4,293 154.6,293 154.6,285 45.4,285"/>
+        <polygon points="47.4,285 152.6,285 148.9,256 51.1,256"/>
+        <polygon points="49.1,259 150.9,259 150.9,251 49.1,251"/>
+        <polygon points="51.1,251 148.9,251 145.1,223 54.9,223"/>
+        <polygon points="52.9,226 147.1,226 147.1,218 52.9,218"/>
+        <polygon points="54.9,218 145.1,218 141.4,191 58.6,191"/>
+        <polygon points="56.6,194 143.4,194 143.4,186 56.6,186"/>
+        <polygon points="58.6,186 141.4,186 137.7,160 62.3,160"/>
+        <polygon points="60.3,163 139.7,163 139.7,155 60.3,155"/>
+        <polygon points="62.3,155 137.7,155 134,130 66,130"/>
+        <polygon points="64,133 136,133 136,125 64,125"/>
+      </g>
+      <g stroke="var(--surface)" stroke-dasharray="3.5 5.5">
+        <line x1="46" y1="346" x2="154" y2="346" stroke-width="18"/>
+        <line x1="50" y1="309" x2="150" y2="309" stroke-width="17"/>
+        <line x1="53" y1="274" x2="147" y2="274" stroke-width="16"/>
+        <line x1="57" y1="240" x2="143" y2="240" stroke-width="15"/>
+        <line x1="61" y1="208" x2="139" y2="208" stroke-width="15"/>
+        <line x1="64" y1="176" x2="136" y2="176" stroke-width="14"/>
+        <line x1="68" y1="145" x2="132" y2="145" stroke-width="14"/>
+      </g>
+
+      <!-- shikhara: the barrel vault flares wider than the tier beneath it -->
+      <path d="M58,126 L58,104 Q58,80 100,80 Q142,80 142,104 L142,126 Z" fill="currentColor"/>
+      <rect x="56" y="120" width="88" height="10" fill="currentColor"/>
+
+      <!-- kalasas along the ridge -->
+      <g fill="currentColor">
+        <rect x="98.7" y="54" width="2.6" height="22"/><circle cx="100" cy="51" r="4.6"/>
+        <rect x="82.9" y="62" width="2.2" height="17"/><circle cx="84" cy="59" r="3.6"/>
+        <rect x="114.9" y="62" width="2.2" height="17"/><circle cx="116" cy="59" r="3.6"/>
+        <rect x="68.1" y="70" width="1.9" height="14"/><circle cx="69" cy="67" r="3"/>
+        <rect x="130" y="70" width="1.9" height="14"/><circle cx="131" cy="67" r="3"/>
+      </g>
+    </g>
+
+  </defs>
+</svg>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <svg class="masthead-chakra" viewBox="0 0 200 200" aria-hidden="true"><use href="#chakra"/></svg>
+    <div>
+      <div class="eyebrow">Phase 0 · Design direction · Revision 2</div>
+      <h1>Sri Lakshmi Chennakesava Swami Devastanam</h1>
+      <p>Simple, modern, traditional, devotional. No photographs of this temple are
+        legally usable yet, so the identity is built from typography, colour, and two
+        forms that belong to this temple in particular — the chakra and the muggu.</p>
+    </div>
+  </header>
+
+  <section>
+    <h2>Ornament, and where it comes from</h2>
+    <p class="sub">A generic mandala would be borrowed. These three are not: the chakra is
+      Vishnu's own emblem and already a radial mandala; the muggu is the dot-grid drawing
+      Telugu households lay at the threshold each morning; the namam is the mark every
+      Vaishnava temple wears. Each is drawn as geometry, held at low opacity, and given
+      room — devotional, but never busy.</p>
+    <div class="orn-grid">
+      <figure class="orn">
+        <div class="orn-stage">
+          <svg viewBox="0 0 200 200" style="width:100%;max-width:132px;color:var(--gold)" aria-label="Sudarshana Chakra mandala"><use href="#chakra"/></svg>
+        </div>
+        <h4>Sudarshana Chakra</h4>
+        <p>Sixteen flames, twelve lotus petals, eight within. Vishnu's discus. Sits behind
+          the temple name and anchors the page.</p>
+      </figure>
+      <figure class="orn">
+        <div class="orn-stage">
+          <svg viewBox="0 0 240 24" style="width:100%;color:var(--gold)" aria-label="Muggu kolam divider"><use href="#kolam"/></svg>
+        </div>
+        <h4>Muggu · ముగ్గు</h4>
+        <p>Two mirrored loops threaded around a row of dots. Replaces the plain horizontal
+          rule between sections.</p>
+      </figure>
+      <figure class="orn">
+        <div class="orn-stage">
+          <svg viewBox="0 0 200 200" style="width:100%;max-width:132px;color:var(--gold)" aria-label="Padma medallion"><use href="#padma"/></svg>
+        </div>
+        <h4>Padma · పద్మం</h4>
+        <p>The lotus seen from above — sixteen petals over twelve, six seeds at the centre.
+          A second mandala, quieter than the chakra. Crowns the Darshan page.</p>
+      </figure>
+      <figure class="orn">
+        <div class="orn-stage">
+          <svg viewBox="0 -3 24 39" style="height:74px;color:var(--gold)" aria-label="Tirunamam"><use href="#namam"/></svg>
+        </div>
+        <h4>Tirunamam</h4>
+        <p>Gold thiruman, kumkum srichurnam — the mark every Vaishnava temple wears.
+          Crowns each header at 17px.</p>
+      </figure>
+      <figure class="orn">
+        <div class="orn-stage" style="display:flex;gap:24px;align-items:center">
+          <svg viewBox="10 0 48 33" style="width:96px;color:var(--gold)" aria-label="Lotus in bloom"><use href="#lotus"/></svg>
+          <svg viewBox="0 0 18 22" style="height:44px;color:var(--gold)" aria-label="Lotus bud"><use href="#bud"/></svg>
+        </div>
+        <h4>Bloom and bud</h4>
+        <p>The open lotus closes every page above the footer. The bud marks each seva in
+          a list — small enough to read as a bullet, particular enough not to be one.</p>
+      </figure>
+      <figure class="orn">
+        <div class="orn-stage">
+          <svg viewBox="0 0 240 20" style="width:100%;color:var(--gold)" aria-label="Padma-patti petal band"><use href="#petalband"/></svg>
+        </div>
+        <h4>Padma-patti</h4>
+        <p>The lotus-petal moulding that runs along the base of the temple itself, flattened
+          into a rule. Separates the header from what follows.</p>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>The gopuram, redrawn</h2>
+    <p class="sub">Redrawn against photographs of the actual tower rather than from
+      proportions. It is far steeper and more slender than a generic gopuram; seven tiers
+      recede above a tall plain gateway, each face packed with rows of niches; and the
+      barrel-vaulted shikhara at the summit <em>flares wider</em> than the tier below it,
+      carrying five kalasas along its ridge. The tiers were not built at once, so they
+      carry the dates rather than decorating with them.</p>
+    <div class="gopuram-block">
+      <svg viewBox="0 0 200 470" role="img"
+           aria-label="The 135-foot Galigopuram: seven receding tiers above a gateway, flared shikhara, five kalasas"
+           style="width:100%; max-width:200px; color:var(--ink)">
+        <use href="#gopuram"/>
+      </svg>
+      <div class="tier-notes">
+        <div class="tier-note"><b>1405–59</b><span>Vijayanagara. The first storey rises in Krishnadeva Raya's reign</span></div>
+        <div class="tier-note"><b>1425</b><span>Walls raised; eighteen inscriptions cut into them</span></div>
+        <div class="tier-note"><b>1837</b><span>Upper storeys added, carrying it to 135 feet</span></div>
+        <div class="tier-note"><b>135 ft</b><span>Reportedly the second tallest gopuram in the Telugu states</span></div>
+        <div class="tier-note"><b>Dec–Jan</b><span>Dawn light passes through and reaches the deity's feet for twenty minutes</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Palette</h2>
+    <p class="sub">Markapur is a slate town — it has manufactured slate for generations.
+      That is the neutral: cool grey-green stone, not the warm cream every temple site
+      reaches for. Kumkum is the accent. Gold is reserved for sacred ornament and the sun,
+      and appears nowhere else.</p>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#EEF0EE"></div><b>Slate pale</b><span>#EEF0EE</span><em>Page ground</em></div>
+      <div class="sw"><div class="chip" style="background:#232A27"></div><b>Slate ink</b><span>#232A27</span><em>Body text, gopuram</em></div>
+      <div class="sw"><div class="chip" style="background:#5D6A63"></div><b>Slate soft</b><span>#5D6A63</span><em>Secondary text</em></div>
+      <div class="sw"><div class="chip" style="background:#96222A"></div><b>Kumkum</b><span>#96222A</span><em>Accent, namam</em></div>
+      <div class="sw"><div class="chip" style="background:#A8781A"></div><b>Temple gold</b><span>#A8781A</span><em>Ornament, sun</em></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Typography</h2>
+    <p class="sub">All system-resolved. Font CDNs are blocked, and a silent fallback on a
+      Telugu glyph is worse than having no webfont at all. Body sets at 18px on mobile,
+      not 16 — many visitors are older, reading outdoors in hard sun.</p>
+    <div class="specimen">
+      <div class="spec-row">
+        <div class="spec-label">Display</div>
+        <div style="font-family:var(--serif); font-size:36px; line-height:1.14;">Chennakesava Swamy</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-label">Telugu</div>
+        <div style="font-size:27px; line-height:1.5;">శ్రీ లక్ష్మీ చెన్నకేశవ స్వామి</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-label">Body 18 / 1.6</div>
+        <div style="font-size:18px; max-width:60ch;">The demon Kesi harassed the ascetics
+          meditating along the Gundlakamma. Kesi could be slain only by a serpent, so
+          Vishnu sent Adisesha.</div>
+      </div>
+      <div class="spec-row">
+        <div class="spec-label">Data · mono</div>
+        <div style="font-family:var(--mono); font-size:14px; font-variant-numeric:tabular-nums;">
+          06:00 — 12:00 &nbsp;·&nbsp; 17:00 — 20:30</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Home — mobile</h2>
+    <p class="sub">85% of visitors arrive on a mid-range Android over patchy 4G. Open-or-shut,
+      today's hours, and what is coming all land above the fold. Scroll the frames.</p>
+    <div class="devices">
+
+      <figure class="device">
+        <div class="phone"><div class="screen"><div class="site">
+
+          <div class="site-head">
+            <svg class="head-chakra" viewBox="0 0 200 200" aria-hidden="true"><use href="#chakra"/></svg>
+            <svg class="namam" viewBox="0 -3 24 39" aria-hidden="true"><use href="#namam"/></svg>
+            <div class="site-te">శ్రీ లక్ష్మీ చెన్నకేశవ స్వామి దేవస్థానం</div>
+            <div class="site-en">Sri Lakshmi Chennakesava Swami Devastanam</div>
+            <div class="site-place">Markapur · మార్కాపురం</div>
+          </div>
+
+          <div class="status">
+            <div class="status-dot"></div>
+            <div class="status-txt">Open now <em>· closes 8:30 PM</em></div>
+          </div>
+
+          <div class="site-pad">
+            <svg class="petal-rule" viewBox="0 0 240 20" preserveAspectRatio="none" aria-hidden="true"><use href="#petalband"/></svg>
+            <h3>Today · Sunday</h3>
+            <table class="times">
+              <tr><td>Darshan</td><td>6:00 AM – 8:30 PM</td></tr>
+              <tr><td>Abhishekam</td><td>6:00 – 7:30 AM</td></tr>
+              <tr><td>Sahasra Namarchana</td><td>8:00 – 8:30 AM</td></tr>
+            </table>
+          </div>
+
+          <div class="site-pad" style="padding-top:0">
+            <svg class="kolam-rule" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true"><use href="#kolam"/></svg>
+            <h3>Next festival</h3>
+            <div class="fest">
+              <svg class="fest-corner fc-tl" viewBox="0 0 14 14" aria-hidden="true"><use href="#corner"/></svg>
+              <svg class="fest-corner fc-tr" viewBox="0 0 14 14" aria-hidden="true"><use href="#corner"/></svg>
+              <svg class="fest-corner fc-bl" viewBox="0 0 14 14" aria-hidden="true"><use href="#corner"/></svg>
+              <svg class="fest-corner fc-br" viewBox="0 0 14 14" aria-hidden="true"><use href="#corner"/></svg>
+              <div class="fest-name">Brahmotsavam</div>
+              <div class="fest-te">బ్రహ్మోత్సవాలు · nineteen days</div>
+              <div class="fest-when">Rathotsavam on day eleven</div>
+            </div>
+          </div>
+
+          <div class="site-pad" style="padding-top:14px">
+            <div class="sun">
+              <svg class="sun-rays" viewBox="0 0 200 200" aria-hidden="true"><use href="#rays"/></svg>
+              <div class="sun-label">Mid-December to early January</div>
+              <h4>The sun reaches the feet</h4>
+              <p>For about twenty minutes at dawn, light passes through the gopuram and
+                falls at the deity's feet.</p>
+            </div>
+          </div>
+
+          <div class="site-pad" style="padding-top:6px">
+            <svg class="kolam-rule" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true"><use href="#kolam"/></svg>
+            <div class="navlist">
+              <a class="navlink" href="#"><b>The temple</b><span>Sthala purana, architecture</span></a>
+              <a class="navlink" href="#"><b>Darshan</b><span>Timings, sevas, dress</span></a>
+              <a class="navlink" href="#"><b>Festivals</b><span>The year's calendar</span></a>
+              <a class="navlink" href="#"><b>Getting there</b><span>Bus, rail, road</span></a>
+            </div>
+          </div>
+
+          <div class="site-pad" style="padding-top:0">
+            <svg class="kolam-rule" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true"><use href="#kolam"/></svg>
+            <h3>Contact</h3>
+            <table class="times">
+              <tr><td>Temple office</td><td class="placeholder">+91 00000 00000</td></tr>
+              <tr><td>Markapuram</td><td>523316</td></tr>
+            </table>
+            <p class="placeholder-note">Placeholder — no number is published anywhere for
+              this temple. See note below.</p>
+          </div>
+
+          <div class="site-foot">
+            <svg class="foot-lotus" viewBox="10 0 48 33" aria-hidden="true"><use href="#lotus"/></svg>
+          </div>
+          <div class="disclaimer">
+            An unofficial site maintained by devotees. Timings are compiled from public
+            sources and not confirmed by the temple — hours may change on festival days.
+          </div>
+
+        </div></div></div>
+        <figcaption>Home · scrollable</figcaption>
+      </figure>
+
+      <figure class="device">
+        <div class="phone"><div class="screen"><div class="site">
+
+          <div class="site-head">
+            <svg class="head-padma" viewBox="0 0 200 200" aria-hidden="true"><use href="#padma"/></svg>
+            <svg class="namam" viewBox="0 -3 24 39" aria-hidden="true"><use href="#namam"/></svg>
+            <div class="site-te">దర్శన సమయాలు</div>
+            <div class="site-en">Darshan</div>
+          </div>
+
+          <div class="status shut">
+            <div class="status-dot"></div>
+            <div class="status-txt">Closed <em>· opens 5:00 PM</em></div>
+          </div>
+
+          <div class="site-pad">
+            <h3>Weekly</h3>
+            <table class="times">
+              <tr><td>Sunday – Friday</td><td>06:00 – 20:30</td></tr>
+              <tr><td>Saturday, morning</td><td>06:00 – 12:00</td></tr>
+              <tr><td>Saturday, evening</td><td>17:00 – 20:30</td></tr>
+            </table>
+
+            <svg class="kolam-rule" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true"><use href="#kolam"/></svg>
+
+            <h3>Daily rituals</h3>
+            <table class="times">
+              <tr><td>Abhishekam</td><td>06:00 – 07:30</td></tr>
+              <tr><td>Sahasra Namarchana</td><td>08:00 – 08:30</td></tr>
+              <tr><td>Maha Mangala Harathi</td><td>Evening</td></tr>
+            </table>
+
+            <svg class="kolam-rule" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true"><use href="#kolam"/></svg>
+
+            <h3>Sevas offered</h3>
+            <ul class="seva-list">
+              <li><svg viewBox="0 0 18 22" aria-hidden="true"><use href="#bud"/></svg>Moolavirat Panchamrutha Abhishekam</li>
+              <li><svg viewBox="0 0 18 22" aria-hidden="true"><use href="#bud"/></svg>Sahasra Namarchana</li>
+              <li><svg viewBox="0 0 18 22" aria-hidden="true"><use href="#bud"/></svg>Kalyanotsavam · కళ్యాణోత్సవం</li>
+              <li><svg viewBox="0 0 18 22" aria-hidden="true"><use href="#bud"/></svg>Unjal Seva</li>
+            </ul>
+            <div class="prose" style="margin-top:11px">
+              <p>Ticket rates are not published here. Enquire at the temple office.</p>
+            </div>
+
+            <svg class="kolam-rule" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true"><use href="#kolam"/></svg>
+
+            <h3>Before you go</h3>
+            <div class="prose">
+              <p>Traditional dress is expected. Footwear and leather are left outside. The
+                temple stands beside the Gundlakamma, a short walk from Markapur bus stand.</p>
+            </div>
+          </div>
+
+          <div class="site-foot">
+            <svg class="foot-lotus" viewBox="10 0 48 33" aria-hidden="true"><use href="#lotus"/></svg>
+          </div>
+          <div class="disclaimer">
+            Published sources disagree on closing time. The hours shown are the earliest of
+            them, so the temple may well be open later than stated — never earlier.
+          </div>
+
+        </div></div></div>
+        <figcaption>Darshan · closed state</figcaption>
+      </figure>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Home — desktop</h2>
+    <p class="sub">Same content, one column widened to two, with the gopuram standing beside
+      the name. Nothing is invented for the larger screen; the mobile page is the real page.</p>
+    <div class="desktop">
+      <div class="chrome">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="chrome-url">chennakesavaswamy.org</div>
+      </div>
+      <div class="site">
+
+        <div class="site-head" style="padding:32px 40px 26px">
+          <svg class="head-chakra" style="width:300px;height:300px;opacity:.12" viewBox="0 0 200 200" aria-hidden="true"><use href="#chakra"/></svg>
+          <svg class="namam" style="width:19px" viewBox="0 -3 24 39" aria-hidden="true"><use href="#namam"/></svg>
+          <div class="site-te" style="font-size:19px">శ్రీ లక్ష్మీ చెన్నకేశవ స్వామి దేవస్థానం</div>
+          <div class="site-en" style="font-size:29px; line-height:1.2">Sri Lakshmi Chennakesava Swami Devastanam</div>
+          <div class="site-place">Markapur, Prakasam District · Est. 1425</div>
+        </div>
+
+        <div class="status">
+          <div class="status-dot"></div>
+          <div class="status-txt">Open now <em>· closes 8:30 PM</em></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:132px 1fr 1fr; gap:36px; padding:30px 40px 22px; align-items:start;">
+          <svg viewBox="0 0 200 470" style="width:100%;color:var(--ink)" aria-label="The Galigopuram"><use href="#gopuram"/></svg>
+          <div>
+            <h3>Today · Sunday</h3>
+            <table class="times">
+              <tr><td>Darshan</td><td>6:00 AM – 8:30 PM</td></tr>
+              <tr><td>Abhishekam</td><td>6:00 – 7:30 AM</td></tr>
+              <tr><td>Sahasra Namarchana</td><td>8:00 – 8:30 AM</td></tr>
+            </table>
+            <div style="height:20px"></div>
+            <h3>Next festival</h3>
+            <div class="fest">
+              <svg class="fest-corner fc-tl" viewBox="0 0 14 14" aria-hidden="true"><use href="#corner"/></svg>
+              <svg class="fest-corner fc-tr" viewBox="0 0 14 14" aria-hidden="true"><use href="#corner"/></svg>
+              <svg class="fest-corner fc-bl" viewBox="0 0 14 14" aria-hidden="true"><use href="#corner"/></svg>
+              <svg class="fest-corner fc-br" viewBox="0 0 14 14" aria-hidden="true"><use href="#corner"/></svg>
+              <div class="fest-name">Brahmotsavam</div>
+              <div class="fest-te">బ్రహ్మోత్సవాలు · nineteen days</div>
+              <div class="fest-when">Rathotsavam on day eleven</div>
+            </div>
+          </div>
+          <div>
+            <div class="sun" style="padding:20px">
+              <svg class="sun-rays" viewBox="0 0 200 200" aria-hidden="true"><use href="#rays"/></svg>
+              <div class="sun-label">Mid-December to early January</div>
+              <h4 style="font-size:23px">The sun reaches the feet</h4>
+              <p>For about twenty minutes at dawn, light passes through the gopuram and falls
+                at the deity's feet. It is the most particular thing about this temple, and
+                almost nothing has been written about it.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:0 40px">
+          <svg class="kolam-rule" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true"><use href="#kolam"/></svg>
+          <div class="navlist" style="display:grid; grid-template-columns:repeat(4,1fr); gap:0 26px">
+            <a class="navlink" href="#" style="flex-direction:column; align-items:flex-start; gap:3px"><b>The temple</b><span style="text-align:left">Sthala purana, architecture</span></a>
+            <a class="navlink" href="#" style="flex-direction:column; align-items:flex-start; gap:3px"><b>Darshan</b><span style="text-align:left">Timings, sevas, dress</span></a>
+            <a class="navlink" href="#" style="flex-direction:column; align-items:flex-start; gap:3px"><b>Festivals</b><span style="text-align:left">The year's calendar</span></a>
+            <a class="navlink" href="#" style="flex-direction:column; align-items:flex-start; gap:3px"><b>Getting there</b><span style="text-align:left">Bus, rail, road</span></a>
+          </div>
+        </div>
+
+        <div class="site-foot" style="padding-top:22px">
+          <svg class="foot-lotus" viewBox="10 0 48 33" aria-hidden="true"><use href="#lotus"/></svg>
+        </div>
+        <div class="disclaimer" style="padding:15px 40px 22px">
+          An unofficial site maintained by devotees. Timings are compiled from public sources
+          and are not confirmed by the temple.
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The status badge, in every state</h2>
+    <p class="sub">The one component that can do harm. Published hours are the
+      <em>intersection</em> of every source — the earliest closing time anyone reports. So the
+      badge can say "closed" when the temple is in fact open, but never the reverse. Nobody
+      makes a wasted journey because of us. Festival days override the weekly schedule.</p>
+    <div class="states">
+      <div class="state-demo">
+        <div class="status"><div class="status-dot"></div>
+          <div class="status-txt">Open now <em>· closes 8:30 PM</em></div></div>
+        <div class="state-cap">Within hours. Kumkum ground, live dot.</div>
+      </div>
+      <div class="state-demo">
+        <div class="status shut"><div class="status-dot"></div>
+          <div class="status-txt">Closed <em>· opens 6:00 AM tomorrow</em></div></div>
+        <div class="state-cap">Outside hours. Quiet, never alarming.</div>
+      </div>
+      <div class="state-demo">
+        <div class="status shut"><div class="status-dot"></div>
+          <div class="status-txt">Closed <em>· reopens 5:00 PM</em></div></div>
+        <div class="state-cap">Saturday midday break.</div>
+      </div>
+      <div class="state-demo">
+        <div class="status" style="background:var(--gold-glow)">
+          <div class="status-dot" style="background:var(--gold); box-shadow:0 0 0 3px var(--gold-glow)"></div>
+          <div class="status-txt">Open · Rathotsavam <em>· extended to 11:00 PM</em></div></div>
+        <div class="state-cap">A date override. Hand-entered, note shown alongside.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Deliberately absent</h2>
+    <p class="sub">Traditional does not mean cluttered. Every one of these appears on
+      comparable temple sites, and every one makes them slower, busier, or harder to trust.</p>
+    <ul class="nope">
+      <li>carousel</li><li>autoplay bhajan</li><li>marquee notices</li>
+      <li>parallax hero</li><li>scroll animation</li><li>gradient overlays</li>
+      <li>glitter borders</li><li>counter-up stats</li><li>stock temple photos</li>
+      <li>popup newsletter</li><li>ads</li><li>mobile app banner</li>
+    </ul>
+  </section>
+
+</div>
