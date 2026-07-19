@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Tirunamam. Two flat shapes, no fine detail, so it survives 16px. -->
+  <path d="M5,3 L5,17 C5,23.4 9.2,28.6 16,31 C22.8,28.6 27,23.4 27,17
+           L27,3 L21.6,3 L21.6,17 C21.6,21.2 19.3,24.5 16,26.4
+           C12.7,24.5 10.4,21.2 10.4,17 L10.4,3 Z" fill="#A8781A"/>
+  <path d="M16,1 L18.4,23 L13.6,23 Z" fill="#96222A"/>
+</svg>

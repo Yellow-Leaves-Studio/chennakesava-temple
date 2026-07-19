@@ -67,14 +67,14 @@ export function status(timings, instant = new Date()) {
   const laterToday = hours.map((s) => s.open).find((t) => toMinutes(t) > minutes);
   if (laterToday) return { open: false, until: laterToday, note, nextDay: false };
 
-  // nothing left today — first opening tomorrow, honouring tomorrow's override
+  // nothing left today, so take the first opening tomorrow, honouring tomorrow's override
   const tomorrow = nextDate(date);
   const tomorrowWeekday = DAYS[(DAYS.indexOf(weekday) + 1) % 7];
   const next = hoursFor(timings, tomorrow, tomorrowWeekday).hours[0];
   return { open: false, until: next ? next.open : null, note, nextDay: true };
 }
 
-/** "6:00 AM" from "06:00" — devotees read 12-hour time here. */
+/** "6:00 AM" from "06:00". Devotees read 12-hour time here. */
 export function display(hhmm) {
   const [h, m] = hhmm.split(':').map(Number);
   const suffix = h < 12 ? 'AM' : 'PM';

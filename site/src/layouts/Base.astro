@@ -38,7 +38,7 @@ const schema = {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
   <!-- Must run before first paint, or a visitor who chose light gets a dark flash on
-       every page load. Inline and blocking on purpose — do not move or defer this. -->
+       every page load. Inline and blocking on purpose. Do not move or defer this. -->
   <script is:inline>
     try {
       var t = localStorage.getItem('theme');
@@ -50,7 +50,8 @@ const schema = {
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 36'><path d='M2.6,2 L2.6,19 C2.6,26.2 6.6,31.8 12,34.6 C17.4,31.8 21.4,26.2 21.4,19 L21.4,2 L17.4,2 L17.4,19 C17.4,24.1 15.2,27.9 12,30.1 C8.8,27.9 6.6,24.1 6.6,19 L6.6,2 Z' fill='%23A8781A'/><path d='M12,-1.5 L13.7,23.5 L10.3,23.5 Z' fill='%2396222A'/></svg>" />
+  <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+  <link rel="apple-touch-icon" href={url('/favicon.svg')} />
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </head>
 <body>
@@ -96,7 +97,7 @@ const schema = {
     <p class="disclaimer">
       An unofficial site maintained by devotees, not by the temple or the Endowments
       Department. Timings and festival dates are compiled from public sources and are
-      <strong>not confirmed by the temple</strong> — where sources disagree, the earliest
+      <strong>not confirmed by the temple</strong>. Where sources disagree, the earliest
       closing time is published, so the temple may well be open later than stated, never
       earlier. Hours change on festival days.
     </p>
@@ -161,14 +162,14 @@ const schema = {
 
   <style is:global>
     /* Light is the default. Dark applies when the device asks for it AND the visitor
-       hasn't overridden to light — the :not() is what lets the toggle win in both
+       hasn't overridden to light. The :not() is what lets the toggle win in both
        directions without restating the light palette a second time. */
     :root {
       color-scheme: light;
       --ground: #EEF0EE; --surface: #F8F9F7; --line: #D3D8D4;
       --ink: #232A27; --ink-soft: #5D6A63;
       --kumkum: #96222A; --kumkum-soft: #F2E0DF;
-      --gold: #A8781A; --gold-line: rgba(168,120,26,.34); --gold-glow: rgba(168,120,26,.13);
+      --gold: #A8781A; --gold-line: rgba(168,120,26,.62); --gold-glow: rgba(168,120,26,.13);
       --serif: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
       --sans: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
       --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
@@ -180,7 +181,7 @@ const schema = {
         --ground: #171B1A; --surface: #1F2523; --line: #343C39;
         --ink: #E7EBE8; --ink-soft: #95A099;
         --kumkum: #DE8087; --kumkum-soft: #2E1D1C;
-        --gold: #D6A63F; --gold-line: rgba(214,166,63,.32); --gold-glow: rgba(214,166,63,.10);
+        --gold: #D6A63F; --gold-line: rgba(214,166,63,.40); --gold-glow: rgba(214,166,63,.10);
       }
     }
     :root[data-theme="dark"] {
@@ -188,13 +189,13 @@ const schema = {
       --ground: #171B1A; --surface: #1F2523; --line: #343C39;
       --ink: #E7EBE8; --ink-soft: #95A099;
       --kumkum: #DE8087; --kumkum-soft: #2E1D1C;
-      --gold: #D6A63F; --gold-line: rgba(214,166,63,.32); --gold-glow: rgba(214,166,63,.10);
+      --gold: #D6A63F; --gold-line: rgba(214,166,63,.40); --gold-glow: rgba(214,166,63,.10);
     }
 
     *, *::before, *::after { box-sizing: border-box; }
     /* The page is --surface (paper). --ground is the recessed tone, for chrome and
        cards only. In the mockup --ground was the backdrop the phone frames sat on,
-       never the site itself — porting it onto body made the page read two-tone. */
+       never the site itself. Porting it onto body made the page read two-tone. */
     body {
       margin: 0; background: var(--surface); color: var(--ink);
       font-family: var(--sans); font-size: 18px; line-height: 1.62;
@@ -308,8 +309,10 @@ const schema = {
       text-align: right; font-family: var(--mono); font-size: 14px;
       font-variant-numeric: tabular-nums; white-space: nowrap;
     }
-    .kolam-rule { display: block; width: 100%; height: 16px; color: var(--gold-line); margin: 30px 0; }
-    .petal-rule { display: block; width: 100%; height: 14px; color: var(--gold-line); margin: 26px 0; }
+    /* Height matches the pattern tile exactly (60x24 and 24x20 user units, 1 unit = 1px
+       with no viewBox), so the motif is never clipped and never squashed. */
+    .kolam-rule { display: block; width: 100%; height: 24px; color: var(--gold-line); margin: 30px 0; }
+    .petal-rule { display: block; width: 100%; height: 20px; color: var(--gold-line); margin: 26px 0; }
 
     .note {
       border-left: 2px solid var(--gold); background: var(--gold-glow);

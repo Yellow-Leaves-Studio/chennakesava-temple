@@ -1,5 +1,5 @@
 {
-  "_note": "Published hours are the INTERSECTION of every public source — the earliest closing anyone reports. This is deliberate: the badge may say 'closed' while the temple is open, but never the reverse. Nobody makes a wasted journey because of us. Replace with the board at the temple once it has been photographed.",
+  "_note": "Published hours are the INTERSECTION of every public source, the earliest closing anyone reports. This is deliberate: the badge may say 'closed' while the temple is open, but never the reverse. Nobody makes a wasted journey because of us. Replace with the board at the temple once it has been photographed.",
   "timezone": "Asia/Kolkata",
   "regular": {
     "sunday":    [{ "open": "06:00", "close": "20:30" }],
@@ -16,7 +16,7 @@
   "overrides": [
     {
       "date": "2027-04-11",
-      "note": "Rathotsavam — extended darshan",
+      "note": "Rathotsavam, extended darshan",
       "hours": [{ "open": "04:00", "close": "23:00" }]
     }
   ],

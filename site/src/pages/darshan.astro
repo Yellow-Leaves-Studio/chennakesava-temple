@@ -22,7 +22,7 @@ for (const day of order) {
 const span = (days) =>
   days.length === 1 ? label[days[0]] : `${label[days[0]]} – ${label[days[days.length - 1]]}`;
 
-// A day with two sittings gets both rows labelled — an empty cell reads as nothing
+// A day with two sittings gets both rows labelled. An empty cell reads as nothing
 // at all to a screen reader, and as a floating time to everyone else.
 const partOfDay = (open) => {
   const hour = Number(open.split(':')[0]);
@@ -62,12 +62,12 @@ const rowLabel = (r, i) =>
       <strong>These hours are the earliest anyone reports.</strong> Published sources give
       the closing time variously as 8:30, 8:50 and 9:00 in the evening. Rather than choose,
       this site publishes the earliest of them. The temple may well be open later than
-      shown here — it will not be open earlier. No source has been confirmed against the
+      shown here. It will not be open earlier. No source has been confirmed against the
       board at the temple.
     </p>
   </div>
 
-  <svg class="kolam-rule" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true"><use href="#kolam" /></svg>
+  <svg class="kolam-rule" aria-hidden="true"><rect width="100%" height="100%" fill="url(#kolam)" /></svg>
 
   <h3>Daily rituals</h3>
   <div class="table-wrap">
@@ -100,7 +100,7 @@ const rowLabel = (r, i) =>
     autos run to it from there.
   </p>
   <p>
-    Festival days do not follow the weekly schedule — during Brahmotsavam in particular,
+    Festival days do not follow the weekly schedule. During Brahmotsavam in particular,
     hours extend well past those shown above.
   </p>
 </Base>

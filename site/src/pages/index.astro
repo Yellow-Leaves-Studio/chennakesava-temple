@@ -15,13 +15,13 @@ const bram = festivals.brahmotsavam;
 const highlights = bram.days.filter((d) => d.highlight);
 ---
 <Base
-  title="Sri Lakshmi Chennakesava Swami Devastanam, Markapur — timings, festivals, and how to visit"
+  title="Sri Lakshmi Chennakesava Swami Devastanam, Markapur: timings, festivals, and how to visit"
   description="Darshan timings, the annual festival calendar, and the history of the 600-year-old Chennakesava Swamy temple at Markapur, Prakasam District, Andhra Pradesh."
 >
   <h1>A Vijayanagara temple on the Gundlakamma</h1>
   <p class="lead">
-    Sri Maha Vishnu stands here as <strong>Chennakesava Swamy</strong> — the beautifully
-    adorned — with his consort Sri Mahalakshmi. The gopuram above the shrine rises
+    Sri Maha Vishnu stands here as <strong>Chennakesava Swamy</strong>, the beautifully
+    adorned, with his consort Sri Mahalakshmi. The gopuram above the shrine rises
     135 feet, reportedly the second tallest in the Telugu states, and has stood in some
     form since 1425.
   </p>
@@ -39,7 +39,7 @@ const highlights = bram.days.filter((d) => d.highlight);
   </div>
   <p style="margin-top:12px"><a href={url('/darshan')}>Full timings and sevas →</a></p>
 
-  <svg class="kolam-rule" viewBox="0 0 240 24" preserveAspectRatio="none" aria-hidden="true"><use href="#kolam" /></svg>
+  <svg class="kolam-rule" aria-hidden="true"><rect width="100%" height="100%" fill="url(#kolam)" /></svg>
 
   <h3>The next festival</h3>
   <h2 style="margin-top:0">Brahmotsavam <span style="color:var(--ink-soft)">బ్రహ్మోత్సవాలు</span></h2>
@@ -51,13 +51,13 @@ const highlights = bram.days.filter((d) => d.highlight);
     {highlights.map((d) => (
       <li>
         <svg viewBox="0 0 18 22" aria-hidden="true"><use href="#bud" /></svg>
-        <span><strong>{d.name}</strong> — {fmt(d.date)}</span>
+        <span><strong>{d.name}</strong>, {fmt(d.date)}</span>
       </li>
     ))}
   </ul>
   <p style="margin-top:14px"><a href={url('/festivals')}>The whole calendar →</a></p>
 
-  <svg class="petal-rule" viewBox="0 0 240 20" preserveAspectRatio="none" aria-hidden="true"><use href="#petalband" /></svg>
+  <svg class="petal-rule" aria-hidden="true"><rect width="100%" height="100%" fill="url(#petalband)" /></svg>
 
   <h2>The sun reaches the feet</h2>
   <p>

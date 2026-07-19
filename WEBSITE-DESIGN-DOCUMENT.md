@@ -1,8 +1,12 @@
 # Website Design Document
 ## Sri Lakshmi Chennakesava Swami Devastanam, Markapur
 
-**Status:** v3 — decisions locked, awaiting mockup approval. No production code yet.
+**Status:** v4 — Phase 1 built and verified locally, awaiting push.
 **Last updated:** 2026-07-19
+
+> **This document leads the code.** Any change to palette, hosting, content policy or
+> scope is recorded here *first*, then implemented. If the two ever disagree, this file
+> is right and the code is a bug.
 
 Legend: `[NEED]` = asset/content required · `[VERIFY]` = web-sourced, unconfirmed by the temple
 
@@ -18,6 +22,9 @@ Legend: `[NEED]` = asset/content required · `[VERIFY]` = web-sourced, unconfirm
 | 4 | **No photographs** — none are legally usable | Design is typographic + SVG. No gallery in Phase 1. No image pipeline |
 | 5 | **English only, Telugu terms inline** | No `/te/` mirror. Halves every future edit |
 | 6 | **Conservative timings + live badge + date overrides** | Safe-by-construction: the badge can err toward "closed", never toward "open" |
+| 7 | **Markapur slate palette**, not the warm cream first proposed | `--surface` is the page, `--ground` is recessed. Kumkum the only accent; gold for ornament and the sun (§8) |
+| 8 | **Light and dark, device-following, with a manual override** | Sunlight legibility outside the temple beats respecting the OS setting (§8) |
+| 9 | **No webfonts at all** | A silent fallback on a Telugu glyph is worse than none. System faces throughout (§8) |
 
 **What the site optimizes for, in priority order:** accuracy (the utility) → the story
 (the differentiator) → craft (throughout) → official-readiness (a constraint: build
@@ -183,21 +190,29 @@ door* to this temple, not a payments company.
 
 ## 5. Phase plan
 
-### Phase 0 — Design *(current)*
-This document · UX mockups: mobile + desktop · color, type, and component direction
-approved. **Exit:** you sign off on the mockups.
+### Phase 0 — Design ✅ *complete*
+This document · mockups mobile + desktop · palette, type and ornament approved.
+**Exit met:** mockups signed off 2026-07-19.
 
-### Phase 1 — Static site
-Astro, static, English with Telugu inline, deployed. Content as Markdown/JSON in the repo.
+### Phase 1 — Static site ✅ *built, not yet pushed*
+Astro, static, English with Telugu inline. Content as JSON in the repo. Lives in `site/`.
 
-**Six pages:** Home · About · Darshan · Festivals · Visit · Sun Phenomenon
+**Six pages:** Home · The temple · Darshan · Festivals · The sun · Getting there
 
 - Open/closed badge, computed from conservative timings + date overrides (§6)
-- Festival calendar from a single data file
+- Light/dark, following the device with a manual override (§8)
+- Festival calendar and sevas from data files
 - Typographic + SVG design, no images, no image pipeline
-- SEO: per-page metadata, `Place`/`LocalBusiness` structured data, sitemap
+- SEO: per-page metadata, `PlaceOfWorship` structured data
 - Footer disclaimer: unofficial devotee-built site, timings unverified
-- **Exit:** live on GitHub Pages, verified on mid-range Android over 4G, under 2s load
+
+**Measured:** 8.2 KB gzipped per page · 168 KB total · zero external requests · no JS
+bundle (the one script inlines) · WCAG AA in both themes · 11 passing checks on the
+hours logic.
+
+- **Exit:** live on GitHub Pages, verified on a real mid-range Android over 4G.
+  *Outstanding:* push, enable Pages, and test on an actual phone rather than an emulated
+  viewport.
 
 ### Phase 2 — Photos, editability, seasonal content
 - Photo gallery, once you've had someone shoot the temple
@@ -272,8 +287,10 @@ Six pages. Gallery joins in Phase 2 when photos exist.
 **Language:** English throughout, with Telugu script inline for the temple name, deity
 names, festivals, and sevas — *Rathotsavam (రథోత్సవం)*, *Garuda Vahana Seva*,
 *Kalyanotsavam*. Not translated to "chariot festival"; the Telugu term is the real name.
-Font: **Noto Sans Telugu**, subset and self-hosted — other Telugu webfonts render
-inconsistently on older Android.
+Font: **the platform's own Telugu face**, no webfont. Self-hosting Noto Sans Telugu was
+the original plan; it was dropped because a silent fallback on a Telugu glyph is worse
+than no webfont at all, and every device that reads Telugu already ships a face for it.
+See §8.
 
 ## 8. Visual design
 
@@ -286,22 +303,102 @@ inscription-inspired rule work, the sapta-swara motif for the musical pillars.
 This is a constraint that pays: no image pipeline, no lightbox, negligible page weight,
 instant on 4G. When real photos arrive they slot in without a redesign.
 
-**Colors** — proposed, to be confirmed at mockup
-- Base warm off-white `#FDF8F0` — sandalwood, paper
-- Primary deep maroon `#8C2F1E` — kumkum
-- Accent turmeric gold `#C9962B` — accents only, never large fills, never gradients
-- Text warm near-black `#2A2118`
-- Stone gray `#6B6459` — secondary text, echoes the granite
+### Palette — approved at mockup, and in the build
 
-WCAG AA minimum. Bright-sunlight readability is a real constraint.
+The warm-cream direction originally proposed here was **rejected at the mockup stage**.
+Cream ground, serif display and terracotta accent is where nearly every temple site — and
+nearly every generated design — lands. Markapur has manufactured **slate** for
+generations, so the neutral is that: a cool grey-green stone. Kumkum is the only accent.
+Gold is reserved for sacred ornament and the sun, and appears nowhere else.
 
-**Type**
-- Telugu: Noto Sans Telugu
-- English body: humanist sans, **18px base on mobile** — many visitors are older
-- English headings: restrained serif
+| Token | Light | Dark | Role |
+|---|---|---|---|
+| `--surface` | `#F8F9F7` | `#1F2523` | **The page.** Paper. Body, masthead, main |
+| `--ground` | `#EEF0EE` | `#171B1A` | **Recessed only.** Nav strip, cards |
+| `--line` | `#D3D8D4` | `#343C39` | Rules and borders |
+| `--ink` | `#232A27` | `#E7EBE8` | Body text |
+| `--ink-soft` | `#5D6A63` | `#95A099` | Secondary text |
+| `--kumkum` | `#96222A` | `#DE8087` | The single accent. Links, active nav, live badge |
+| `--kumkum-soft` | `#F2E0DF` | `#2E1D1C` | Open-now badge ground |
+| `--gold` | `#A8781A` | `#D6A63F` | Ornament and the sun. Never a large fill |
+
+> **`--surface` is the page; `--ground` is recessed.** Getting this backwards was a real
+> bug in the first build — `mockup.html` uses `--ground` for the *document backdrop the
+> phone frames sit on*, and `.site{--surface}` for the temple site itself. Porting the
+> backdrop colour onto `body` produced a grey page under a near-white header. It also
+> silently broke the gopuram, which punches its doorway and tier niches with
+> `var(--surface)` and only reads as a cut-out when the page behind it matches.
+
+Dark values are **hand-tuned, not inverted** — kumkum lightens to a rose and gold
+brightens, because the light-mode versions go muddy on a dark ground.
+
+**Measured contrast** (WCAG AA needs 4.5:1 for body text):
+
+| | Light | Dark |
+|---|---|---|
+| Body text | 13.89:1 | 12.95:1 |
+| Secondary text | 5.36:1 | 5.76:1 |
+| Links | 7.77:1 | 5.60:1 |
+| Nav | 4.95:1 | 6.43:1 |
+
+### Light and dark
+
+Both are designed. The site follows the device by default **and carries a manual
+control**, because the two can conflict here in a way they don't on most sites: a devotee
+whose phone lives in dark mode has no other way to get a readable page while standing in
+the sun outside the gopuram. Bright-sunlight legibility is a stated constraint (§2), so
+the override earns its keep.
+
+- The control shows **both options — "Light | Dark"** with the active one marked, not a
+  single icon toggle. Working out whether a half-moon means *current state* or *what
+  you'll get* is not a puzzle to hand an older visitor in direct sunlight.
+- **A blocking inline script in `<head>` sets `data-theme` before first paint.** Without
+  it, anyone who has chosen light gets a dark flash on every page load. It must stay
+  inline and must not be deferred or bundled.
+- The CSS override wins in **both** directions via
+  `@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { … } }`, which
+  also means the light palette is written once rather than duplicated.
+- Choice persists in `localStorage`; clearing it returns to following the device.
+
+**Type** — all system-resolved. No webfont is loaded at all: the CSP-free win is real,
+but the deciding reason is that a silent fallback on a Telugu glyph is worse than having
+no webfont. Telugu renders in the platform's own face, which is present on every device
+that reads Telugu.
+- Body: `system-ui` at **18px on mobile** — many visitors are older, reading outdoors
+- Headings: a system serif (Iowan Old Style / Palatino / Georgia)
+- Times and data: system monospace, `tabular-nums` so digits align in columns
+
+**Ornament** — drawn as geometry, never imported as images. Chakra (Vishnu's discus, and
+already a radial mandala), padma, muggu, padma-patti, tirunamam, lotus, bud, and the
+gopuram itself. See `site/src/components/Ornaments.astro`; each is defined once and
+referenced with `<use>`.
+
+### Rules the ornament has to follow
+
+**Dividers tile. They never stretch.** The muggu and padma-patti rules were first drawn
+with `preserveAspectRatio="none"` and stretched to the container width. At 46rem that
+pulls each loop into a long flat lens and the motif stops reading as a kolam at all. They
+are now SVG `<pattern>` fills, so the unit repeats at its drawn proportions no matter how
+wide the column gets. Any future ornament used as a rule follows the same rule: tile it,
+do not scale it.
+
+**Ornament has to survive the light theme.** Gold at low opacity is legible against a
+dark ground and close to invisible against paper. `--gold-line` is therefore set
+separately per theme rather than shared, and the light value is the stronger of the two.
+Check ornament in light mode before calling it done, since dark flatters it.
+
+**Punctuation: no em dashes**, in copy or in code comments. Use a comma, a colon,
+parentheses, or start a new sentence. En dashes stay where they are correct, which is
+numeric and time ranges such as `06:00 – 20:30`.
+
+**Favicon:** the tirunamam, at `site/public/favicon.svg`. It is a real file rather than
+an inline data URI, because a data URI carrying raw `<`, `>` and spaces fails to parse in
+some browsers, which is exactly how the first attempt broke. The mark is gold with the
+kumkum srichurnam, and it reads at 16px because it is two flat shapes with no fine
+detail. Remember the base path when linking it.
 
 **Layout**
-- Single column mobile, max ~1100px desktop
+- Single column, max **46rem** for reading measure
 - Generous spacing, clear section breaks
 - **No carousels, autoplay, parallax, scroll animation, or background music.** Each
   appears on comparable temple sites; each makes them worse.
@@ -383,6 +480,39 @@ root, so no base path at all. Worth switching to only if the gallery forces it.)
 `*.pages.dev` subdomain, which is enough to build, test on a phone, and demo. See §13.
 **Ownership** — when sanction comes, domain and hosting are registered in the temple's
 name, not a personal one, or the site dies when someone moves on.
+
+## 11a. What was built — file map
+
+Repo: **[Yellow-Leaves-Studio/chennakesava-temple](https://github.com/Yellow-Leaves-Studio/chennakesava-temple)**
+(the org, not a personal account — which is why Pages serves from
+`yellow-leaves-studio.github.io`, and why `astro.config.mjs` sets `site` to that host).
+
+```
+site/
+  astro.config.mjs        base: '/chennakesava-temple' — must match the repo name
+  src/
+    data/                 THE EDITABLE LAYER — see README
+      timings.json        weekly hours, festival overrides, daily rituals
+      festivals.json      Brahmotsavam day by day, annual observances
+      sevas.json          sevas offered, deliberately without prices
+    lib/
+      status.js           open/shut logic — the only non-trivial code here
+      status.test.js      11 checks; the deploy refuses to publish if these fail
+    layouts/Base.astro    design tokens, theming, badge, nav, footer
+    components/Ornaments.astro   every SVG motif, defined once
+    pages/                six .astro files, one per page
+.github/workflows/deploy.yml     test → build → Pages
+```
+
+**Why `status.js` is separated out and tested.** It is the one place the site can cause
+real harm: a badge that wrongly says "open" sends someone on a wasted journey. Two things
+it must get right, both covered by tests — it answers in **Markapur's** time regardless of
+where the visitor is, and a festival override resolves against the temple's date, not
+UTC. (A visitor at 05:00 IST on 11 April is at 23:30 UTC on the 10th; match the override
+on the UTC date and it silently vanishes.)
+
+**One-time setup before the site goes live:** repo *Settings → Pages → Source =
+GitHub Actions*. Without it the workflow builds and deploys nowhere, with no error.
 
 ## 12. Out of scope for v1
 
